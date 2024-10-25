@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <title>Test</title>
+</head>
+<body>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="#">StaneApp</a>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg bg-body-secondary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-dark" href="home.html">MENU PRINCIPAL</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Client</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Commande</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Facture</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Tenues</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Models</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Album</a>
+              </li>
+            </ul>
+               <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
+            <form class="d-flex ms-auto" role="search">
+              <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+              <button class="btn btn-outline-success" type="submit">Recherche</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Fin de la barre de navigation -->
+
+
+      <div class="container-fluid d-flex flex-column align-items-center">
+        <h2 class="text-center">Inserez l'image de la tenue</h2>
+        <div class="mb-3 w-50">
+            <label for="exampleFormControlInput1" class="form-label">ID Tenues</label>
+            <input type="number" class="form-control" id="exampleFormControlInput1" name="idcom" placeholder="01">
+        </div>
+
+        <div class="mb-3 w-50">
+            <label for="exampleFormControlInput1" class="form-label">Modele</label>
+            <input type="file" class="form-control" id="exampleFormControlInput1" name="photos" placeholder="Inserez la l'image de la tenue">
+        </div>
+
+        <div class="mb-3 w-50">
+            <label for="exampleFormControlInput1" class="form-label">Description</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" name="libelle" placeholder="Tenue Mariage">
+        </div>
+
+
+        <!-- Boutons Annuler et Suivant rapprochés -->
+        <div class="d-flex justify-content-center w-50 mt-2">
+            <!-- permet d'ajouter de l'espace entre les boutons -->
+            <button type="button" class="btn btn-secondary me-5">Annuler</button>
+            <button type="button" class="btn btn-primary">Suivant</button>
+        </div>
+    </div>
+    
+    
+
+    <!-- Liste des Clients et des elements -->
+      <table class="table table-striped mt-3">
+        <thead>
+            <th colspan="4" class="text-center fw-bold">LISTE DES TENUES</th>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+</body>
+</html>
