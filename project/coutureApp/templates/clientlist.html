@@ -1,13 +1,17 @@
+
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
-    <title>Test</title>
+    <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <title>Liste client</title>
 </head>
 <body>
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="bootstrap/js/bootstrap.bundle.min.js"></script> -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
           <a class="navbar-brand text-light" href="#">StaneApp</a>
@@ -15,17 +19,17 @@
     </nav>
     <nav class="navbar navbar-expand-lg bg-body-secondary">
         <div class="container-fluid">
-          <a class="navbar-brand text-dark" href="home.html">MENU PRINCIPAL</a>
+          <a class="navbar-brand text-dark" href="{% url 'home'%}">MENU PRINCIPAL</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Client</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Commande</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Facture</a>
@@ -39,6 +43,7 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Album</a>
               </li>
+
             </ul>
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">
@@ -49,46 +54,14 @@
         </div>
       </nav>
 
+
       <!-- Fin de la barre de navigation -->
-
-
       <div class="container-fluid d-flex flex-column align-items-center">
-        <h2 class="text-center">Edition Facture</h2>
-        <div class="mb-3 w-50">
-            <label for="exampleFormControlInput1" class="form-label">ID client</label>
-            <input type="number" class="form-control" id="exampleFormControlInput1" name="idclient" placeholder="01">
-        </div>
-
-        <div class="mb-3 w-50">
-            <label for="exampleFormControlInput1" class="form-label">ID commande</label>
-            <input type="number" class="form-control" id="exampleFormControlInput1" name="idtype" placeholder="01">
-        </div>
-
-        <div class="mb-3 w-50">
-            <label for="exampleFormControlInput1" class="form-label">Montant Remis</label>
-            <input type="number" class="form-control" id="exampleFormControlInput1" name="montantdonne" placeholder="10000">
-        </div>
-
-        <div class="mb-3 w-50">
-            <label for="exampleFormControlInput1" class="form-label">Montant Facture</label>
-            <input type="number" class="form-control" id="exampleFormControlInput1" name="montantfacture" placeholder="5000">
-        </div>
-
-
-        <!-- Boutons Annuler et Suivant rapprochés -->
-        <div class="d-flex justify-content-center w-50 mt-2">
-            <!-- permet d'ajouter de l'espace entre les boutons -->
-            <button type="button" class="btn btn-secondary me-5">Annuler</button>
-            <button type="button" class="btn btn-primary">Suivant</button>
-        </div>
-    </div>
-    
-    
-
-    <!-- Liste des Clients et des elements -->
+        <h2 class="text-center mt-3"> LISTE DES CLIENTS</h2>
+         <!-- Liste des Clients et des elements -->
       <table class="table table-striped mt-3">
         <thead>
-            <th colspan="4" class="text-center fw-bold">LISTE DES TENUES</th>
+            <!-- <th colspan="4" class="text-center fw-bold">LISTE DES CLIENTS</th> -->
           <tr>
             <th scope="col">#</th>
             <th scope="col">First</th>
@@ -116,5 +89,9 @@
           </tr>
         </tbody>
       </table>
+      </div>
+       
+    </div>
+    
 </body>
 </html>

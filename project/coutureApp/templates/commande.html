@@ -1,13 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
-    <title>Test</title>
+    <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+
+    <title>commande</title>
 </head>
 <body>
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="bootstrap/js/bootstrap.bundle.min.js"></script> -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
           <a class="navbar-brand text-light" href="#">StaneApp</a>
@@ -15,7 +19,7 @@
     </nav>
     <nav class="navbar navbar-expand-lg bg-body-secondary">
         <div class="container-fluid">
-          <a class="navbar-brand text-dark" href="home.html">MENU PRINCIPAL</a>
+          <a class="navbar-brand text-dark" href="{% url 'home'%}">MENU PRINCIPAL</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -40,6 +44,44 @@
                 <a class="nav-link active" aria-current="page" href="#">Album</a>
               </li>
             </ul>
+            
+
+
+
+
+            <!-- Affichage du message de succes -->
+            {% if messages %}
+              <div id="message-container">
+                  {% for message in messages %}
+                      <div class="alert alert-success" role="alert">
+                          {{ message }}
+                      </div>
+                  {% endfor %}
+              </div>
+            {% endif %}
+
+            <!-- Du javaScript pour creer de l'animation -->
+            <script>
+              // Attendre que la page soit chargée
+              document.addEventListener("DOMContentLoaded", function() {
+                  // Sélectionner le conteneur de message
+                  const messageContainer = document.getElementById('message-container');
+                  
+                  if (messageContainer) {
+                      // Cacher le message après 3 secondes
+                      setTimeout(() => {
+                          messageContainer.style.display = 'none';
+                      }, 5000);  // 3000 ms = 3 secondes
+                  }
+              });
+          </script>
+        
+
+
+
+
+
+
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">
               <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
@@ -51,6 +93,8 @@
 
       <!-- Fin de la barre de navigation -->
 
+       <!-- Affichage de message apres avoir enregistré un client -->
+       
 
       <div class="container-fluid d-flex flex-column align-items-center">
         <h2 class="text-center">Enregistrez la Commande</h2>

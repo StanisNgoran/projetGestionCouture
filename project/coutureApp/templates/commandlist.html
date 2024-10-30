@@ -1,14 +1,17 @@
-{% load static%}
+
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css'%}">
-    <title>Facture</title>
+    <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <title>Liste Commande</title>
 </head>
 <body>
-  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- <script src="bootstrap/js/bootstrap.bundle.min.js"></script> -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
           <a class="navbar-brand text-light" href="#">StaneApp</a>
@@ -23,10 +26,10 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Client</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Commande</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Facture</a>
@@ -40,6 +43,7 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Album</a>
               </li>
+
             </ul>
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">
@@ -50,24 +54,14 @@
         </div>
       </nav>
 
+
       <!-- Fin de la barre de navigation -->
-
-      <div class="col-sm-3 mt-3">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Editer une facture</h5>
-            <p class="card-text">Creer une facture</p>
-            <a href="{% url 'editefacture'%}" class="btn btn-success">Creer</a>
-          </div>
-        </div>
-      </div>
-    
-    
-
-    <!-- Liste des Clients et des elements -->
+      <div class="container-fluid d-flex flex-column align-items-center">
+        <h2 class="text-center mt-3"> LISTE DES COMMANDES</h2>
+         <!-- Liste des Clients et des elements -->
       <table class="table table-striped mt-3">
         <thead>
-            <th colspan="4" class="text-center fw-bold">LISTE DES FACTURES</th>
+            <!-- <th colspan="4" class="text-center fw-bold">LISTE DES CLIENTS</th> -->
           <tr>
             <th scope="col">#</th>
             <th scope="col">First</th>
@@ -95,5 +89,9 @@
           </tr>
         </tbody>
       </table>
+      </div>
+       
+    </div>
+    
 </body>
 </html>

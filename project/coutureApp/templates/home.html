@@ -4,13 +4,11 @@
   {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
 
     <title>Accueil</title>
 </head>
 <body>
-    <!-- <script src="bootstrap/js/bootstrap.bundle.min.js"></script> -->
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
@@ -26,10 +24,10 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Client</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Commande</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="facture.html">Facture</a>
@@ -61,78 +59,89 @@
 
       <!-- Fin de la barre de navigation -->
 
-      <div class="row mt-3">
-        <div class="col-sm-3 mb-3 mb-sm-0">
-          <div class="card">
-            <div class="card-body bg-secondary" >
-              <h5 class="card-title">Creer une Commande</h5>
-              <p class="card-text">Debuter une Nouvelle commande ici.</p>
-              <a href="client.html" class="btn btn-success">Creer une Commande</a>
+     
+      <div class="container mt-3">
+        <div class="row justify-content-center">
+            <!-- Première carte -->
+            <div class="col-sm-3 mb-3">
+                <div class="card" style="width: 15rem;">
+                    <img src="{% static 'img/client.png' %}" class="card-img-top" alt="client_Image" style="height: 125px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Créer une Commande</h5>
+                        <a href="{% url 'client' %}" class="btn btn-success">Créer une Commande</a>
+                    </div>
+                </div>
             </div>
-          </div>
+
+            <!-- Deuxième carte -->
+            <div class="col-sm-3 mb-3">
+                <div class="card" style="width: 15rem;">
+                    <img src="{% static 'img/2emecarte.png' %}" class="card-img-top" alt="client_Image" style="height: 125px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Facture & Reçu</h5>
+                        <a href="{% url 'facture'%}" class="btn btn-success">Edition Facture</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Troisième carte -->
+            <div class="col-sm-3 mb-3">
+                <div class="card" style="width: 15rem;">
+                  <img src="{% static 'img/facture.png' %}" class="card-img-top" alt="client_Image" style="height: 125px; object-fit: cover;">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Vente</h5>
+                  
+                        <a href="#" class="btn btn-success">Voir les Ventes</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Quatrième carte -->
+            <div class="col-sm-3 mb-3">
+                <div class="card" style="width: 15rem;">
+                  <img src="{% static 'img/stat.png' %}" class="card-img-top" alt="client_Image" style="height: 125px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Statistique</h5>
+                        <a href="#" class="btn btn-success">Voir les Stats</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-3 ">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Special title treatment</h5>
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="#" class="btn btn-success">Go somewhere</a>
-            </div>
-          </div>
-        </div>
+    </div>
 
 
-        <div class="col-sm-3">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-success">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-3">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-success">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-      </div>
 
     <!-- Liste des Clients et des elements -->
+        <!-- Tableau des clients enregistrés -->
+    <div class="container mt-4">
+      <h2 class="text-center">Liste des Commandes</h2>
+      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
       <table class="table table-striped mt-3">
-        <thead>
-            <th colspan="4" class="text-center fw-bold">LISTE DES COMMANDES</th>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
+          <thead>
+              <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Prenom</th>
+                  <th scope="col">Contact</th>
+                  <th scope="col">Date d'ajout</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for client in clients %}
+                  <tr>
+                      <td>{{ client.idclient }}</td>
+                      <td>{{ client.nom }}</td>
+                      <td>{{ client.prenom }}</td>
+                      <td>{{ client.contact }}</td>
+                      <td>{{ client.ajout|date:"d/m/Y H:i" }}</td>
+                  </tr>
+              {% empty %}
+                  <tr>
+                      <td colspan="5" class="text-center">Aucun client enregistré.</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
       </table>
+  </div>
 </body>
 </html>

@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css'%}">
-    <title>Facture</title>
+    <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap.css'%}">
+    <title>editionfacture</title>
 </head>
 <body>
-  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
           <a class="navbar-brand text-light" href="#">StaneApp</a>
@@ -52,22 +52,44 @@
 
       <!-- Fin de la barre de navigation -->
 
-      <div class="col-sm-3 mt-3">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Editer une facture</h5>
-            <p class="card-text">Creer une facture</p>
-            <a href="{% url 'editefacture'%}" class="btn btn-success">Creer</a>
-          </div>
+
+      <div class="container-fluid d-flex flex-column align-items-center">
+        <h2 class="text-center">Edition Facture</h2>
+        <div class="mb-3 w-50">
+            <label for="exampleFormControlInput1" class="form-label">ID client</label>
+            <input type="number" class="form-control" id="exampleFormControlInput1" name="idclient" placeholder="01">
         </div>
-      </div>
+
+        <div class="mb-3 w-50">
+            <label for="exampleFormControlInput1" class="form-label">ID commande</label>
+            <input type="number" class="form-control" id="exampleFormControlInput1" name="idtype" placeholder="01">
+        </div>
+
+        <div class="mb-3 w-50">
+            <label for="exampleFormControlInput1" class="form-label">Montant Remis</label>
+            <input type="number" class="form-control" id="exampleFormControlInput1" name="montantdonne" placeholder="10000">
+        </div>
+
+        <div class="mb-3 w-50">
+            <label for="exampleFormControlInput1" class="form-label">Montant Facture</label>
+            <input type="number" class="form-control" id="exampleFormControlInput1" name="montantfacture" placeholder="5000">
+        </div>
+
+
+        <!-- Boutons Annuler et Suivant rapprochés -->
+        <div class="d-flex justify-content-center w-50 mt-2">
+            <!-- permet d'ajouter de l'espace entre les boutons -->
+            <button type="button" class="btn btn-secondary me-5">Annuler</button>
+            <button type="button" class="btn btn-primary">Suivant</button>
+        </div>
+    </div>
     
     
 
     <!-- Liste des Clients et des elements -->
       <table class="table table-striped mt-3">
         <thead>
-            <th colspan="4" class="text-center fw-bold">LISTE DES FACTURES</th>
+            <th colspan="4" class="text-center fw-bold">LISTE DES TENUES</th>
           <tr>
             <th scope="col">#</th>
             <th scope="col">First</th>

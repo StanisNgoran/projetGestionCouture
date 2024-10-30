@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
-    <title>Test</title>
+    <title>client</title>
 </head>
 <body>
     <!-- <script src="bootstrap/js/bootstrap.bundle.min.js"></script> -->
@@ -19,29 +19,29 @@
     </nav>
     <nav class="navbar navbar-expand-lg bg-body-secondary">
         <div class="container-fluid">
-          <a class="navbar-brand text-dark" href="home.html">MENU PRINCIPAL</a>
+          <a class="navbar-brand text-dark" href="{% url 'home'%}">MENU PRINCIPAL</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Client</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Commande</a>
+                <a class="nav-link active" aria-current="page" href="{%url 'commandlist'%}">Commande</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Facture</a>
+                <a class="nav-link active" aria-current="page" href="{%url 'facture'%}">Facture</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Tenues</a>
+                <a class="nav-link active" aria-current="page" href="{%url 'tenue'%}">Tenues</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Models</a>
+                <a class="nav-link active" aria-current="page" href="">Models</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Album</a>
+                <a class="nav-link active" aria-current="page" href="">Album</a>
               </li>
 
             </ul>
@@ -55,64 +55,65 @@
       </nav>
 
 
-      <!-- Fin de la barre de navigation -->
+  <form action="{% url 'client'%}" method="post">    <!-- Fin de la barre de navigation -->
       <div class="container-fluid d-flex flex-column align-items-center">
         <h2 class="text-center">Enregistrez le Client</h2>
+
+        {%csrf_token%}
         <div class="mb-3 w-50">
             <label for="exampleFormControlInput1" class="form-label">Nom</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Ngoran">
+            <input type="text" class="form-control" name="nom" id="exampleFormControlInput1" placeholder="Ngoran" required>
         </div>
     
         <div class="mb-3 w-50">
             <label for="exampleFormControlInput1" class="form-label">Prenom</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Stane">
+            <input type="text" class="form-control" name="prenom" id="exampleFormControlInput1" placeholder="Stane" required>
         </div>
     
         <div class="mb-3 w-50">
             <label for="exampleFormControlInput1" class="form-label">Contact</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="0700010203">
+            <input type="text" class="form-control" name="contact" id="exampleFormControlInput1" placeholder="0700010203" required>
         </div>
 
         <!-- Boutons Annuler et Suivant rapprochés -->
         <div class="d-flex justify-content-center w-50 mt-2">
             <!-- permet d'ajouter de l'espace entre les boutons -->
-            <button type="button" class="btn btn-secondary me-5">Annuler</button>
-            <button type="button" class="btn btn-primary">Suivant</button>
+            <button type="reset" class="btn btn-secondary me-5">Annuler</button>
+            <button type="submit" class="btn btn-primary">Suivant</button>
         </div>
     </div>
-    
-    
-
-    <!-- Liste des Clients et des elements -->
+</form>
+   
+      <!-- Tableau des clients enregistrés -->
+    <div class="container mt-4">
+      <h2 class="text-center">Liste des Clients</h2>
+      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
       <table class="table table-striped mt-3">
-        <thead>
-            <th colspan="4" class="text-center fw-bold">LISTE DES CLIENTS</th>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
+          <thead>
+              <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Prenom</th>
+                  <th scope="col">Contact</th>
+                  <th scope="col">Date d'ajout</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for client in clients %}
+                  <tr>
+                      <td>{{ client.idclient }}</td>
+                      <td>{{ client.nom }}</td>
+                      <td>{{ client.prenom }}</td>
+                      <td>{{ client.contact }}</td>
+                      <td>{{ client.ajout|date:"d/m/Y H:i" }}</td>
+                  </tr>
+              {% empty %}
+                  <tr>
+                      <td colspan="5" class="text-center">Aucun client enregistré.</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
       </table>
+  </div>
 </body>
 </html>

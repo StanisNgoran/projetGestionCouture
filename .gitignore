@@ -1,0 +1,17 @@
+# Environnements virtuels
+env/
+venv/
+
+# Fichiers spécifiques à l'environnement
+*.pyc
+__pycache__/
+
+# Configuration de l'IDE
+.vscode/
+.idea/
+
+# Fichiers de la base de données locale
+appdatabase
+
+# Clés et fichiers sensibles
+.env
