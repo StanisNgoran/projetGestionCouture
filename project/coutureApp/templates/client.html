@@ -45,6 +45,14 @@
               </li>
 
             </ul>
+
+            <!-- affiche de message  -->
+            {% include 'message.html'%}
+
+            <!-- Du javaScript pour creer de l'animation -->
+            <script src="{% static 'bootstrap/js/message.js'%}">  </script>
+            
+
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">
               <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
@@ -62,17 +70,17 @@
         {%csrf_token%}
         <div class="mb-3 w-50">
             <label for="exampleFormControlInput1" class="form-label">Nom</label>
-            <input type="text" class="form-control" name="nom" id="exampleFormControlInput1" placeholder="Ngoran" required>
+            <input type="text" class="form-control" name="nom" id="exampleFormControlInput1" placeholder="Ngoran">
         </div>
     
         <div class="mb-3 w-50">
             <label for="exampleFormControlInput1" class="form-label">Prenom</label>
-            <input type="text" class="form-control" name="prenom" id="exampleFormControlInput1" placeholder="Stane" required>
+            <input type="text" class="form-control" name="prenom" id="exampleFormControlInput1" placeholder="Stane">
         </div>
     
         <div class="mb-3 w-50">
             <label for="exampleFormControlInput1" class="form-label">Contact</label>
-            <input type="text" class="form-control" name="contact" id="exampleFormControlInput1" placeholder="0700010203" required>
+            <input type="text" class="form-control" name="contact" id="exampleFormControlInput1" placeholder="0700010203">
         </div>
 
         <!-- Boutons Annuler et Suivant rapprochés -->

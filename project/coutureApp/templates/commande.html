@@ -26,7 +26,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Client</a>
+                <a class="nav-link active" aria-current="page" href="">Client</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Commande</a>
@@ -44,44 +44,13 @@
                 <a class="nav-link active" aria-current="page" href="#">Album</a>
               </li>
             </ul>
-            
 
-
-
-
-            <!-- Affichage du message de succes -->
-            {% if messages %}
-              <div id="message-container">
-                  {% for message in messages %}
-                      <div class="alert alert-success" role="alert">
-                          {{ message }}
-                      </div>
-                  {% endfor %}
-              </div>
-            {% endif %}
+            <!-- Affichage du message d'erreur -->
+            {% include 'message.html'%}
 
             <!-- Du javaScript pour creer de l'animation -->
-            <script>
-              // Attendre que la page soit chargée
-              document.addEventListener("DOMContentLoaded", function() {
-                  // Sélectionner le conteneur de message
-                  const messageContainer = document.getElementById('message-container');
-                  
-                  if (messageContainer) {
-                      // Cacher le message après 3 secondes
-                      setTimeout(() => {
-                          messageContainer.style.display = 'none';
-                      }, 5000);  // 3000 ms = 3 secondes
-                  }
-              });
-          </script>
-        
-
-
-
-
-
-
+            <script src="{% static 'bootstrap/js/message.js'%}">  </script>
+            
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">
               <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
@@ -93,67 +62,75 @@
 
       <!-- Fin de la barre de navigation -->
 
-       <!-- Affichage de message apres avoir enregistré un client -->
+       <!-- Affichage de message apres avoir enregistré une commande -->
        
+    <form action="{% url 'commande'%}" method="post">
+      {%csrf_token%}
+        <div class="container-fluid d-flex flex-column align-items-center">
+          <h2 class="text-center">Enregistrez la Commande</h2>
+          
+          <div class="mb-3 w-50">
+              <label for="exampleCombobox" class="form-label">ID Client:</label>
+              <select class="form-select" id="exampleCombobox" name="idclient">
+                  {% for client in clients %}
+                    <option value="{{ client.idclient }}"> {{client.nom }} {{ client.idclient }}</option>
+                  {% endfor %}
+              </select>
+          </div>
 
-      <div class="container-fluid d-flex flex-column align-items-center">
-        <h2 class="text-center">Enregistrez la Commande</h2>
-        <div class="mb-3 w-50">
-            <label for="exampleFormControlInput1" class="form-label">ID client</label>
-            <input type="number" class="form-control" id="exampleFormControlInput1" name="idclient" placeholder="01">
-        </div>
 
+          <div class="mb-3 w-50">
+              <label for="dateInput" class="form-label">Date Commande</label>
+              <input type="date" class="form-control" id="dateInput" name="debutcom">
+          </div>
 
-        <div class="mb-3 w-50">
-            <label for="dateInput" class="form-label">Date Commande</label>
-            <input type="date" class="form-control" id="dateInput" name="debutcom">
-        </div>
+          <div class="mb-3 w-50">
+              <label for="dateInput" class="form-label">Date Rendez Vous</label>
+              <input type="date" class="form-control" id="dateInput" name="fincom">
+          </div>
 
-        <div class="mb-3 w-50">
-            <label for="dateInput" class="form-label">Date Rendez Vous</label>
-            <input type="date" class="form-control" id="dateInput" name="fincom">
-        </div>
-
-        <!-- Boutons Annuler et Suivant rapprochés -->
-        <div class="d-flex justify-content-center w-50 mt-2">
-            <!-- permet d'ajouter de l'espace entre les boutons -->
-            <button type="button" class="btn btn-secondary me-5">Annuler</button>
-            <button type="button" class="btn btn-primary">Suivant</button>
-        </div>
-    </div>
+          <!-- Boutons Annuler et Suivant rapprochés -->
+          <div class="d-flex justify-content-center w-50 mt-2">
+              <!-- permet d'ajouter de l'espace entre les boutons -->
+              <button type="reset" class="btn btn-secondary me-5">Annuler</button>
+              <button type="submit" class="btn btn-primary">Suivant</button>
+          </div>
+      </div>
+    </form>
     
     
 
     <!-- Liste des Clients et des elements -->
+    <div class="container mt-4">
+      <h2 class="text-center">Liste des commandes</h2>
+      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
       <table class="table table-striped mt-3">
-        <thead>
-            <th colspan="4" class="text-center fw-bold">LISTE DES COMMANDES</th>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
+          <thead>
+              <tr>
+                  <th scope="col">ID Commande</th>
+                  <th scope="col">ID client</th>
+                  <th scope="col">Date de Depôt</th>
+                  <th scope="col">Rendez Vous</th>
+                  <th scope="col">Jour Restant</th>
+                  <th scope="col">Date d'ajout</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for commande in commandes %}
+                  <tr>
+                      <td>{{ commande.idcom }}</td>
+                      <td>{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}</td>
+                      <td>{{ commande.debutcom }}</td>
+                      <td>{{ commande.fincom }}</td>
+                      <td>{{ commande.jour_restant }}</td>
+                      <td>{{ commande.creation|date:"d/m/Y H:i" }}</td>
+                  </tr>
+              {% empty %}
+                  <tr>
+                      <td colspan="5" class="text-center">Aucune Commande enregistrée.</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
       </table>
 </body>
 </html>

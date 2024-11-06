@@ -42,7 +42,17 @@
                 <a class="nav-link active" aria-current="page" href="#">Album</a>
               </li>
             </ul>
-               <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
+
+
+          <!-- Affichage du message de succes -->
+            {% include 'message.html'%}
+
+            <!-- Du javaScript pour creer de l'animation -->
+            <script src="{% static 'bootstrap/js/message.js'%}">  </script>
+
+
+            
+              <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">
               <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
               <button class="btn btn-outline-success" type="submit">Recherche</button>
@@ -57,13 +67,12 @@
       <div class="container-fluid d-flex flex-column align-items-center">
         <h2 class="text-center">Ajouter des Tenues dans la commande</h2>
         <div class="mb-3 w-50">
-            <label for="exampleFormControlInput1" class="form-label">ID commande</label>
-            <input type="number" class="form-control" id="exampleFormControlInput1" name="idcom" placeholder="01">
-        </div>
-
-        <div class="mb-3 w-50">
-            <label for="exampleFormControlInput1" class="form-label">ID Type</label>
-            <input type="number" class="form-control" id="exampleFormControlInput1" name="idtype" placeholder="01">
+          <label for="exampleCombobox" class="form-label">ID Command:</label>
+          <select class="form-select" id="exampleCombobox" name="idcom">
+              {% for command in commands %}
+                <option value="{{ command.idcom }}"> {{command.idcom }}</option>
+              {% endfor %}
+          </select>
         </div>
 
         <div class="mb-3 w-50">
@@ -75,6 +84,32 @@
             <label for="exampleFormControlInput1" class="form-label">Avance</label>
             <input type="text" class="form-control" id="exampleFormControlInput1" name="avance" placeholder="5000">
         </div>
+
+
+        <div class="mb-3 w-50">
+          <label for="exampleCombobox" class="form-label">Model:</label>
+          <select class="form-select" id="exampleCombobox" name="modeltenue">
+                <option value="Costume Femme">Costume Femme </option>
+                <option value="Costume Homme">Costume Homme </option>
+                <option value="Costume ecole">Costume ecole </option>
+                <option value="Chemise Manche Longue Pantalon">Chemise Manche Longue+ pantanlon </option>
+                <option value="Chemise Manche Longue simple">Chemise Manche Longue simple </option>
+                <option value="Chemise Manche courte Pantalon">Chemise Manche Courte+ pantanlon </option>
+                <option value="Chemise Manche courte simple">Chemise Manche Courte simple </option>
+                <option value="Pantalon simple">Pantalon simple </option>
+                <option value="culotte simple">culotte simple </option>
+                <option value="Robe compose">Robe Composée </option>
+                <option value="Robe simple">Robe simple </option>
+                <option value="Tunique homme">Tunique homme</option>
+                <option value="Tunique femme">Tunique Femme </option>
+                <option value="Tunique enfant">Tunique enfant </option>
+                <option value="Mesticaine">Mesticaine </option>
+                <option value="Taille Haute">Taille haute </option>
+                <option value="Jupe simple">Jupe simple </option>
+                <option value="Jupe haut">Jupe + haut </option>
+                <option value="Toge">Toge</option>
+          </select>
+      </div>
 
         <div class="mb-3 w-50">
             <label for="exampleFormControlInput1" class="form-label">Description</label>
@@ -91,37 +126,41 @@
     </div>
     
     
-
-    <!-- Liste des Clients et des elements -->
+      
+    <!-- Liste des Vetements et des elements -->
+    <div class="container mt-4">
+      <h2 class="text-center">Liste des Tenues commandées</h2>
+      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
       <table class="table table-striped mt-3">
-        <thead>
-            <th colspan="4" class="text-center fw-bold">LISTE DES TENUES</th>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
+          <thead>
+              <tr>
+                  <th scope="col">ID Tenue</th>
+                  <th scope="col">ID Commande</th>
+                  <th scope="col">ID Client</th>
+                  <th scope="col">Prix</th>
+                  <th scope="col">Avance</th>
+                  <th scope="col">Restant</th>
+                  <th scope="col">Model</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Date d'ajout</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for commande in commandes %}
+                  <tr>
+                      <td>{{ commande.idcom }}</td>
+                      <td>{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}</td>
+                      <td>{{ commande.debutcom }}</td>
+                      <td>{{ commande.fincom }}</td>
+                      <td>{{ commande.jour_restant }}</td>
+                      <td>{{ commande.creation|date:"d/m/Y H:i" }}</td>
+                  </tr>
+              {% empty %}
+                  <tr>
+                      <td colspan="5" class="text-center">Aucune Commande enregistrée.</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
       </table>
 </body>
 </html>

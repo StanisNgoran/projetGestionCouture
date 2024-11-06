@@ -119,25 +119,27 @@
       <table class="table table-striped mt-3">
           <thead>
               <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Nom</th>
-                  <th scope="col">Prenom</th>
-                  <th scope="col">Contact</th>
-                  <th scope="col">Date d'ajout</th>
+                <th scope="col">ID Commande</th>
+                <th scope="col">ID client</th>
+                <th scope="col">Date de Depôt</th>
+                <th scope="col">Rendez Vous</th>
+                <th scope="col">Jour Restant</th>
+                <th scope="col">Date d'ajout</th>
               </tr>
           </thead>
           <tbody>
-              {% for client in clients %}
-                  <tr>
-                      <td>{{ client.idclient }}</td>
-                      <td>{{ client.nom }}</td>
-                      <td>{{ client.prenom }}</td>
-                      <td>{{ client.contact }}</td>
-                      <td>{{ client.ajout|date:"d/m/Y H:i" }}</td>
-                  </tr>
+            {% for commande in commandes %}
+            <tr>
+                <td>{{ commande.idcom }}</td>
+                <td>{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}</td>
+                <td>{{ commande.debutcom }}</td>
+                <td>{{ commande.fincom }}</td>
+                <td>{{ commande.jour_restant }}</td>
+                <td>{{ commande.creation|date:"d/m/Y H:i" }}</td>
+            </tr>
               {% empty %}
                   <tr>
-                      <td colspan="5" class="text-center">Aucun client enregistré.</td>
+                      <td colspan="5" class="text-center">Aucune commande Enreigistrée.</td>
                   </tr>
               {% endfor %}
           </tbody>
