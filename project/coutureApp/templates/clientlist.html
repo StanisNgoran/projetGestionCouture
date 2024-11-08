@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
     <title>Liste client</title>
 </head>
 <body>
@@ -32,19 +34,28 @@
                 <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Facture</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Tenues</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues</a>
               </li>
+
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Models</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album</a>
               </li>
+
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Album</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques</a>
               </li>
 
             </ul>
+
+            <!-- affiche de message  -->
+            {% include 'message.html'%}
+            <!-- Du javaScript pour creer de l'animation -->
+            <script src="{% static 'bootstrap/js/message.js'%}">  </script>
+
+
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">
               <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
@@ -54,44 +65,51 @@
         </div>
       </nav>
 
+      <!-- Liste des Clients et des éléments -->
+<div class="container mt-4">
+  <h2 class="text-center">Liste Client</h2>
+  <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+    <table class="table table-striped mt-3">
+      <thead>
+        <tr>
+          <th scope="col">ID Client</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Prenom</th>
+          <th scope="col">Contact</th>
+          <th scope="col">Date d'Ajout</th>
+          <th scope="col">Modifier</th>
+          <th scope="col">Supprimer</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for client in clients %}
+          <tr>
+            <td>{{ client.idclient }}-{{ client.nom }}</td>
+            <td>{{ client.nom }}</td>
+            <td>{{ client.prenom }}</td>
+            <td>{{ client.contact }}</td>
+            <td>{{ client.ajout|date:"d/m/Y" }}</td>
+            <td>
+              <a href="{% url 'modifier_client' client.idclient %}">
+                <i class="fas fa-edit"></i> <!-- Icône de modification -->
+              </a>
+            </td>
+            <td>
+              <a href="{% url 'supprimer_client' client.idclient %}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce client ?');">
+                <i class="fas fa-trash-alt"></i> <!-- Icône de suppression -->
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" class="text-center">Aucun Client.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
-      <!-- Fin de la barre de navigation -->
-      <div class="container-fluid d-flex flex-column align-items-center">
-        <h2 class="text-center mt-3"> LISTE DES CLIENTS</h2>
-         <!-- Liste des Clients et des elements -->
-      <table class="table table-striped mt-3">
-        <thead>
-            <!-- <th colspan="4" class="text-center fw-bold">LISTE DES CLIENTS</th> -->
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-       
-    </div>
     
 </body>
 </html>

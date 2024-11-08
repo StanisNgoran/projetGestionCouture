@@ -12,7 +12,14 @@ urlpatterns = [
     path('editefacture/', views.editefacture, name='editefacture'),
     path('clientlist/', views.clientlist, name='clientlist'),
     path('commandlist/', views.commandlist, name='commandlist'),
+    path('album/', views.album, name='album'),
+    path('listeTenue/', views.listeTenue, name='listeTenue'),
+    path('statistique/', views.statistique, name='statistique'),
+    path('client/supprimer/<int:idclient>/', views.supprimer_client, name='supprimer_client'),
+    path('client/modifier/<int:idclient>/', views.modifier_client, name='modifier_client'),
     
+
+
     
 ]
 

@@ -23,24 +23,36 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Client</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Commande</a>
+                <a class="nav-link active" aria-current="page" href="{%url 'commandlist'%}">Commande</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Facture</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Tenues</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues</a>
               </li>
+
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Models</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album</a>
               </li>
+
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Album</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques</a>
               </li>
+
             </ul>
+
+
+            
+       <!-- Affichage du message d'erreur -->
+       {% include 'message.html'%}
+
+       <!-- Du javaScript pour creer de l'animation -->
+       <script src="{% static 'bootstrap/js/message.js'%}">  </script>
+
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">
               <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
@@ -50,67 +62,87 @@
         </div>
       </nav>
 
+
       <!-- Fin de la barre de navigation -->
 
 
-      <div class="container-fluid d-flex flex-column align-items-center">
-        <h2 class="text-center">Inserez l'image de la tenue</h2>
-        <div class="mb-3 w-50">
-            <label for="exampleFormControlInput1" class="form-label">ID Tenues</label>
-            <input type="number" class="form-control" id="exampleFormControlInput1" name="idcom" placeholder="01">
-        </div>
+      <form action="{% url 'image'%}" method="post" enctype="multipart/form-data">
 
-        <div class="mb-3 w-50">
-            <label for="exampleFormControlInput1" class="form-label">Modele</label>
-            <input type="file" class="form-control" id="exampleFormControlInput1" name="photos" placeholder="Inserez la l'image de la tenue">
-        </div>
+              <div class="container-fluid d-flex flex-column align-items-center">
+                <h2 class="text-center">Inserez l'image de la tenue</h2>
 
-        <div class="mb-3 w-50">
-            <label for="exampleFormControlInput1" class="form-label">Description</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" name="libelle" placeholder="Tenue Mariage">
-        </div>
+                {%csrf_token%}
+                <div class="mb-3 w-50">
+                  <label for="exampleCombobox" class="form-label">ID Tenu:</label>
+                  <select class="form-select" id="exampleCombobox" name="idtenu">
+                      {% for tenue in tenues %}
+                        <option value="{{ tenue.idtenu }}"> {{tenue.idtenu }}</option>
+                      {% endfor %}
+                  </select>
+                </div>
+
+                <div class="mb-3 w-50">
+                    <label for="exampleFormControlInput1" class="form-label">Image Modele </label>
+                    <input type="file" class="form-control" id="exampleFormControlInput1" name="photos" placeholder="Inserez la l'image de la tenue">
+                </div>
+
+                <div class="mb-3 w-50">
+                    <label for="exampleFormControlInput1" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="libelle" placeholder="Tenue Mariage">
+                </div>
 
 
-        <!-- Boutons Annuler et Suivant rapprochés -->
-        <div class="d-flex justify-content-center w-50 mt-2">
-            <!-- permet d'ajouter de l'espace entre les boutons -->
-            <button type="button" class="btn btn-secondary me-5">Annuler</button>
-            <button type="button" class="btn btn-primary">Suivant</button>
-        </div>
-    </div>
-    
-    
-
+                <!-- Boutons Annuler et Suivant rapprochés -->
+                <div class="d-flex justify-content-center w-50 mt-2">
+                    <!-- permet d'ajouter de l'espace entre les boutons -->
+                    <button type="reset" class="btn btn-secondary me-5">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                </div>
+            </div>
+      </form>
+      
     <!-- Liste des Clients et des elements -->
+    <div class="container mt-4">
+      <h2 class="text-center">Liste des tenues et leurs images</h2>
+      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
       <table class="table table-striped mt-3">
-        <thead>
-            <th colspan="4" class="text-center fw-bold">LISTE DES TENUES</th>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
+          <thead>
+              <tr>
+                  <th scope="col">ID Image</th>
+                  <th scope="col">ID Tenue</th>
+                  <th scope="col">ID Commande</th>
+                  <th scope="col">ID Client</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Modele</th>
+                  <th scope="col">Prix</th>
+                  <th scope="col">Date d'ajout</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for imagemodele in imagemodeles %}
+                  <tr>
+                      <td>{{ imagemodele.idmg }}</td>
+                      <td>{{ imagemodele.idtenu.idtenu }}</td>
+                      <td>{{ imagemodele.idtenu.idcom }}</td>
+                      <td>{{ imagemodele.idtenu.idcom.idclient.idclient }}-{{ imagemodele.idtenu.idcom.idclient.nom }}</td>
+                      <td>
+                        {% if imagemodele.photos %}
+                            <img src="{{ imagemodele.photos.url }}" alt="Image de la tenue" style="width: 100px; height: auto;">
+                        {% else %}
+                            <span>Pas d'image</span>
+                        {% endif %}
+                    </td>
+
+                      <td>{{ imagemodele.idtenu.modele }}</td>
+                      <td>{{ imagemodele.idtenu.prix }}</td>
+                      <td>{{ imagemodele.ajout|date:"d/m/Y H:i" }}</td>
+                  </tr>
+              {% empty %}
+                  <tr>
+                      <td colspan="5" class="text-center">Aucune Image enregistrée enregistrée.</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
       </table>
 </body>
 </html>

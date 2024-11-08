@@ -23,23 +23,26 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Client</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Commande</a>
+                <a class="nav-link active" aria-current="page" href="{%url 'commandlist'%}">Commande</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Facture</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Tenues</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues</a>
               </li>
+
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Models</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album</a>
               </li>
+
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Album</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques</a>
               </li>
+
             </ul>
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">

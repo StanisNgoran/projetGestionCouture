@@ -42,6 +42,7 @@ class Tenue(models.Model):
     reste = models.IntegerField()
     modele = models.TextField()
     description = models.CharField(max_length=300)
+    idcom = models.ForeignKey(Commande, on_delete=models.CASCADE ,default=1)
     ajout = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -51,7 +52,8 @@ class Tenue(models.Model):
 class ImageModele(models.Model):
     idmg = models.AutoField(primary_key=True)
     idtenu = models.ForeignKey(Tenue, on_delete=models.CASCADE)
-    photos = models.BinaryField()  # Store image as binary
+    #photos = models.BinaryField()  # Store image as binary
+    photos = models.ImageField(upload_to='tenue_images/', null=True, blank=True)
     libelle = models.CharField(max_length=100)
     ajout = models.DateTimeField(auto_now_add=True)
 
@@ -59,14 +61,14 @@ class ImageModele(models.Model):
         return self.libelle
 
 
-class TenueCommande(models.Model):
-    idcom = models.ForeignKey(Commande, on_delete=models.CASCADE)
-    idtenu = models.ForeignKey(Tenue, on_delete=models.CASCADE)
+# class TenueCommande(models.Model):
+#     idcom = models.ForeignKey(Commande, on_delete=models.CASCADE)
+#     idtenu = models.ForeignKey(Tenue, on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = ('idcom', 'idtenu')  # Prevent duplicate combinations
+#     class Meta:
+#         unique_together = ('idcom', 'idtenu')  # Prevent duplicate combinations
 
-    def __str__(self):
-        return f"Commande {self.idcom.idcom} - Tenue {self.idtenu.idtenu}"
+#     def __str__(self):
+#         return f"Commande {self.idcom.idcom} - Tenue {self.idtenu.idtenu}"
 
 

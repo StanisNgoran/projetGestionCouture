@@ -30,20 +30,18 @@
                 <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="facture.html">Facture</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Tenues</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Models</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Album</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues</a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Statistiques</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques</a>
               </li>
 
             </ul>
@@ -115,7 +113,7 @@
         <!-- Tableau des clients enregistrés -->
     <div class="container mt-4">
       <h2 class="text-center">Liste des Commandes</h2>
-      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
+      <div class="table-responsive" style="max-height: 250px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
       <table class="table table-striped mt-3">
           <thead>
               <tr>
