@@ -1,0 +1,125 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
+    <title>Liste Tenue</title>
+</head>
+<body>
+    <!-- <script src="bootstrap/js/bootstrap.bundle.min.js"></script> -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="#">StaneApp</a>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg bg-body-secondary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-dark" href="{% url 'home'%}">MENU PRINCIPAL</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques</a>
+              </li>
+
+            </ul>
+
+            <!-- affiche de message  -->
+            {% include 'message.html'%}
+            <!-- Du javaScript pour creer de l'animation -->
+            <script src="{% static 'bootstrap/js/message.js'%}">  </script>
+
+
+               <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
+            <form class="d-flex ms-auto" role="search">
+              <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+              <button class="btn btn-outline-success" type="submit">Recherche</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Liste des Clients et des éléments -->
+<div class="container mt-4">
+  <h2 class="text-center">Liste des Tenues</h2>
+  <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+    <table class="table table-striped mt-3">
+      <thead>
+        <tr>
+          
+          <th scope="col">ID Client</th>
+          <th scope="col">ID Commande</th>
+          <th scope="col">ID Tenue</th>
+          <th scope="col">Prix</th>
+          <th scope="col">Avance</th>
+          <th scope="col">Reste</th>
+          <th scope="col">Modele</th>
+          <th scope="col">Description</th>
+          <th scope="col">Etat Tenue</th>
+          <th scope="col">Date d'Ajout</th>
+          <th scope="col">Modifier</th>
+          <th scope="col">Supprimer</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tenu in tenues %}
+          <tr>
+            <td>{{ tenu.idcom.idclient.idclient }}-{{ tenu.idcom.idclient.nom }}</td>
+            <td>{{ tenu.idcom.idcom}}</td>
+            <td>{{ tenu.idtenu }}</td>
+            <td>{{ tenu.prix  }}</td>
+            <td>{{ tenu.avance  }}</td>
+            <td>{{ tenu.reste  }}</td>
+            <td>{{ tenu.modele  }}</td>
+            <td>{{ tenu.description  }}</td>
+            <td>{{ tenu.etat_tenue  }}</td>
+            <td>{{ tenu.ajout|date:"d/m/Y" }}</td>
+            <td>
+              <a href="{% url 'modifier_tenue' tenu.idtenu %}">
+                <i class="fas fa-edit"></i> <!-- Icône de modification -->
+              </a>
+            </td>
+            <td>
+              <a href="{% url 'supprimer_tenue' tenu.idtenu %}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprime cette Tenue ?');">
+                <i class="fas fa-trash-alt"></i> <!-- Icône de suppression -->
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" class="text-center">Aucune Tenue.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+  
+</body>
+</html>

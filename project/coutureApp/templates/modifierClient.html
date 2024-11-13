@@ -71,6 +71,12 @@
             <h2 class="text-center">Modification Client</h2>
     
             {% csrf_token %}
+
+            <div class="mb-3 w-50">
+              <label for="exampleFormControlInput1" class="form-label">ID client</label>
+              <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ client.idclient }}" disabled>
+          </div>
+
             <div class="mb-3 w-50">
                 <label for="exampleFormControlInput1" class="form-label">Nom</label>
                 <input type="text" class="form-control" name="nom" id="exampleFormControlInput1" value="{{ client.nom }}">

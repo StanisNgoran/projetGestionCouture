@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Client(models.Model):
     idclient = models.AutoField(primary_key=True)
@@ -14,8 +15,8 @@ class Client(models.Model):
 class Commande(models.Model):
     idcom = models.AutoField(primary_key=True)
     idclient = models.ForeignKey(Client, on_delete=models.CASCADE)
-    debutcom = models.DateTimeField()
-    fincom = models.DateTimeField()
+    debutcom = models.DateField()
+    fincom = models.DateField()
     creation = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -44,6 +45,9 @@ class Tenue(models.Model):
     description = models.CharField(max_length=300)
     idcom = models.ForeignKey(Commande, on_delete=models.CASCADE ,default=1)
     ajout = models.DateTimeField(auto_now_add=True)
+    etat_tenue=models.CharField(max_length=100, blank=True)
+    modifierle=models.DateField(default= timezone.now)
+    
 
     def __str__(self):
         return self.description

@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="fr">
@@ -7,9 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 
-    <title>Liste Commande</title>
+    <title>Operation Commande</title>
 </head>
 <body>
     <!-- <script src="bootstrap/js/bootstrap.bundle.min.js"></script> -->
@@ -31,7 +29,7 @@
                 <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande</a>
+                <a class="nav-link active" aria-current="page" href="{%url 'commandlist'%}">Commande</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture</a>
@@ -50,12 +48,12 @@
 
             </ul>
 
-            <!-- affiche de message  -->
+            <!-- Affichage du message d'erreur -->
             {% include 'message.html'%}
+
             <!-- Du javaScript pour creer de l'animation -->
             <script src="{% static 'bootstrap/js/message.js'%}">  </script>
-
-
+            
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">
               <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
@@ -65,51 +63,43 @@
         </div>
       </nav>
 
-      <!-- Liste des Clients et des éléments -->
-<div class="container mt-4">
-  <h2 class="text-center">Liste Commandes</h2>
-  <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
-    <table class="table table-striped mt-3">
-      <thead>
-        <tr>
-          <th scope="col">ID Commande</th>
-          <th scope="col">ID Client</th>
-          <th scope="col">Date Depot</th>
-          <th scope="col">Date Retrait</th>
-          <th scope="col">Date d'Ajout</th>
-          <th scope="col">Modifier</th>
-          <th scope="col">Supprimer</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for command in commandes %}
-          <tr>
-            <td>{{ command.idcom}}</td>
-            <td>{{ command.idclient.idclient }}-{{ command.idclient.nom }}</td>
-            <td>{{ command.debutcom }}</td>
-            <td>{{ command.fincom }}</td>
-            <td>{{ command.creation|date:"d/m/Y" }}</td>
-            <td>
-              <a href="{% url 'modifier_commande' command.idcom %}">
-                <i class="fas fa-edit"></i> <!-- Icône de modification -->
-              </a>
-            </td>
-            <td>
-              <a href="{% url 'supprimer_commande' command.idcom %}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce cette commande ?');">
-                <i class="fas fa-trash-alt"></i> <!-- Icône de suppression -->
-              </a>
-            </td>
-          </tr>
-        {% empty %}
-          <tr>
-            <td colspan="7" class="text-center">Aucune Commande.</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
+      <!-- Fin de la barre de navigation -->
 
+       <!-- Affichage de message apres avoir enregistré une commande -->
+       
+    <form action="{% url 'modifier_commande' idcom=commande.idcom %}" method="post">
+      {%csrf_token%}
+        <div class="container-fluid d-flex flex-column align-items-center">
+              <h2 class="text-center">Operation sur Commande</h2>
+            
+
+              <div class="mb-3 w-50">
+                <label for="exampleFormControlInput1" class="form-label">ID commande</label>
+                <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="{{ commande.idcom }}" disabled>
+              </div>
+
+
+              <div class="mb-3 w-50">
+                <label for="exampleFormControlInput1" class="form-label">ID client</label>
+                <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}" disabled>
+              </div>
+
+              <div class="mb-3 w-50">
+                  <label for="dateInput" class="form-label">Date Commande</label>
+                  <input type="date" class="form-control" id="dateInput" name="debutcom" value="{{commande.debutcom}}">
+              </div>
+
+              <div class="mb-3 w-50">
+                  <label for="dateInput" class="form-label">Date Rendez Vous</label>
+                  <input type="date" class="form-control" id="dateInput" name="fincom" value="{{commande.fincom}}">
+              </div>
+
+              <!-- Boutons Annuler et Suivant rapprochés -->
+              <div class="d-flex justify-content-center w-50 mt-2">
+                  <!-- permet d'ajouter de l'espace entre les boutons -->
+                  <a href="{% url 'commandlist'%}" class="btn btn-secondary me-5">Abandonner</a>
+                  <button type="submit" class="btn btn-primary">Appliquer</button>
+              </div>
+        </div>
+    </form>
     
-</body>
-</html>

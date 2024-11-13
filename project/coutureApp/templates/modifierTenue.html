@@ -66,39 +66,41 @@
 
       <!-- Fin de la barre de navigation -->
 
-      <form  action="{% url 'tenue'%}" method="post">
+      <form  action="{% url 'modifier_tenue' idtenu=tenue.idtenu %}" method="post" >
 
-            <div class="container-fluid d-flex flex-column align-items-center">
-              <h2 class="text-center">Ajouter des Tenues dans la commande</h2>
+            <div class="container-fluid d-flex flex-column align-items-center" style="max-height: 500px; overflow-y: auto;">
+              <h2 class="text-center">Modification de Tenue</h2>
               {%csrf_token%}
-              <div class="mb-3 w-50">
-                <label for="exampleCombobox" class="form-label">ID Command:</label>
-                <select class="form-select" id="exampleCombobox" name="idcom">
-                    {% for command in commands %}
-                      <option value="{{ command.idcom }}"> {{command.idcom }}</option>
-                    {% endfor %}
-                </select>
-              </div>
 
               <div class="mb-3 w-50">
-                  <label for="exampleFormControlInput1" class="form-label">Prix</label>
-                  <input type="text" class="form-control" id="exampleFormControlInput1" name="prix" placeholder="10000">
+                  <label for="exampleFormControlInput1" class="form-label">ID client</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" name="idclient" value="{{ tenue.idcom.idclient.idclient }}-{{ tenue.idcom.idclient.nom }}" disabled>
               </div>
+
+                <div class="mb-3 w-50">
+                    <label for="exampleFormControlInput1" class="form-label">ID commande</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="idcom" value="{{tenue.idcom.idcom}}" disabled>
+                </div>
+
+                <div class="mb-3 w-50">
+                    <label for="exampleFormControlInput1" class="form-label">ID Tenue</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="idtenu" value="{{tenue.idtenu}}" disabled>
+                </div>
+
+                <div class="mb-3 w-50">
+                    <label for="exampleFormControlInput1" class="form-label">Prix</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="prix" value="{{tenue.prix}}" >
+                </div>
 
               <div class="mb-3 w-50">
                   <label for="exampleFormControlInput1" class="form-label">Avance</label>
-                  <input type="text" class="form-control" id="exampleFormControlInput1" name="avance" placeholder="5000">
+                  <input type="text" class="form-control" id="exampleFormControlInput1" name="avance" value="{{tenue.avance}}">
               </div>
 
-              
-              <div class="mb-3 w-50">
-                <label for="exampleCombobox" class="form-label">Etat:</label>
-                <select class="form-select" id="exampleCombobox" name="etat_tenue">
-                      <option value="Non Soldé">Non Soldé </option>
-                      <option value="Soldé">Soldé </option>
-                    
-                </select>
-            </div>
+                <div class="mb-3 w-50">
+                    <label for="exampleFormControlInput1" class="form-label">Reste</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="reste" value="{{tenue.reste}}" disabled>
+                </div>
 
 
               <div class="mb-3 w-50">
@@ -128,59 +130,18 @@
 
               <div class="mb-3 w-50">
                   <label for="exampleFormControlInput1" class="form-label">Description</label>
-                  <input type="text" class="form-control" id="exampleFormControlInput1" name="description" placeholder="Manche bleue Bouton rouge">
+                  <input type="text" class="form-control" id="exampleFormControlInput1" name="description" value="{{tenue.description}}">
               </div>
 
 
               <!-- Boutons Annuler et Suivant rapprochés -->
               <div class="d-flex justify-content-center w-50 mt-2">
                   <!-- permet d'ajouter de l'espace entre les boutons -->
-                  <button type="reset" class="btn btn-secondary me-5">Annuler</button>
-                  <button type="submit" class="btn btn-primary">Suivant</button>
+                  <a href="{% url 'listeTenue'%}" class="btn btn-secondary me-5">Annuler</a>
+                  <button type="submit" class="btn btn-primary">Appliquer</button>
               </div>
           </div>
     </form>
     
-    
-      
-    <!-- Liste des Vetements et des elements -->
-    <div class="container mt-4">
-      <h2 class="text-center">Liste des Tenues commandées</h2>
-      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
-      <table class="table table-striped mt-3">
-          <thead>
-              <tr>
-                  <th scope="col">ID Tenue</th>
-                  <th scope="col">ID Commande</th>
-                  <th scope="col">ID Client</th>
-                  <th scope="col">Prix</th>
-                  <th scope="col">Avance</th>
-                  <th scope="col">Restant</th>
-                  <th scope="col">Model</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Date d'ajout</th>
-              </tr>
-          </thead>
-          <tbody>
-              {% for tenue in tenues %}
-
-                  <tr>
-                      <td>{{ tenue.idtenu }}</td>
-                      <td>{{ tenue.idcom }}</td>
-                      <td>{{ tenue.idcom.idclient.idclient }}-{{ tenue.idcom.idclient.nom }}</td>
-                      <td>{{ tenue.prix }}</td>
-                      <td>{{ tenue.avance }}</td>
-                      <td>{{ tenue.reste }}</td>
-                      <td>{{ tenue.modele }}</td>
-                      <td>{{ tenue.description }}</td>
-                      <td>{{ tenue.ajout|date:"d/m/Y H:i" }}</td>
-                  </tr>
-              {% empty %}
-                  <tr>
-                      <td colspan="5" class="text-center">Aucune Tenue enregistrée dans une quelconque commande.</td>
-                  </tr>
-              {% endfor %}
-          </tbody>
-      </table>
 </body>
 </html>

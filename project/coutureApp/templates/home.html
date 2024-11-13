@@ -121,7 +121,6 @@
                 <th scope="col">ID client</th>
                 <th scope="col">Date de Depôt</th>
                 <th scope="col">Rendez Vous</th>
-                <th scope="col">Jour Restant</th>
                 <th scope="col">Date d'ajout</th>
               </tr>
           </thead>
@@ -132,7 +131,6 @@
                 <td>{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}</td>
                 <td>{{ commande.debutcom }}</td>
                 <td>{{ commande.fincom }}</td>
-                <td>{{ commande.jour_restant }}</td>
                 <td>{{ commande.creation|date:"d/m/Y H:i" }}</td>
             </tr>
               {% empty %}
