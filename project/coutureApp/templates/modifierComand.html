@@ -78,11 +78,17 @@
                 <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="{{ commande.idcom }}" disabled>
               </div>
 
-
+             
               <div class="mb-3 w-50">
                 <label for="exampleFormControlInput1" class="form-label">ID client</label>
                 <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}" disabled>
               </div>
+
+              <div class="mb-3 w-50">
+                <label for="exampleFormControlInput1" class="form-label">Montant commande</label>
+                <input type="text" class="form-control" name="montantcom" id="exampleFormControlInput1" value="{{ commande.montantcom }}" disabled>
+              </div>
+
 
               <div class="mb-3 w-50">
                   <label for="dateInput" class="form-label">Date Commande</label>
@@ -93,6 +99,16 @@
                   <label for="dateInput" class="form-label">Date Rendez Vous</label>
                   <input type="date" class="form-control" id="dateInput" name="fincom" value="{{commande.fincom}}">
               </div>
+
+              
+              <div class="mb-3 w-50">
+                <label for="exampleCombobox" class="form-label">Statut Commande</label>
+                <select class="form-select" id="exampleCombobox" name="statut">
+                      <option value="En Attente">En Attente </option>
+                      <option value="Livrée">Livrée </option>
+                    
+                </select>
+            </div>
 
               <!-- Boutons Annuler et Suivant rapprochés -->
               <div class="d-flex justify-content-center w-50 mt-2">

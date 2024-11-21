@@ -17,23 +17,12 @@ class Commande(models.Model):
     idclient = models.ForeignKey(Client, on_delete=models.CASCADE)
     debutcom = models.DateField()
     fincom = models.DateField()
+    montantcom=models.IntegerField(default=0)
+    statut=models.CharField(default="En Attente", max_length=50)
     creation = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Commande {self.idcom}"
-
-
-class Facture(models.Model):
-    idfacture = models.AutoField(primary_key=True)
-    idclient = models.ForeignKey(Client, on_delete=models.CASCADE)
-    idcom = models.ForeignKey(Commande, on_delete=models.CASCADE)
-    montantdonne = models.IntegerField()
-    montantfacture = models.IntegerField()
-    reste = models.IntegerField()
-    date_facture = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Facture {self.idfacture}"
 
 
 class Tenue(models.Model):
@@ -41,16 +30,31 @@ class Tenue(models.Model):
     prix = models.IntegerField()
     avance = models.IntegerField()
     reste = models.IntegerField()
+    montant=models.IntegerField(default=0)
+    qte=models.IntegerField(default=0)
     modele = models.TextField()
     description = models.CharField(max_length=300)
     idcom = models.ForeignKey(Commande, on_delete=models.CASCADE ,default=1)
     ajout = models.DateTimeField(auto_now_add=True)
     etat_tenue=models.CharField(max_length=100, blank=True)
     modifierle=models.DateField(default= timezone.now)
+
     
 
     def __str__(self):
         return self.description
+
+        
+
+class Facture(models.Model):
+    idfacture = models.AutoField(primary_key=True)
+    idclient = models.ForeignKey(Client, on_delete=models.CASCADE)
+    idcom = models.ForeignKey(Commande, on_delete=models.CASCADE)
+    date_facture = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Facture {self.idfacture}"
+
 
 
 class ImageModele(models.Model):

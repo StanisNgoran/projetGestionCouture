@@ -179,10 +179,24 @@ def modifier_commande(request,idcom):
     if request.method=='POST':
         commande.debutcom=request.POST.get('debutcom',commande.debutcom)
         commande.fincom=request.POST.get('fincom',commande.fincom)
+        commande.statut=request.POST.get('statut',commande.statut)
+        
+        if commande.debutcom=="":
+            messages.error(request, "Veuillez selectionner la date du debut.")
+            return redirect('modifier_commande',idcom=idcom)
+        
+        elif commande.fincom=="":
+            messages.error(request, "Veuillez selectionner la date de fin.")
+            return redirect('modifier_commande',idcom=idcom)
+        
+        elif commande.fincom<commande.debutcom:
+            messages.error(request, "La date de fin doit être après la date de début.")
+            return redirect('modifier_commande',idcom=idcom)
+        else:
 
-        commande.save()
-        messages.success(request,'Commande modifiée avec Succès')
-        return redirect('commandlist')
+            commande.save()
+            messages.success(request,'Commande modifiée avec Succès')
+            return redirect('commandlist')
     return render(request,'modifierComand.html',{'commande':commande})
 
 
