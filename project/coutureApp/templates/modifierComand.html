@@ -75,7 +75,7 @@
 
               <div class="mb-3 w-50">
                 <label for="exampleFormControlInput1" class="form-label">ID commande</label>
-                <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="{{ commande.idcom }}" disabled>
+                <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="Commande{{ commande.idcom }}" disabled>
               </div>
 
              
@@ -104,6 +104,7 @@
               <div class="mb-3 w-50">
                 <label for="exampleCombobox" class="form-label">Statut Commande</label>
                 <select class="form-select" id="exampleCombobox" name="statut">
+                      <option value="" selected disabled>-- Sélectionner Statut --</option>
                       <option value="En Attente">En Attente </option>
                       <option value="Livrée">Livrée </option>
                     

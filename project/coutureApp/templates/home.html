@@ -4,6 +4,7 @@
   {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
 
     <title>Accueil</title>
@@ -115,7 +116,7 @@
       <h2 class="text-center">Liste des Commandes</h2>
       <div class="table-responsive" style="max-height: 250px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
       <table class="table table-striped mt-3">
-          <thead>
+          <thead class="sticky-header">
               <tr>
                 <th scope="col">ID Commande</th>
                 <th scope="col">ID client</th>
@@ -127,7 +128,7 @@
           <tbody>
             {% for commande in commandes %}
             <tr>
-                <td>{{ commande.idcom }}</td>
+                <td>COMM-{{ commande.idcom }}</td>
                 <td>{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}</td>
                 <td>{{ commande.debutcom }}</td>
                 <td>{{ commande.fincom }}</td>

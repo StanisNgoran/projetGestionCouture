@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 
@@ -70,18 +71,20 @@
   <h2 class="text-center">Liste des Tenues</h2>
   <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
     <table class="table table-striped mt-3">
-      <thead>
+      <thead class="sticky-header">
         <tr>
           
           <th scope="col">ID Client</th>
           <th scope="col">ID Commande</th>
           <th scope="col">ID Tenue</th>
-          <th scope="col">Prix</th>
+          <th scope="col">Prix Unitaire</th>
           <th scope="col">Avance</th>
           <th scope="col">Reste</th>
-          <th scope="col">Modele</th>
+          <th scope="col">Montant</th>
+          <th scope="col">Quantité</th>
+          <th scope="col">Statut</th>
+          <th scope="col">Modele</th>  
           <th scope="col">Description</th>
-          <th scope="col">Etat Tenue</th>
           <th scope="col">Date d'Ajout</th>
           <th scope="col">Modifier</th>
           <th scope="col">Supprimer</th>
@@ -91,14 +94,16 @@
         {% for tenu in tenues %}
           <tr>
             <td>{{ tenu.idcom.idclient.idclient }}-{{ tenu.idcom.idclient.nom }}</td>
-            <td>{{ tenu.idcom.idcom}}</td>
-            <td>{{ tenu.idtenu }}</td>
+            <td>COMM-{{ tenu.idcom.idcom}}</td>
+            <td>TEN-{{ tenu.idtenu }}</td>
             <td>{{ tenu.prix  }}</td>
             <td>{{ tenu.avance  }}</td>
             <td>{{ tenu.reste  }}</td>
+            <td>{{ tenu.montant  }}</td>
+            <td>{{ tenu.qte  }}</td>
+            <td>{{ tenu.etat_tenue  }}</td>
             <td>{{ tenu.modele  }}</td>
             <td>{{ tenu.description  }}</td>
-            <td>{{ tenu.etat_tenue  }}</td>
             <td>{{ tenu.ajout|date:"d/m/Y" }}</td>
             <td>
               <a href="{% url 'modifier_tenue' tenu.idtenu %}">
@@ -119,6 +124,8 @@
       </tbody>
     </table>
   </div>
+
+  
 </div>
   
 </body>

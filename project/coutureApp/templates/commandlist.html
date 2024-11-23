@@ -13,6 +13,7 @@
 </head>
 <body>
     <!-- <script src="bootstrap/js/bootstrap.bundle.min.js"></script> -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
@@ -70,7 +71,7 @@
   <h2 class="text-center">Liste Commandes</h2>
   <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
     <table class="table table-striped mt-3">
-      <thead>
+      <thead class="sticky-header">
         <tr>
           <th scope="col">ID Commande</th>
           <th scope="col">ID Client</th>
@@ -86,7 +87,7 @@
       <tbody>
         {% for command in commandes %}
           <tr>
-            <td>{{ command.idcom}}</td>
+            <td>COMM-{{ command.idcom}}</td>
             <td>{{ command.idclient.idclient }}-{{ command.idclient.nom }}</td>
             <td>{{ command.debutcom }}</td>
             <td>{{ command.fincom }}</td>

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
 
     <title>commande</title>
@@ -75,6 +76,7 @@
           <div class="mb-3 w-50">
               <label for="exampleCombobox" class="form-label">ID Client:</label>
               <select class="form-select" id="exampleCombobox" name="idclient">
+                <option value="" selected disabled>-- Sélectionner un client-</option>
                   {% for client in clients %}
                     <option value="{{ client.idclient }}"> {{client.nom }} {{ client.idclient }}</option>
                   {% endfor %}
@@ -106,9 +108,9 @@
     <!-- Liste des Clients et des elements -->
     <div class="container mt-4">
       <h2 class="text-center">Liste des commandes</h2>
-      <div class="table-responsive" style="max-height: 400px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
+      <div class="table-responsive" style="max-height: 250px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
       <table class="table table-striped mt-3">
-          <thead>
+          <thead class="sticky-header">
               <tr>
                   <th scope="col">ID Commande</th>
                   <th scope="col">ID client</th>
@@ -120,7 +122,7 @@
           <tbody>
               {% for commande in commandes %}
                   <tr>
-                      <td>{{ commande.idcom }}</td>
+                      <td>COMM-{{ commande.idcom }}</td>
                       <td>{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}</td>
                       <td>{{ commande.debutcom }}</td>
                       <td>{{ commande.fincom }}</td>

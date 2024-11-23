@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Client(models.Model):
     idclient = models.AutoField(primary_key=True)
@@ -24,6 +26,14 @@ class Commande(models.Model):
     def __str__(self):
         return f"Commande {self.idcom}"
 
+    # def calculer_montant_total(self):
+    #     # Récupère toutes les tenues associées à cette commande
+    #     tenues = self.tenue_set.all()
+    #     total = sum(tenue.qte * tenue.prix for tenue in tenues)
+    #     self.montantcom = total
+    #     self.save()  # Sauvegarde du nouveau montant
+    #     return total
+
 
 class Tenue(models.Model):
     idtenu = models.AutoField(primary_key=True)
@@ -43,7 +53,22 @@ class Tenue(models.Model):
 
     def __str__(self):
         return self.description
+    
 
+#     def calculer_montant(self):
+#             # Calcule le montant en fonction de la quantité et du prix
+#             self.montant = self.qte * self.prix
+#             self.reste = self.montant - self.avance
+#             self.save()  # Sauvegarde les valeurs calculées
+#             return self.montant
+    
+
+# # Signal pour mettre à jour le montant total de la commande après modification d'une tenue
+# @receiver(post_save, sender=Tenue)
+# def mettre_a_jour_montant_commande(sender, instance, **kwargs):
+#     commande = instance.idcom
+#     if commande:
+#         commande.calculer_montant_total()
         
 
 class Facture(models.Model):

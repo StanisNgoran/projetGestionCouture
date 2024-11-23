@@ -120,6 +120,8 @@ def supprimer_client(request,idclient):
 
 # Permet d'afficher la liste des commandes à modifier
 def commandlist(request):
+    # commande = get_object_or_404(Commande, idcom=idcom)
+    # tenues = commande.tenue_set.all()
     commandes=Commande.objects.all()
     return render(request,'commandlist.html',{'commandes':commandes})
 
@@ -131,14 +133,10 @@ def SaveCommande(request):
         idclient = request.POST.get("idclient")
         debutcom = request.POST.get("debutcom")
         fincom = request.POST.get("fincom")
-
-         # Vérifie que `idclient` est valide et récupère l'instance `Client` clé étrangère
-        client_instance = get_object_or_404(Client, pk=idclient)
         
         # Enregistrement de la commande si son client existe
 
         if not idclient:
-
             messages.error(request, "Veuillez sélectionner un client valide.")
             return redirect('commande')
         
@@ -155,7 +153,8 @@ def SaveCommande(request):
             return redirect('commande')
     
         else:
-            
+            # Vérifie que `idclient` est valide et récupère l'instance `Client` clé étrangère
+            client_instance = get_object_or_404(Client, pk=idclient)
             commande = Commande(idclient=client_instance, debutcom=debutcom, fincom=fincom)
             commande.save()
             messages.success(request, 'Commande Enregistrée avec Succès!')
@@ -234,12 +233,25 @@ def modifier_tenue(request,idtenu):
         tenue.avance=request.POST.get("avance",tenue.avance)
         tenue.modele=request.POST.get("modeltenue",tenue.modele)
         tenue.description=request.POST.get("description",tenue.description)
+        tenue.qte=request.POST.get("qte",tenue.qte)
+
+        qte=int(tenue.qte)
         prix_cal=int(tenue.prix)
         avance_cal=int(tenue.avance)
-        tenue.reste=prix_cal-avance_cal
-        tenue.save()
-        messages.success(request,"Tenue modifiée avec succès")
-        return redirect('listeTenue')
+        tenue.montant=qte*prix_cal
+        tenue.reste=tenue.montant-avance_cal
+        
+
+        if tenue.reste<=0:
+            tenue.etat_tenue="Soldé"
+            tenue.save()
+            messages.success(request,"Tenue modifiée avec succès")
+            return redirect('listeTenue')
+        else:
+            tenue.etat_tenue="Non Soldé"
+            tenue.save()
+            messages.success(request,"Tenue modifiée avec succès")
+            return redirect('listeTenue')
     return render(request,"modifierTenue.html",{'tenue':tenue})
 
 # Permet de supprimer une tenue dans une commande 
@@ -257,14 +269,10 @@ def tenue(request):
         # Récupération des valeurs depuis le formulaire
         idcom = request.POST.get("idcom")
         prix = request.POST.get("prix")
+        qte=request.POST.get("qte")
         avance = request.POST.get("avance")
         modele = request.POST.get("modeltenue")
         description = request.POST.get("description")
-        etat_tenue=request.POST.get("etat_tenue")
-
-
-         # Vérifie que `idclient` est valide et récupère l'instance `Client` clé étrangère
-        commande_instance = get_object_or_404(Commande, pk=idcom)
         
         # Enregistrement de la commande si son client existe
 
@@ -277,6 +285,14 @@ def tenue(request):
             messages.error(request, "Veuillez saisir un prix valide et superieur à 0.")
             return redirect('tenue')
         
+        elif prix=="" or not prix.isdigit() or prix<='0':
+            messages.error(request, "Veuillez saisir un prix valide et superieur à 0.")
+            return redirect('tenue')
+        
+        elif qte=="" or not qte.isdigit() or prix<='0':
+            messages.error(request, "Veuillez saisir une quantité valide et superieur à 0.")
+            return redirect('tenue')
+        
         elif avance=="" or not avance.isdigit() or avance>prix:
             messages.error(request, "Veuillez saisir une avance valide!.")
             return redirect('tenue')
@@ -284,20 +300,32 @@ def tenue(request):
         elif modele=="":
             messages.error(request, "Veuillez selectionner un modele")
             return redirect('tenue')
-        elif not etat_tenue:
-            messages.error(request, "Veuillez Preciser si la tenue est soldée ou non!")
-            return redirect('tenue')
 
 
            
         else:
+            
+         # Vérifie que `idclient` est valide et récupère l'instance `Client` clé étrangère
+            commande_instance = get_object_or_404(Commande, pk=idcom)
             prix_converti=int(prix)
             avance_converti=int(avance)
-            reste=prix_converti-avance_converti
-            tenue = Tenue(idcom=commande_instance, prix=prix_converti, avance=avance_converti,reste=reste,modele=modele,description=description,etat_tenue=etat_tenue)
-            tenue.save()
-            messages.success(request, 'Tenue Ajoutée avec Succès!')
-            return redirect('image')
+            qte=int(qte)
+            montant=qte*prix_converti
+            reste=montant-avance_converti
+           
+            
+
+
+            if montant==avance_converti:
+                tenue = Tenue(idcom=commande_instance, prix=prix_converti, qte=qte,montant=montant, avance=avance_converti,reste=reste,modele=modele,description=description,etat_tenue="Soldé")
+                tenue.save()
+                messages.success(request, 'Tenue Ajoutée avec Succès!')
+                return redirect('image')
+            elif reste>0:
+                tenue = Tenue(idcom=commande_instance, prix=prix_converti,qte=qte,montant=montant, avance=avance_converti,reste=reste,modele=modele,description=description,etat_tenue="Non Soldé")
+                tenue.save()
+                messages.success(request, 'Tenue Ajoutée avec Succès!')
+                return redirect('image')
 
     # Permet d'afficher toutes les commandes dans un tableau
     tenues = Tenue.objects.all()
@@ -325,9 +353,6 @@ def image(request):
         # photos = request.POST.get("photos")
         photos = request.FILES.get("photos")
         libelle = request.POST.get("libelle")
-
-         # Vérifie que `id` est valide et récupère l'instance `Client` clé étrangère
-        tenue_instance = get_object_or_404(Tenue, pk=idtenu)
         
         if not idtenu:
 
@@ -343,6 +368,8 @@ def image(request):
             return redirect('image')
            
         else:
+            # Vérifie que `id` est valide et récupère l'instance `Client` clé étrangère
+            tenue_instance = get_object_or_404(Tenue, pk=idtenu)
             imagemodele = ImageModele(idtenu=tenue_instance, photos=photos, libelle=libelle)
             imagemodele.save()
             messages.success(request, 'Image Ajoutée avec Succès!')

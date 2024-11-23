@@ -79,17 +79,28 @@
 
                 <div class="mb-3 w-50">
                     <label for="exampleFormControlInput1" class="form-label">ID commande</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="idcom" value="{{tenue.idcom.idcom}}" disabled>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="idcom" value="Commande{{tenue.idcom.idcom}}" disabled>
                 </div>
 
                 <div class="mb-3 w-50">
                     <label for="exampleFormControlInput1" class="form-label">ID Tenue</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="idtenu" value="{{tenue.idtenu}}" disabled>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="idtenu" value="Tenue{{tenue.idtenu}}" disabled>
                 </div>
 
                 <div class="mb-3 w-50">
-                    <label for="exampleFormControlInput1" class="form-label">Prix</label>
+                  <label for="exampleFormControlInput1" class="form-label">Montant</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" name="montant" value="{{tenue.montant}}" disabled>
+              </div>
+
+                <div class="mb-3 w-50">
+                    <label for="exampleFormControlInput1" class="form-label">Prix Unitaire</label>
                     <input type="text" class="form-control" id="exampleFormControlInput1" name="prix" value="{{tenue.prix}}" >
+                </div>
+
+
+                <div class="mb-3 w-50">
+                  <label for="exampleFormControlInput1" class="form-label">Quantité</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" name="qte" value="{{tenue.qte}}" >
                 </div>
 
               <div class="mb-3 w-50">
@@ -106,6 +117,7 @@
               <div class="mb-3 w-50">
                 <label for="exampleCombobox" class="form-label">Model:</label>
                 <select class="form-select" id="exampleCombobox" name="modeltenue">
+                      <option value="" selected disabled>-- Sélectionner un modèle --</option>
                       <option value="Costume Femme">Costume Femme </option>
                       <option value="Costume Homme">Costume Homme </option>
                       <option value="Costume ecole">Costume ecole </option>

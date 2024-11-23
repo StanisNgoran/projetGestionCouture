@@ -1,0 +1,13 @@
+
+     /* Fixe l'entête du tableau en haut */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      background-color: #ffffff; /* Couleur de fond des en-têtes */
+      z-index: 10; /* Assurez-vous que les en-têtes sont au-dessus du reste du contenu */
+    }
+  
+    /* Optionnel : ajouter une ombre sous l'entête pour améliorer la visibilité */
+    .sticky-header th {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
