@@ -20,19 +20,39 @@ class Commande(models.Model):
     debutcom = models.DateField()
     fincom = models.DateField()
     montantcom=models.IntegerField(default=0)
-    statut=models.CharField(default="En Attente", max_length=50)
+    statut=models.CharField(default="En Cours", max_length=51)
     creation = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Commande {self.idcom}"
+    
 
-    # def calculer_montant_total(self):
-    #     # Récupère toutes les tenues associées à cette commande
-    #     tenues = self.tenue_set.all()
-    #     total = sum(tenue.qte * tenue.prix for tenue in tenues)
-    #     self.montantcom = total
-    #     self.save()  # Sauvegarde du nouveau montant
-    #     return total
+
+# ____________________________________________________________________________________
+#  PERMET DE CALCULER LE MONTANT TOTAL DE CHAQUE TENUE EN FONCTION DE SA QUANTITE ET DE SON PRIX UNITAIRE
+# ____________________________________________________________________________________
+   
+    def calculer_montant_total(self):
+        # Récupère toutes les tenues associées à cette commande
+        tenues = self.tenue_set.all()
+        total = sum(tenue.montant for tenue in tenues)
+        self.montantcom = total
+        self.save()  # Sauvegarde du nouveau montant
+        return total
+    
+    
+# ____________________________________________________________________________________
+#  PERMET DE CALCULER LE NOMBRE DE TENUES DISTINCTES DANS UNE COMMANDE DONNEE
+# ____________________________________________________________________________________
+
+    def calculer_NombreTenue(self):
+        tenues=self.tenue_set.all()
+        nbr=sum(tenue.qte for tenue in tenues)
+        return nbr
+        # return self.tenue_set.count()
+        
+    
+
 
 
 class Tenue(models.Model):
@@ -49,27 +69,25 @@ class Tenue(models.Model):
     etat_tenue=models.CharField(max_length=100, blank=True)
     modifierle=models.DateField(default= timezone.now)
 
-    
-
     def __str__(self):
         return self.description
     
 
-#     def calculer_montant(self):
-#             # Calcule le montant en fonction de la quantité et du prix
-#             self.montant = self.qte * self.prix
-#             self.reste = self.montant - self.avance
-#             self.save()  # Sauvegarde les valeurs calculées
-#             return self.montant
+
+
+# ____________________________________________________________________________________
+#  PERMET DE CALCULER LE MONTANT TOTAL DE CHAQUE TENUE EN FONCTION DE SA QUANTITE ET DE SON PRIX UNITAIRE
+# ____________________________________________________________________________________
+
+    def calculer_montant(self):
+            # Calcule le montant en fonction de la quantité et du prix
+            self.montant = self.qte * self.prix
+            self.reste = self.montant - self.avance
+            self.save()  # Sauvegarde les valeurs calculées
+            return self.montant
     
 
-# # Signal pour mettre à jour le montant total de la commande après modification d'une tenue
-# @receiver(post_save, sender=Tenue)
-# def mettre_a_jour_montant_commande(sender, instance, **kwargs):
-#     commande = instance.idcom
-#     if commande:
-#         commande.calculer_montant_total()
-        
+
 
 class Facture(models.Model):
     idfacture = models.AutoField(primary_key=True)

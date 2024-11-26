@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
     <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap.css'%}">
     <title>editionfacture</title>
 </head>
@@ -54,6 +55,51 @@
       </nav>
 
       <!-- Fin de la barre de navigation -->
+
+         
+    <form action="{% url 'editefacture' idcom=commande.idcom %}" method="post">
+      {%csrf_token%}
+        <div class="container-fluid d-flex flex-column align-items-center">
+              <h2 class="text-center">Edition de facture</h2>
+            
+
+              <div class="mb-3 w-50">
+                <label for="exampleFormControlInput1" class="form-label">ID commande</label>
+                <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="Commande{{ commande.idcom }}" disabled>
+              </div>
+
+             
+              <div class="mb-3 w-50">
+                <label for="exampleFormControlInput1" class="form-label">ID client</label>
+                <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}" disabled>
+              </div>
+
+              <div class="mb-3 w-50">
+                <label for="exampleFormControlInput1" class="form-label">Montant commande</label>
+                <input type="text" class="form-control" name="montantcom" id="exampleFormControlInput1" value="{{ commande.montantcom }}" disabled>
+              </div>
+
+              <div class="mb-3 w-50">
+                <label for="dateInput" class="form-label">Date Facture</label>
+                <input type="date" class="form-control" id="dateInput" name="date_facture">
+            </div>
+              <!-- Boutons Annuler et Suivant rapprochés -->
+              <div class="d-flex justify-content-center w-50 mt-2">
+                  <!-- permet d'ajouter de l'espace entre les boutons -->
+                  <a href="{% url 'facture'%}" class="btn btn-secondary me-5">Abandonner</a>
+                  <button type="submit" class="btn btn-primary">Generez Facture</button>
+              </div>
+        </div>
+    </form>
+    
+
+
+
+
+
+
+
+
 
 
       <div class="container-fluid d-flex flex-column align-items-center">

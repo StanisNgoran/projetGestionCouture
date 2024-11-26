@@ -9,7 +9,8 @@ urlpatterns = [
     path('tenue/', views.tenue, name='tenue'),
     path('image/', views.image, name='image'),
     path('facture/', views.facture, name='facture'),
-    path('editefacture/', views.editefacture, name='editefacture'),
+    path('editefacture/Generez/<int:idcom>/', views.editefacture, name='editefacture'),
+
     path('clientlist/', views.clientlist, name='clientlist'),
     path('commandlist/', views.commandlist, name='commandlist'),
     path('album/', views.album, name='album'),

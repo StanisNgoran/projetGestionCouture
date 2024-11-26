@@ -108,7 +108,7 @@
     <!-- Liste des Clients et des elements -->
     <div class="container mt-4">
       <h2 class="text-center">Liste des commandes</h2>
-      <div class="table-responsive" style="max-height: 250px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
+      <div class="table-responsive mb-3" style="max-height: 250px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
       <table class="table table-striped mt-3">
           <thead class="sticky-header">
               <tr>
@@ -116,6 +116,9 @@
                   <th scope="col">ID client</th>
                   <th scope="col">Date de Depôt</th>
                   <th scope="col">Rendez Vous</th>
+                  <th scope="col">Montant Total</th>
+                  <th scope="col">Nombre de Tenue</th>
+                  <th scope="col">Statut</th>
                   <th scope="col">Date d'ajout</th>
               </tr>
           </thead>
@@ -126,6 +129,9 @@
                       <td>{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}</td>
                       <td>{{ commande.debutcom }}</td>
                       <td>{{ commande.fincom }}</td>
+                      <td>{{ commande.montantcom }}</td>
+                      <td>{{ commande.nombre_tenue }}</td>
+                      <td>{{ commande.statut }}</td>
                       <td>{{ commande.creation|date:"d/m/Y H:i" }}</td>
                   </tr>
               {% empty %}

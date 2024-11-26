@@ -120,9 +120,9 @@ def supprimer_client(request,idclient):
 
 # Permet d'afficher la liste des commandes à modifier
 def commandlist(request):
-    # commande = get_object_or_404(Commande, idcom=idcom)
-    # tenues = commande.tenue_set.all()
     commandes=Commande.objects.all()
+    for commande in commandes:
+        commande.nombre_tenue=commande.calculer_NombreTenue()
     return render(request,'commandlist.html',{'commandes':commandes})
 
 
@@ -162,6 +162,8 @@ def SaveCommande(request):
 
     # Permet d'afficher toutes les commandes dans un tableau
     commandes = Commande.objects.all()
+    for commande in commandes :
+        commande.nombre_tenue=commande.calculer_NombreTenue()
 
     # permet de remplir le comboBox des ID du client 
     clients = Client.objects.all()
@@ -393,7 +395,16 @@ def image(request):
 
 
 def facture(request):
-    return render(request,'facture.html')
+    commandes = Commande.objects.all()
+    for commande in commandes :
+        commande.nombre_tenue=commande.calculer_NombreTenue()
+
+    # # permet de remplir le comboBox des ID du client 
+    clients = Client.objects.all()
+
+    # Retourne les commandes et clients dans le contexte du template
+    return render(request, 'facture.html', {'commandes': commandes, 'clients': clients})
+
 
 def editefacture(request):
     return render(request,'editefacture.html')
