@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/style_Facture.css' %}">
     <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap.css'%}">
-    <title>editionfacture</title>
+    <title>Details Facture</title>
 </head>
 <body>
 
@@ -46,9 +47,6 @@
               </li>
 
             </ul>
-
-            <script src="{% static 'bootstrap/js/message.js'%}">  </script>
-
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">
               <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
@@ -64,35 +62,54 @@
     <form action="{% url 'rendu_Facture' idcom=commande.idcom %}" method="post">
       {%csrf_token%}
         <div class="container-fluid d-flex flex-column align-items-center">
-              <h2 class="text-center">Edition de facture</h2>
+              <h2 class="text-center">Details Facture</h2>
             
-
-              <div class="mb-3 w-50">
-                <label for="exampleFormControlInput1" class="form-label">ID commande</label>
-                <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="Commande{{ commande.idcom }}" disabled>
-              </div>
-
-             
-              <div class="mb-3 w-50">
-                <label for="exampleFormControlInput1" class="form-label">ID client</label>
-                <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}" disabled>
-              </div>
-
-              <div class="mb-3 w-50">
-                <label for="exampleFormControlInput1" class="form-label">Montant commande</label>
-                <input type="text" class="form-control" name="montantcom" id="exampleFormControlInput1" value="{{ commande.montantcom }}" disabled>
-              </div>
-
-              <div class="mb-3 w-50">
-                <label for="dateInput" class="form-label">Date Facture</label>
-                <input type="date" class="form-control" id="dateInput" name="date_facture">
+              <div class="container">
+                <div class="header">
+                    <h1>Facture #{{ facture.idfacture }}</h1>
+                    <p>Date : {{ details.date_facture|date:"d/m/Y H:i" }}</p>
+                </div>
+        
+                <table class="details">
+                    <tr>
+                        <td>Client</td>
+                        <td>{{ details.client.nom }} ({{ details.client.idclient }})</td>
+                    </tr>
+                    <tr>
+                        <td>Commande</td>
+                        <td>Commande #{{ details.commande.idcom }}</td>
+                    </tr>
+                </table>
+        
+                <h3>Tenues Commandées</h3>
+                <table class="tenues">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Modèle</th>
+                            <th>Quantité</th>
+                            <th>Prix Unitaire</th>
+                            <th>Montant Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tenue in details.tenues %}
+                        <tr>
+                            <td>{{ tenue.description }}</td>
+                            <td>{{ tenue.modele }}</td>
+                            <td>{{ tenue.qte }}</td>
+                            <td>{{ tenue.prix }} FCFA</td>
+                            <td>{{ tenue.montant }} FCFA</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+        
+                <div class="footer">
+                    <h3>Total : {{ details.commande.montantcom }} FCFA</h3>
+                </div>
             </div>
-              <!-- Boutons Annuler et Suivant rapprochés -->
-              <div class="d-flex justify-content-center w-50 mt-2">
-                  <!-- permet d'ajouter de l'espace entre les boutons -->
-                  <a href="{% url 'facture'%}" class="btn btn-secondary me-5">Abandonner</a>
-                  <button type="submit" class="btn btn-primary">Generez Facture</button>
-              </div>
+
         </div>
     </form>
     

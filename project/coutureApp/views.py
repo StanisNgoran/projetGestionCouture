@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from.models import Client
 from.models import Commande
 from.models import Tenue
-from.models import ImageModele
+from.models import ImageModele,Facture
 from django.contrib import messages
 from datetime import datetime,timezone
 
@@ -406,8 +406,37 @@ def facture(request):
     return render(request, 'facture.html', {'commandes': commandes, 'clients': clients})
 
 
-def editefacture(request):
-    return render(request,'editefacture.html')
+def editefacture(request,idcom):
+    commande=get_object_or_404(Commande,pk=idcom)
+    return render(request,'editefacture.html',{'commande':commande})
+
+
+def save_Facture(request):
+    cle_commande=get_object_or_404(Commande,pk=idcom)
+    cle_client=get_object_or_404(Client,pk=idclient)
+
+    if request.method=="POST":
+        idclient=request.POST.get("idclient")
+        idcom=request.POST.get("idcom")
+        date_facture=request.POST.get("date_facture")
+
+        if date_facture=="":
+            messages.error(request, "Veuillez Entrer la Date de Facturation.")
+            return redirect('editefacture')
+        else:
+
+            facture=Facture(idclient=cle_client,idcom=cle_commande,date_facture=date_facture)
+            facture.save()
+            messages.success(request,"Facture Enregistrée avec Succès!")
+            return('rendu_Facture')
+    facture=Facture.objects.all()
+    commande=Commande.objects.all()
+    client=Client.objects.all()
+    tenue=Tenue.objects.all()
+    return render(request, 'rendu_Facture.html', {'facture':facture,'commande':commande,'client':client,'tenue':tenue})
+
+
+
 
 
 

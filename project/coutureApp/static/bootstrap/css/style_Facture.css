@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+}
+.container {
+    width: 80%;
+    margin: auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.header h1 {
+    margin: 0;
+}
+.details, .tenues {
+    margin-top: 20px;
+    border-collapse: collapse;
+    width: 100%;
+}
+.details td, .tenues td, .tenues th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+.details td {
+    font-weight: bold;
+}
+.tenues th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+.footer {
+    margin-top: 20px;
+    text-align: center;
+}
