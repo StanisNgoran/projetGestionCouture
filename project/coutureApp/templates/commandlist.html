@@ -99,14 +99,17 @@
             <td>{{ command.creation|date:"d/m/Y" }}</td>
             <td>
               <a href="{% url 'modifier_commande' command.idcom %}">
-                <i class="fas fa-edit"></i> <!-- Icône de modification -->
+                <button type="submit" class="btn btn-warning"> Modifier la Commande</button> <!-- Icône de modification -->
+                
               </a>
             </td>
             <td>
               <a href="{% url 'supprimer_commande' command.idcom %}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce cette commande ?');">
-                <i class="fas fa-trash-alt"></i> <!-- Icône de suppression -->
+                <button type="submit" class="btn btn-danger"> Supprimer Commande</button> <!-- Icône de modification -->
+
               </a>
             </td>
+            
           </tr>
         {% empty %}
           <tr>

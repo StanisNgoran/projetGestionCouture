@@ -107,12 +107,14 @@
             <td>{{ tenu.ajout|date:"d/m/Y" }}</td>
             <td>
               <a href="{% url 'modifier_tenue' tenu.idtenu %}">
-                <i class="fas fa-edit"></i> <!-- Icône de modification -->
+                <button type="submit" class="btn btn-info"> Modifier Tenue</button> <!-- Icône de modification -->
+
               </a>
             </td>
             <td>
               <a href="{% url 'supprimer_tenue' tenu.idtenu %}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprime cette Tenue ?');">
-                <i class="fas fa-trash-alt"></i> <!-- Icône de suppression -->
+                <button type="submit" class="btn btn-danger"> Supprimer Tenue</button> <!-- Icône de modification -->
+
               </a>
             </td>
           </tr>

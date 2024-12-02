@@ -92,12 +92,14 @@
             <td>{{ client.ajout|date:"d/m/Y" }}</td>
             <td>
               <a href="{% url 'modifier_client' client.idclient %}">
-                <i class="fas fa-edit"></i> <!-- Icône de modification -->
+                <button type="submit" class="btn btn-info"> Modifier Client</button> <!-- Icône de modification -->
+
               </a>
             </td>
             <td>
               <a href="{% url 'supprimer_client' client.idclient %}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce client ?');">
-                <i class="fas fa-trash-alt"></i> <!-- Icône de suppression -->
+                <button type="submit" class="btn btn-outline-danger"> Supprimer Client</button> <!-- Icône de modification -->
+
               </a>
             </td>
           </tr>

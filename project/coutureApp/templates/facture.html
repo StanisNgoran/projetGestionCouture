@@ -56,40 +56,90 @@
 
    
       <!-- Liste des Clients et des éléments -->
-<div class="container mt-4">
-  <h2 class="text-center">Facturation</h2>
-  <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
-    <table class="table table-striped mt-3">
-      <thead class="sticky-header">
-        <tr>
-          <th scope="col">ID Commande</th>
-          <th scope="col">ID Client</th>
-          <th scope="col">Montant Total</th>
-          <th scope="col">Nombre de Tenue</th>
-          <th scope="col">Generez Facture</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for command in commandes %}
-          <tr>
-            <td>COMM-{{ command.idcom}}</td>
-            <td>{{ command.idclient.idclient }}-{{ command.idclient.nom }}</td>
-            <td>{{ command.montantcom }}</td>
-            <td>{{ command.nombre_tenue }}</td>
+      <div class="container mt-4">
+        <h2 class="text-center">Gestion de la Facturation</h2>
+        <div class="row">
 
-            <td>
-              <a href="{% url 'editefacture' command.idcom %}">
-                <button type="submit" class="btn btn-outline-success"> Generez Facture</button> <!-- Icône de modification -->
-              </a>
-            </td>
-    
-          </tr>
-        {% empty %}
-          <tr>
-            <td colspan="7" class="text-center">Aucune Commande.</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+          <!-- Colonne 1 : Liste des commandes avec bouton "Créer Facture" -->
+          <div class="col-md-6">
+            <h3 class="text-center">Facturation</h3>
+            <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+              <table class="table table-striped mt-3">
+                <thead class="sticky-header">
+                  <tr>
+                    <th scope="col">ID Commande</th>
+                    <th scope="col">ID Client</th>
+                    <th scope="col">Montant Total</th>
+                    <th scope="col">Nombre de Tenues</th>
+                    <th scope="col">Générez Facture</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for command in commandes %}
+                    <tr>
+                      <td>COMM-{{ command.idcom }}</td>
+                      <td>{{ command.idclient.idclient }} - {{ command.idclient.nom }}</td>
+                      <td>{{ command.montantcom }}</td>
+                      <td>{{ command.nombre_tenue }}</td>
+                      <td>
+                        <a href="{% url 'editefacture' command.idcom %}">
+                          <button type="submit" class="btn btn-success">Créer Facture</button>
+                        </a>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="5" class="text-center">Aucune Commande.</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+      
+
+
+
+
+          <!-- Colonne 2 : Espace pour afficher autre contenu -->
+          <div class="col-md-6">
+            <h3 class="text-center">Liste Facture</h3>
+            <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+              <table class="table table-striped mt-3">
+                <thead class="sticky-header">
+                  <tr>
+                    <th scope="col">ID Facture</th>
+                    <th scope="col">ID Commande</th>
+                    <th scope="col">ID Client</th>
+                    <th scope="col">Montant Total</th>
+                    <th scope="col">Date Facture</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for facture in facture %}
+                    <tr>
+                      <td>{{ facture.idfacture }}</td>
+                      <td>{{ facture.idcom }}</td>
+                      <td>{{ facture.idclient.idclient }} - {{ facture.idclient.nom }}</td>
+                      <td>{{ facture.idcom.montantcom }}</td>
+                      <td>{{ facture.date_facture }}</td>
+                      <td>
+                        <a href="{% url 'Aff_Facture' facture.idfacture %}">
+                          <button type="submit" class="btn btn-info">Voir Details</button>
+                        </a>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="5" class="text-center">Aucune Commande.</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 </body>
 </html>

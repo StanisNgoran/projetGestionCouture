@@ -46,7 +46,7 @@
               </li>
 
             </ul>
-
+            {% include 'message.html'%}
             <script src="{% static 'bootstrap/js/message.js'%}">  </script>
 
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
@@ -61,7 +61,7 @@
       <!-- Fin de la barre de navigation -->
 
          
-    <form action="{% url 'rendu_Facture' idcom=commande.idcom %}" method="post">
+    <form action="{% url 'editefacture' idcom=commande.idcom %}" method="post">
       {%csrf_token%}
         <div class="container-fluid d-flex flex-column align-items-center">
               <h2 class="text-center">Edition de facture</h2>
@@ -91,7 +91,7 @@
               <div class="d-flex justify-content-center w-50 mt-2">
                   <!-- permet d'ajouter de l'espace entre les boutons -->
                   <a href="{% url 'facture'%}" class="btn btn-secondary me-5">Abandonner</a>
-                  <button type="submit" class="btn btn-primary">Generez Facture</button>
+                  <button type="submit" class="btn btn-primary">Créer Facture</button>
               </div>
         </div>
     </form>

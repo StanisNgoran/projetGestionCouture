@@ -18,7 +18,7 @@ from datetime import datetime,timezone
 def home(request):
 
     # Permet d'afficher toutes les commandes dans un tableau
-    commandes = Commande.objects.all()
+    commandes = Commande.objects.all().order_by('-idcom')
 
     # Retourne les commandes et clients dans le contexte du template
     return render(request, 'home.html', {'commandes': commandes})
@@ -71,7 +71,7 @@ def creerEtAfficher_client(request):
 
 # Affiche la liste des clients à modifier 
 def clientlist(request):
-    clients=Client.objects.all()
+    clients=Client.objects.all().order_by('-idclient')
     return render(request,'clientlist.html',{'clients':clients})
 
 # Permet de modifier un client 
@@ -401,40 +401,57 @@ def facture(request):
 
     # # permet de remplir le comboBox des ID du client 
     clients = Client.objects.all()
+    facture=Facture.objects.all()
 
     # Retourne les commandes et clients dans le contexte du template
-    return render(request, 'facture.html', {'commandes': commandes, 'clients': clients})
+    return render(request, 'facture.html', {'commandes': commandes, 'clients': clients,'facture':facture})
 
 
-def editefacture(request,idcom):
-    commande=get_object_or_404(Commande,pk=idcom)
-    return render(request,'editefacture.html',{'commande':commande})
 
 
-def save_Facture(request):
-    cle_commande=get_object_or_404(Commande,pk=idcom)
-    cle_client=get_object_or_404(Client,pk=idclient)
 
-    if request.method=="POST":
-        idclient=request.POST.get("idclient")
-        idcom=request.POST.get("idcom")
-        date_facture=request.POST.get("date_facture")
+def editefacture(request, idcom):
+    commande = get_object_or_404(Commande, pk=idcom)
+    cle_client = commande.idclient  # Récupération du client lié à la commande
+    
+    if request.method == "POST":
+        date_facture = request.POST.get("date_facture")
 
-        if date_facture=="":
-            messages.error(request, "Veuillez Entrer la Date de Facturation.")
-            return redirect('editefacture')
+        if date_facture == "":
+            messages.error(request, "Veuillez entrer la date de facturation.")
+            return redirect('editefacture', idcom=idcom)  # Retourne à la page si la date est vide
         else:
-
-            facture=Facture(idclient=cle_client,idcom=cle_commande,date_facture=date_facture)
+            # Création de la facture
+            facture = Facture.objects.create(idclient=cle_client, idcom=commande, date_facture=date_facture)
             facture.save()
-            messages.success(request,"Facture Enregistrée avec Succès!")
-            return('rendu_Facture')
-    facture=Facture.objects.all()
-    commande=Commande.objects.all()
-    client=Client.objects.all()
-    tenue=Tenue.objects.all()
-    return render(request, 'rendu_Facture.html', {'facture':facture,'commande':commande,'client':client,'tenue':tenue})
+            
+            messages.success(request, "Facture enregistrée avec succès !")
+            # Redirection vers la page d'affichage de la facture avec l'ID de la facture
+            return redirect('Aff_Facture', idfacture=facture.idfacture)
 
+    return render(request, 'editefacture.html', {'commande': commande, 'client': cle_client})
+
+
+
+
+def Aff_Facture(request,idfacture):
+    # Récupérer la facture avec ses détails
+    facture = get_object_or_404(Facture, idfacture=idfacture)
+    tenues = facture.idcom.tenue_set.all()  # Récupère les tenues de la commande associée
+
+    details = {
+        "client": facture.idclient,
+        "commande": facture.idcom,
+        "tenues": tenues,
+        "date_facture": facture.date_facture,
+        "total_commande": facture.idcom.montantcom,
+    }
+
+    return render(request, 'Aff_Facture.html', {
+        'facture': facture,
+        'details': details,
+    })
+    
 
 
 

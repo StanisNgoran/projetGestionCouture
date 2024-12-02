@@ -58,29 +58,27 @@
 
       <!-- Fin de la barre de navigation -->
 
-         
-    <form action="{% url 'rendu_Facture' idcom=commande.idcom %}" method="post">
       {%csrf_token%}
         <div class="container-fluid d-flex flex-column align-items-center">
               <h2 class="text-center">Details Facture</h2>
             
               <div class="container">
                 <div class="header">
-                    <h1>Facture #{{ facture.idfacture }}</h1>
+                    <h1>Facture N°00{{ facture.idfacture }}</h1>
                     <p>Date : {{ details.date_facture|date:"d/m/Y H:i" }}</p>
                 </div>
-        
+            
                 <table class="details">
                     <tr>
-                        <td>Client</td>
-                        <td>{{ details.client.nom }} ({{ details.client.idclient }})</td>
+                        <td><strong>Client</strong></td>
+                        <td>{{ details.client.nom }} (ID : {{ details.client.idclient }})</td>
                     </tr>
                     <tr>
-                        <td>Commande</td>
-                        <td>Commande #{{ details.commande.idcom }}</td>
+                        <td><strong>Commande</strong></td>
+                        <td>Commande {{ details.commande.idcom }}</td>
                     </tr>
                 </table>
-        
+            
                 <h3>Tenues Commandées</h3>
                 <table class="tenues">
                     <thead>
@@ -104,11 +102,12 @@
                         {% endfor %}
                     </tbody>
                 </table>
-        
+            
                 <div class="footer">
-                    <h3>Total : {{ details.commande.montantcom }} FCFA</h3>
+                    <h3>Total : {{ details.total_commande }} FCFA</h3>
                 </div>
             </div>
+            
 
         </div>
     </form>

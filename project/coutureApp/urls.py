@@ -9,8 +9,9 @@ urlpatterns = [
     path('tenue/', views.tenue, name='tenue'),
     path('image/', views.image, name='image'),
     path('facture/', views.facture, name='facture'),
-    path('editefacture/Generez/<int:idcom>/', views.editefacture, name='editefacture'),
-    path('rendu_Facture/Vue/<int:idcom>/', views.save_Facture, name='rendu_Facture'),
+    path('editefacture/Enregistrement/<int:idcom>/', views.editefacture, name='editefacture'),
+    # path('Aff_Facture/Vue/<int:idcom>/', views.Aff_Facture, name='Aff_Facture'),
+    path('Aff_Facture/Vue/<int:idfacture>/', views.Aff_Facture, name='Aff_Facture'),
 
     path('clientlist/', views.clientlist, name='clientlist'),
     path('commandlist/', views.commandlist, name='commandlist'),

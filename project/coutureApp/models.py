@@ -97,6 +97,17 @@ class Facture(models.Model):
 
     def __str__(self):
         return f"Facture {self.idfacture}"
+    
+
+    def get_details(self):
+        tenues = self.idcom.tenue_set.all()  # Toutes les tenues de la commande
+        return {
+            "client": self.idclient,
+            "commande": self.idcom,
+            "tenues": tenues,
+            "date_facture": self.date_facture,
+        }
+
 
 
 
