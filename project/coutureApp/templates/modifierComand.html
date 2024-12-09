@@ -75,13 +75,13 @@
 
               <div class="mb-3 w-50">
                 <label for="exampleFormControlInput1" class="form-label">ID commande</label>
-                <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="Commande{{ commande.idcom }}" disabled>
+                <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="{{ commande.idcom }}" disabled>
               </div>
 
              
               <div class="mb-3 w-50">
                 <label for="exampleFormControlInput1" class="form-label">ID client</label>
-                <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}" disabled>
+                <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande.idclient.idclient }}" disabled>
               </div>
 
               <div class="mb-3 w-50">

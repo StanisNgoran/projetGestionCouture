@@ -78,7 +78,7 @@
                   <select class="form-select" id="exampleCombobox" name="idtenu">
                         <option value="" selected disabled>-- Sélectionner une Tenue-</option>
                       {% for tenue in tenues %}
-                        <option value="{{ tenue.idtenu }}"> TEN{{tenue.idtenu }}</option>
+                        <option value="{{ tenue.idtenu }}">{{tenue.idtenu }}</option>
                       {% endfor %}
                   </select>
                 </div>
@@ -123,10 +123,10 @@
           <tbody>
               {% for imagemodele in imagemodeles %}
                   <tr>
-                      <td>IMG-{{ imagemodele.idmg }}</td>
-                      <td>TEN{{ imagemodele.idtenu.idtenu }}</td>
-                      <td>COMM-{{ imagemodele.idtenu.idcom.idcom }}</td>
-                      <td>{{ imagemodele.idtenu.idcom.idclient.idclient }}-{{ imagemodele.idtenu.idcom.idclient.nom }}</td>
+                      <td>{{ imagemodele.idmg }}</td>
+                      <td>{{ imagemodele.idtenu.idtenu }}</td>
+                      <td>{{ imagemodele.idtenu.idcom.idcom }}</td>
+                      <td>{{ imagemodele.idtenu.idcom.idclient.idclient }}</td>
                       <td>
                         {% if imagemodele.photos %}
                             <img src="{{ imagemodele.photos.url }}" alt="Image de la tenue" style="width: 100px; height: auto;">

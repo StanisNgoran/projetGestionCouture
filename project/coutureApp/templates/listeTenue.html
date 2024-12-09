@@ -69,7 +69,7 @@
       <!-- Liste des Clients et des éléments -->
 <div class="container mt-4">
   <h2 class="text-center">Liste des Tenues</h2>
-  <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+  <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
     <table class="table table-striped mt-3">
       <thead class="sticky-header">
         <tr>
@@ -93,9 +93,9 @@
       <tbody>
         {% for tenu in tenues %}
           <tr>
-            <td>{{ tenu.idcom.idclient.idclient }}-{{ tenu.idcom.idclient.nom }}</td>
-            <td>COMM-{{ tenu.idcom.idcom}}</td>
-            <td>TEN-{{ tenu.idtenu }}</td>
+            <td>{{ tenu.idcom.idclient.idclient }}</td>
+            <td>{{ tenu.idcom.idcom}}</td>
+            <td>{{ tenu.idtenu }}</td>
             <td>{{ tenu.prix  }}</td>
             <td>{{ tenu.avance  }}</td>
             <td>{{ tenu.reste  }}</td>

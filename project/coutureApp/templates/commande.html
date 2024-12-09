@@ -78,7 +78,7 @@
               <select class="form-select" id="exampleCombobox" name="idclient">
                 <option value="" selected disabled>-- Sélectionner un client-</option>
                   {% for client in clients %}
-                    <option value="{{ client.idclient }}"> {{client.nom }} {{ client.idclient }}</option>
+                    <option value="{{ client.idclient }}">{{ client.idclient }}</option>
                   {% endfor %}
               </select>
           </div>
@@ -125,8 +125,8 @@
           <tbody>
               {% for commande in commandes %}
                   <tr>
-                      <td>COMM-{{ commande.idcom }}</td>
-                      <td>{{ commande.idclient.idclient }}-{{ commande.idclient.nom }}</td>
+                      <td>{{ commande.idcom }}</td>
+                      <td>{{ commande.idclient }}</td>
                       <td>{{ commande.debutcom }}</td>
                       <td>{{ commande.fincom }}</td>
                       <td>{{ commande.montantcom }}</td>

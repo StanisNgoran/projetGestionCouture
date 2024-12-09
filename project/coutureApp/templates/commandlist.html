@@ -69,7 +69,7 @@
       <!-- Liste des Clients et des éléments -->
 <div class="container mt-4">
   <h2 class="text-center">Liste Commandes</h2>
-  <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+  <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
     <table class="table table-striped mt-3">
       <thead class="sticky-header">
         <tr>
@@ -88,8 +88,8 @@
       <tbody>
         {% for command in commandes %}
           <tr>
-            <td>COMM-{{ command.idcom}}</td>
-            <td>{{ command.idclient.idclient }}-{{ command.idclient.nom }}</td>
+            <td>{{ command.idcom}}</td>
+            <td>{{ command.idclient.idclient }}</td>
             <td>{{ command.debutcom }}</td>
             <td>{{ command.fincom }}</td>
             <td>{{ command.montantcom }}</td>

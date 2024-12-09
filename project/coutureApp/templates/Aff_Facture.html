@@ -45,8 +45,11 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques</a>
               </li>
-
+              
             </ul>
+
+            {% include 'message.html'%}
+            <script src="{% static 'bootstrap/js/message.js'%}">  </script>
                <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
             <form class="d-flex ms-auto" role="search">
               <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
@@ -64,7 +67,7 @@
             
               <div class="container">
                 <div class="header">
-                    <h1>Facture N°00{{ facture.idfacture }}</h1>
+                    <h1>Facture N°{{ facture.idfacture }}</h1>
                     <p>Date : {{ details.date_facture|date:"d/m/Y H:i" }}</p>
                 </div>
             

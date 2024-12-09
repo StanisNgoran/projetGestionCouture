@@ -2,9 +2,21 @@ from django.db import models
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import random
+from datetime import datetime
+
+
+def generate_client_id():
+    year = datetime.now().year
+    while True:
+        random_part = str(random.randint(1, 999)).zfill(3)
+        unique_id = f"CLI-{year}{random_part}"
+        if not Client.objects.filter(idclient=unique_id).exists():
+            return unique_id
+
 
 class Client(models.Model):
-    idclient = models.AutoField(primary_key=True)
+    idclient = models.CharField(primary_key=True, max_length=20,default=generate_client_id,unique=True)
     nom = models.CharField(max_length=100, null=True, blank=True)
     prenom = models.CharField(max_length=100, null=True, blank=True)
     contact = models.CharField(max_length=10, null=True, blank=True)
@@ -12,10 +24,20 @@ class Client(models.Model):
 
     def __str__(self):
         return f"{self.nom} {self.prenom}"
+    
+    
 
+
+def generate_commande_id():
+    year = datetime.now().year
+    while True:
+        random_part = str(random.randint(1, 999)).zfill(3)
+        unique_id = f"CMD-{year}{random_part}"
+        if not Commande.objects.filter(idcom=unique_id).exists():
+            return unique_id
 
 class Commande(models.Model):
-    idcom = models.AutoField(primary_key=True)
+    idcom = models.CharField(primary_key=True,max_length=20,default=generate_commande_id,unique=True)
     idclient = models.ForeignKey(Client, on_delete=models.CASCADE)
     debutcom = models.DateField()
     fincom = models.DateField()
@@ -54,9 +76,17 @@ class Commande(models.Model):
     
 
 
+def generate_tenue_id():
+    year = datetime.now().year
+    while True:
+        random_part = str(random.randint(1, 999)).zfill(3)
+        unique_id = f"TN-{year}{random_part}"
+        if not Tenue.objects.filter(idtenu=unique_id).exists():
+            return unique_id
+
 
 class Tenue(models.Model):
-    idtenu = models.AutoField(primary_key=True)
+    idtenu = models.CharField(primary_key=True, max_length=20,default=generate_tenue_id,unique=True)
     prix = models.IntegerField()
     avance = models.IntegerField()
     reste = models.IntegerField()
@@ -89,8 +119,17 @@ class Tenue(models.Model):
 
 
 
+
+def generate_facture_id():
+    year = datetime.now().year
+    while True:
+        random_part = str(random.randint(1, 999)).zfill(3)
+        unique_id = f"FA-{year}{random_part}"
+        if not Facture.objects.filter(idfacture=unique_id).exists():
+            return unique_id
+
 class Facture(models.Model):
-    idfacture = models.AutoField(primary_key=True)
+    idfacture = models.CharField(primary_key=True,max_length=20,default=generate_facture_id,unique=True)
     idclient = models.ForeignKey(Client, on_delete=models.CASCADE)
     idcom = models.ForeignKey(Commande, on_delete=models.CASCADE)
     date_facture = models.DateTimeField(auto_now_add=True)
@@ -110,9 +149,17 @@ class Facture(models.Model):
 
 
 
+def generate_image_id():
+    year = datetime.now().year
+    while True:
+        random_part = str(random.randint(1, 999)).zfill(3)
+        unique_id = f"MOD-{year}{random_part}"
+        if not ImageModele.objects.filter(idmg=unique_id).exists():
+            return unique_id
+
 
 class ImageModele(models.Model):
-    idmg = models.AutoField(primary_key=True)
+    idmg = models.CharField(primary_key=True,max_length=20,default=generate_image_id,unique=True)
     idtenu = models.ForeignKey(Tenue, on_delete=models.CASCADE)
     #photos = models.BinaryField()  # Store image as binary
     photos = models.ImageField(upload_to='tenue_images/', null=True, blank=True)
@@ -121,16 +168,4 @@ class ImageModele(models.Model):
 
     def __str__(self):
         return self.libelle
-
-
-# class TenueCommande(models.Model):
-#     idcom = models.ForeignKey(Commande, on_delete=models.CASCADE)
-#     idtenu = models.ForeignKey(Tenue, on_delete=models.CASCADE)
-
-#     class Meta:
-#         unique_together = ('idcom', 'idtenu')  # Prevent duplicate combinations
-
-#     def __str__(self):
-#         return f"Commande {self.idcom.idcom} - Tenue {self.idtenu.idtenu}"
-
 

@@ -64,7 +64,7 @@ def creerEtAfficher_client(request):
             return redirect('commande')  # Rediriger vers la même vue pour éviter les re-soumissions
 
     # Récupère tous les clients pour les afficher dans le tableau
-    clients = Client.objects.all()
+    clients = Client.objects.all().order_by('ajout')
     return render(request, 'client.html', {'clients': clients})  # Utilisez 'clients' ici
 
 
@@ -277,6 +277,10 @@ def tenue(request):
         description = request.POST.get("description")
         
         # Enregistrement de la commande si son client existe
+        prix_converti=int(prix)
+        qte_cov=int(qte)
+        avance_converti=int(avance)
+
 
         if not idcom:
 
@@ -295,14 +299,20 @@ def tenue(request):
             messages.error(request, "Veuillez saisir une quantité valide et superieur à 0.")
             return redirect('tenue')
         
-        elif avance=="" or not avance.isdigit() or avance>prix:
+
+        elif avance=="" or not avance.isdigit():
             messages.error(request, "Veuillez saisir une avance valide!.")
             return redirect('tenue')
         
+
         elif modele=="":
             messages.error(request, "Veuillez selectionner un modele")
             return redirect('tenue')
+        
 
+        elif avance_converti>(qte_cov*prix_converti):
+            messages.error(request, " Erreur L'avance depasse le montant total des tenues")
+            return redirect('tenue')
 
            
         else:
@@ -395,17 +405,16 @@ def image(request):
 
 
 def facture(request):
-    commandes = Commande.objects.all()
+    commandes = Commande.objects.all().order_by('-idcom')
     for commande in commandes :
         commande.nombre_tenue=commande.calculer_NombreTenue()
 
     # # permet de remplir le comboBox des ID du client 
-    clients = Client.objects.all()
-    facture=Facture.objects.all()
+    clients = Client.objects.all().order_by('-idclient')
+    facture=Facture.objects.all().order_by('-idfacture')
 
     # Retourne les commandes et clients dans le contexte du template
     return render(request, 'facture.html', {'commandes': commandes, 'clients': clients,'facture':facture})
-
 
 
 
@@ -422,7 +431,7 @@ def editefacture(request, idcom):
             return redirect('editefacture', idcom=idcom)  # Retourne à la page si la date est vide
         else:
             # Création de la facture
-            facture = Facture.objects.create(idclient=cle_client, idcom=commande, date_facture=date_facture)
+            facture = Facture(idclient=cle_client, idcom=commande, date_facture=date_facture)
             facture.save()
             
             messages.success(request, "Facture enregistrée avec succès !")
