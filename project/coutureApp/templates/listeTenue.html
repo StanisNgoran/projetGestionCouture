@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    
 
     <title>Liste Tenue</title>
 </head>
@@ -29,24 +30,38 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client
+                  <i class="fa fa-users" aria-hidden="true"></i>
+                </a>
+
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande
+                  <i class="fa fa-id-card" aria-hidden="true"></i>
+                </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture
+                  <i class="fa fa-file-text" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues
+                  <i class="fa fa-child" aria-hidden="true"></i>
+                </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album
+                  <i class="fa fa-folder" aria-hidden="true"></i>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques
+                  <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                </a>
               </li>
 
             </ul>
@@ -55,19 +70,21 @@
             {% include 'message.html'%}
             <!-- Du javaScript pour creer de l'animation -->
             <script src="{% static 'bootstrap/js/message.js'%}">  </script>
-
-
-               <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
-            <form class="d-flex ms-auto" role="search">
-              <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
-              <button class="btn btn-outline-success" type="submit">Recherche</button>
-            </form>
           </div>
         </div>
       </nav>
 
       <!-- Liste des Clients et des éléments -->
 <div class="container mt-4">
+  <form class="d-flex ms-auto" role="search">
+    <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+    <button class="btn btn-warning" type="submit">Recherche</button>
+  </form>
+
+    <h4 class="mt-3">
+      <a class="nav-link active d-inline" aria-current="page" href="{% url 'tenue'%}"> Ajouter Tenue</a>
+      <i class="fa fa-plus-circle d-inline" aria-hidden="true"></i>
+    </h4>
   <h2 class="text-center">Liste des Tenues</h2>
   <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
     <table class="table table-striped mt-3">

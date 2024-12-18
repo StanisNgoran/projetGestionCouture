@@ -6,6 +6,9 @@ from.models import Tenue
 from.models import ImageModele,Facture
 from django.contrib import messages
 from datetime import datetime,timezone
+from django.shortcuts import render
+from django.db.models import Count
+from django.db.models.functions import TruncWeek
 
 
 
@@ -324,10 +327,7 @@ def tenue(request):
             qte=int(qte)
             montant=qte*prix_converti
             reste=montant-avance_converti
-           
-            
-
-
+ 
             if montant==avance_converti:
                 tenue = Tenue(idcom=commande_instance, prix=prix_converti, qte=qte,montant=montant, avance=avance_converti,reste=reste,modele=modele,description=description,etat_tenue="Soldé")
                 tenue.save()
@@ -356,6 +356,20 @@ def tenue(request):
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS A EFFECTUER SUR LES IMAGES DES TENUES 
 # __________________________________________________________________________________________
 
+# def modifier_image(request,idmg):
+#     infosimageModif=ImageModele.objects.select_related("idtenu").get(idmg=idmg)
+#     if request.method=="POST":
+#         infosimageModif.idmg=request.POST.get("idmg", infosimageModif.idmg)
+#         infosimageModif.idtenu=request.POST.get("idtenu", infosimageModif.idtenu)
+#         infosimageModif.idtenu.idcom=request.POST.get("idcom", infosimageModif.idtenu.idcom)
+#         infosimageModif.idtenu.idcom.idclient=request.POST.get("idclient", infosimageModif.idtenu.idcom.idclient)
+#         infosimageModif.idtenu.prix=request.POST.get("prix", infosimageModif.idtenu.prix)
+#         infosimageModif.photos=request.FILES.get("photos")
+#         infosimageModif.save()
+#         messages.success(request, 'Image Modifiée avec Succès')
+#         return redirect('album')
+#     return render(request, 'modifierImage.html', {' infosimageModif':  infosimageModif})
+
 
 # Permet d'ajouter une image  à la tenue dans la commande
 def image(request):
@@ -364,8 +378,7 @@ def image(request):
         idtenu = request.POST.get("idtenu")
         # photos = request.POST.get("photos")
         photos = request.FILES.get("photos")
-        libelle = request.POST.get("libelle")
-        
+
         if not idtenu:
 
             messages.error(request, "Veuillez sélectionner une tenue valide.")
@@ -374,18 +387,14 @@ def image(request):
         elif not photos:
             messages.error(request, "Veuillez joindre une image de modele.")
             return redirect('image')
-        
-        elif libelle=="":
-            messages.error(request, "Veuillez ajouter un libellé ou un commentaire.")
-            return redirect('image')
            
         else:
             # Vérifie que `id` est valide et récupère l'instance `Client` clé étrangère
             tenue_instance = get_object_or_404(Tenue, pk=idtenu)
-            imagemodele = ImageModele(idtenu=tenue_instance, photos=photos, libelle=libelle)
+            imagemodele = ImageModele(idtenu=tenue_instance, photos=photos)
             imagemodele.save()
-            messages.success(request, 'Image Ajoutée avec Succès!')
-            return redirect('image')
+            messages.success(request, 'Image Ajoutée avec Succès, Commande Validée!')
+            return redirect('album')
 
     # Permet d'afficher les ID des tenues dans le comboBox
     tenues = Tenue.objects.all()
@@ -417,13 +426,36 @@ def facture(request):
     return render(request, 'facture.html', {'commandes': commandes, 'clients': clients,'facture':facture})
 
 
+def createfacture(request):
+    commandes = Commande.objects.all().order_by('-idcom')
+    for commande in commandes :
+        commande.nombre_tenue=commande.calculer_NombreTenue()
+
+ 
+    clients = Client.objects.all().order_by('idclient')
+    commande_nonfacturee=Commande.objects.filter(facture=None)
+    # Retourne les commandes et clients dans le contexte du template
+    return render(request, 'creatfacture.html', {'commande_nonfacturee': commande_nonfacturee, 'clients': clients})
+
+
+def supprimer_facture(request,idfacture):
+    factureasupprimer=get_object_or_404(Facture,pk=idfacture)
+    factureasupprimer.delete()
+    messages.warning(request,"Facture supprimée avec succès")
+    return redirect('facture')
+
 
 
 def editefacture(request, idcom):
     commande = get_object_or_404(Commande, pk=idcom)
     cle_client = commande.idclient  # Récupération du client lié à la commande
-    
-    if request.method == "POST":
+    facture_existante=Facture.objects.filter(idcom=commande).first()
+
+    if facture_existante:
+        messages.error(request, "Cette commande a deja une facture.")
+        return redirect('facture')
+      # Retourne à la page si la date est vide
+    elif request.method == "POST":
         date_facture = request.POST.get("date_facture")
 
         if date_facture == "":
@@ -439,6 +471,29 @@ def editefacture(request, idcom):
             return redirect('Aff_Facture', idfacture=facture.idfacture)
 
     return render(request, 'editefacture.html', {'commande': commande, 'client': cle_client})
+
+
+
+def modifier_facture(request,idfacture):
+    facture=Facture.objects.select_related('idcom').get(idfacture=idfacture)
+    if request.method == "POST":
+        facture.idfacture=request.POST.get("idfacture",facture.idfacture)
+        facture.idclient=request.POST.get("idclient",facture.idclient)
+        facture.idcom=request.POST.get("idcom",facture.idcom)
+        facture.idcom.montantcom=request.POST.get("montantcom",facture.idcom.montantcom)
+        facture.date_facture = request.POST.get("date_facture",facture.date_facture)
+
+        if facture.date_facture == "":
+            messages.error(request, "Veuillez entrer la date de facturation.")
+            return redirect('modifierFacture', idfacture=idfacture)  # Retourne à la page si la date est vide
+        else:
+            facture.save()
+            
+            messages.success(request, "Facture Modifiée avec succès !")
+            # Redirection vers la page d'affichage de la facture avec l'ID de la facture
+            return redirect('Aff_Facture', idfacture=facture.idfacture)
+
+    return render(request, 'modifierFacture.html', {'facture': facture})
 
 
 
@@ -465,18 +520,14 @@ def Aff_Facture(request,idfacture):
 
 
 
-
-
-
-
-
-
 # __________________________________________________________________________________________
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS A EFFECTUER SUR LES ALBUMS 
 # __________________________________________________________________________________________
 
 def album(request):
-    return render(request,'album.html')
+    infosimage=ImageModele.objects.select_related("idtenu")
+    return render(request,'album.html',{'infosimage':infosimage})
+                
 
 
 
@@ -489,7 +540,22 @@ def album(request):
 # __________________________________________________________________________________________
 
 def statistique(request):
-    return render(request,'statistique.html')
+
+     # Récupérer les clients ajoutés par semaine
+    clients_per_week = Client.objects.annotate(week=TruncWeek('ajout')) \
+                                    .values('week') \
+                                    .annotate(client_count=Count('idclient')) \
+                                    .order_by('week')
+
+    # Extraire les données pour le graphique
+    categories = [client['week'].strftime('%d-%m-%Y') for client in clients_per_week]  # Semaine formatée en date
+    data = [client['client_count'] for client in clients_per_week]  # Nombre de clients par semaine
+
+    context = {
+        'categories': categories,
+        'data': data
+    }
+    return render(request,'statistique.html',context)
    
 
 

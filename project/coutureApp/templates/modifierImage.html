@@ -82,21 +82,31 @@
       <!-- Fin de la barre de navigation -->
 
 
-      <form action="{% url 'image'%}" method="post" enctype="multipart/form-data">
+      <form action="{% url 'modifierImage' idmg=infosimageModif.idmg %}" method="post" enctype="multipart/form-data">
 
               <div class="container-fluid d-flex flex-column align-items-center">
-                <h2 class="text-center">Inserez l'image de la tenue</h2>
+                <h2 class="text-center">Changez l'image de la tenue</h2>
 
                 {%csrf_token%}
                 <div class="mb-3 w-50">
-                  <label for="exampleCombobox" class="form-label">ID Tenu:</label>
-                  <select class="form-select" id="exampleCombobox" name="idtenu">
-                        <option value="" selected disabled>-- Sélectionner une Tenue-</option>
-                      {% for tenue in tenues %}
-                        <option value="{{ tenue.idtenu }}">{{tenue.idtenu }}</option>
-                      {% endfor %}
-                  </select>
-                </div>
+                    <label for="exampleFormControlInput1" class="form-label">ID IMAGE</label>
+                    <input type="text" class="form-control" name="idmg" id="exampleFormControlInput1" value="{{ infosimageModif.idmg }}" disabled>
+                  </div>
+    
+                  <div class="mb-3 w-50">
+                    <label for="exampleFormControlInput1" class="form-label">ID Tenue</label>
+                    <input type="text" class="form-control" name="idtenu" id="exampleFormControlInput1" value="{{ infosimageModif.idtenu }}" disabled>
+                  </div>
+
+                  <div class="mb-3 w-50">
+                    <label for="exampleFormControlInput1" class="form-label">ID Com</label>
+                    <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="{{ infosimageModif.idtenu.idcom }}" disabled>
+                  </div>
+
+                  <div class="mb-3 w-50">
+                    <label for="exampleFormControlInput1" class="form-label">ID Com</label>
+                    <input type="text" class="form-control" name="prix" id="exampleFormControlInput1" value="{{ infosimageModif.idtenu.idcom.prix }}" disabled>
+                  </div>
 
                 <div class="mb-3 w-50">
                     <label for="exampleFormControlInput1" class="form-label">Image Modele </label>

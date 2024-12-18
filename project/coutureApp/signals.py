@@ -1,6 +1,6 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,pre_save
 from django.dispatch import receiver
-from .models import Tenue,Commande
+from .models import Tenue,Commande,Client
 
 
 # Signal pour mettre à jour le montant total de la commande après modification d'une tenue
@@ -21,3 +21,4 @@ def mettre_a_jour_nbr_tenue_dans_commande(sender,instance,**kwargs):
     if commande:
         commande.calculer_NombreTenue()
         
+

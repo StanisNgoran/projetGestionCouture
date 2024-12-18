@@ -5,14 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
-    <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap.css'%}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css'%}">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 
-    <title>editionfacture</title>
+    <title>Facture</title>
 </head>
 <body>
-
-    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container-fluid">
           <a class="navbar-brand text-light" href="#">StaneApp</a>
@@ -60,57 +59,66 @@
                   <i class="fa fa-bar-chart" aria-hidden="true"></i>
                 </a>
               </li>
+              
             </ul>
-            {% include 'message.html'%}
-            <script src="{% static 'bootstrap/js/message.js'%}">  </script>
 
-               <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
-            <form class="d-flex ms-auto" role="search">
-              <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
-              <button class="btn btn-outline-success" type="submit">Recherche</button>
-            </form>
+             <!-- Affichage du message d'erreur -->
+             
+
+             <!-- Du javaScript pour creer de l'animation -->
+             <script src="{% static 'bootstrap/js/message.js'%}">  </script>
+             
           </div>
         </div>
       </nav>
 
-      <!-- Fin de la barre de navigation -->
 
-      
-         
-    <form action="{% url 'editefacture' idcom=commande.idcom %}" method="post">
-      {%csrf_token%}
-        <div class="container-fluid d-flex flex-column align-items-center">
-              <h2 class="text-center">Edition de facture</h2>
-            
-
-              <div class="mb-3 w-50">
-                <label for="exampleFormControlInput1" class="form-label">ID commande</label>
-                <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="{{ commande.idcom }}" disabled>
-              </div>
-
-             
-              <div class="mb-3 w-50">
-                <label for="exampleFormControlInput1" class="form-label">ID client</label>
-                <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande.idclient.idclient }}" disabled>
-              </div>
-
-              <div class="mb-3 w-50">
-                <label for="exampleFormControlInput1" class="form-label">Montant commande</label>
-                <input type="text" class="form-control" name="montantcom" id="exampleFormControlInput1" value="{{ commande.montantcom }}" disabled>
-              </div>
-
-              <div class="mb-3 w-50">
-                <label for="dateInput" class="form-label">Date Facture</label>
-                <input type="date" class="form-control" id="dateInput" name="date_facture">
-            </div>
-              <!-- Boutons Annuler et Suivant rapprochés -->
-              <div class="d-flex justify-content-center w-50 mt-2">
-                  <!-- permet d'ajouter de l'espace entre les boutons -->
-                  <a href="{% url 'facture'%}" class="btn btn-secondary me-5">Abandonner</a>
-                  <button type="submit" class="btn btn-primary">Créer Facture</button>
-              </div>
-        </div>
-    </form>
+       <!-- Liste des Clients et des éléments -->
+       <div class="container mt-2">
+        {% include 'message.html'%}
+        <h3 class="text-center">Commande Non Facturée</h3>
+        <form class="d-flex ms-auto" role="search">
+          <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+          <button class="btn btn-warning" type="submit">Recherche</button>
+        </form>
     
-</body>
+        
+            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+              <table class="table table-striped mt-3">
+                <thead class="sticky-header">
+                  <tr>
+                    <th scope="col">ID Commande</th>
+                    <th scope="col">ID Client</th>
+                    <th scope="col">Nom Client</th>
+                    <th scope="col">Montant Total</th>
+                    <th scope="col">Nombre de Tenues</th>
+                    <th scope="col">Générez Facture</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for command in commande_nonfacturee %}
+                    <tr>
+                      <td>{{ command.idcom }}</td>
+                      <td>{{ command.idclient.idclient }}</td>
+                      <td>{{ command.idclient.nom}}</td>
+                      <td>{{ command.montantcom }}</td>
+                      <td>{{ command.nombre_tenue }}</td>
+                      <td>
+                        <a href="{% url 'editefacture' command.idcom %}">
+                          <button type="submit" class="btn btn-info">Créer Facture</button>
+                        </a>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="5" class="text-center">Aucune Commande.</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+    </body>
 </html>
+      
+

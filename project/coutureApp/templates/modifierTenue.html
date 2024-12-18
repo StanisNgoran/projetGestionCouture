@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css'%}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
     <title>Tenue</title>
 </head>
 <body>
@@ -24,26 +26,39 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client
+                  <i class="fa fa-users" aria-hidden="true"></i>
+                </a>
+
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{%url 'commandlist'%}">Commande</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande
+                  <i class="fa fa-id-card" aria-hidden="true"></i>
+                </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture
+                  <i class="fa fa-file-text" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues
+                  <i class="fa fa-child" aria-hidden="true"></i>
+                </a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album
+                  <i class="fa fa-folder" aria-hidden="true"></i>
+                </a>
               </li>
 
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques
+                  <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                </a>
+              </li>
             </ul>
 
 

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
+
+    <title>Album</title>
+</head>
+<body>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="#">StaneApp</a>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg bg-body-secondary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-dark" href="{% url 'home'%}">MENU PRINCIPAL</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client
+                  <i class="fa fa-users" aria-hidden="true"></i>
+                </a>
+
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande
+                  <i class="fa fa-id-card" aria-hidden="true"></i>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture
+                  <i class="fa fa-file-text" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues
+                  <i class="fa fa-child" aria-hidden="true"></i>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album
+                  <i class="fa fa-folder" aria-hidden="true"></i>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques
+                  <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                </a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+
+      <div class="container mt-4">
+        <form class="d-flex ms-auto" role="search">
+          <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+          <button class="btn btn-warning" type="submit">Recherche</button>
+        </form>
+      
+          <h4 class="mt-3">
+            <a class="nav-link active d-inline" aria-current="page" href="{% url 'image'%}"> Ajouter Image</a>
+            <i class="fa fa-plus-circle d-inline" aria-hidden="true"></i>
+          </h4>
+        <div class="row justify-content g-5 mt-2">
+            {% for imagerel in infosimage %}
+            <div class="col-sm-3 mb-1">
+                <div class="card" style="width: 18rem;">
+                    <!-- Affichage de l'image -->
+                    <img src="{{ imagerel.photos.url }}" class="card-img-top" alt="Image" style="height: 150px; object-fit: cover;">
+                    <div class="card-body">
+                        <!-- Affichage des informations -->
+                        <h5 class="card-title">{{ imagerel.idtenu.modele }}</h5>
+                        <p class="card-text">
+                            <strong>ID Tenue :</strong> {{ imagerel.idtenu.idtenu }}<br>
+                            <strong>Prix Unitaire :</strong> {{ imagerel.idtenu.prix }}<br>
+                            <strong>Client :</strong> {{ imagerel.idtenu.idcom.idclient }}<br>
+                            <strong>ID Commande :</strong> {{ imagerel.idtenu.idcom.idcom }}
+                        </p>
+                      
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+</body>
+</html>
