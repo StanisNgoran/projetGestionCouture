@@ -89,11 +89,12 @@
     <table class="table table-striped mt-3">
       <thead class="sticky-header">
         <tr>
-          <th scope="col">ID Client</th>
+          <!-- <th scope="col">ID Client</th> -->
           <th scope="col">Nom</th>
           <th scope="col">Prenom</th>
           <th scope="col">Contact</th>
           <th scope="col">Date d'Ajout</th>
+          <th scope="col">Ajouter Commande</th>
           <th scope="col">Modifier</th>
           <th scope="col">Supprimer</th>
         </tr>
@@ -101,11 +102,17 @@
       <tbody>
         {% for client in clients %}
           <tr>
-            <td>{{ client.idclient }}</td>
+            <!-- <td>{{ client.idclient }}</td> -->
             <td>{{ client.nom }}</td>
             <td>{{ client.prenom }}</td>
             <td>{{ client.contact }}</td>
             <td>{{ client.ajout|date:"d/m/Y" }}</td>
+            <td>
+              <a href="{% url 'commande' client.idclient %}">
+                <button type="submit" class="btn btn-success"> Ajouter Commande</button> 
+
+              </a>
+            </td>
             <td>
               <a href="{% url 'modifier_client' client.idclient %}">
                 <button type="submit" class="btn btn-info"> Modifier Client</button> <!-- Icône de modification -->
@@ -114,7 +121,7 @@
             </td>
             <td>
               <a href="{% url 'supprimer_client' client.idclient %}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce client ?');">
-                <button type="submit" class="btn btn-outline-danger"> Supprimer Client</button> <!-- Icône de modification -->
+                <button type="submit" class="btn btn-danger"> Supprimer Client</button> <!-- Icône de modification -->
 
               </a>
             </td>

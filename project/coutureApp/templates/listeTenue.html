@@ -80,29 +80,18 @@
     <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
     <button class="btn btn-warning" type="submit">Recherche</button>
   </form>
-
-    <h4 class="mt-3">
-      <a class="nav-link active d-inline" aria-current="page" href="{% url 'tenue'%}"> Ajouter Tenue</a>
-      <i class="fa fa-plus-circle d-inline" aria-hidden="true"></i>
-    </h4>
   <h2 class="text-center">Liste des Tenues</h2>
   <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
     <table class="table table-striped mt-3">
       <thead class="sticky-header">
         <tr>
           
-          <th scope="col">ID Client</th>
-          <th scope="col">ID Commande</th>
-          <th scope="col">ID Tenue</th>
+          <th scope="col">Nom Client</th>
           <th scope="col">Prix Unitaire</th>
-          <th scope="col">Avance</th>
-          <th scope="col">Reste</th>
           <th scope="col">Montant</th>
-          <th scope="col">Quantité</th>
           <th scope="col">Statut</th>
-          <th scope="col">Modele</th>  
-          <th scope="col">Description</th>
-          <th scope="col">Date d'Ajout</th>
+          <th scope="col">Details</th>
+          <th scope="col">Associer</th>
           <th scope="col">Modifier</th>
           <th scope="col">Supprimer</th>
         </tr>
@@ -110,18 +99,24 @@
       <tbody>
         {% for tenu in tenues %}
           <tr>
-            <td>{{ tenu.idcom.idclient.idclient }}</td>
-            <td>{{ tenu.idcom.idcom}}</td>
-            <td>{{ tenu.idtenu }}</td>
+            <td>{{ tenu.idcom.idclient.nom }} {{ tenu.idcom.idclient.prenom }}</td>
             <td>{{ tenu.prix  }}</td>
-            <td>{{ tenu.avance  }}</td>
-            <td>{{ tenu.reste  }}</td>
             <td>{{ tenu.montant  }}</td>
-            <td>{{ tenu.qte  }}</td>
             <td>{{ tenu.etat_tenue  }}</td>
-            <td>{{ tenu.modele  }}</td>
-            <td>{{ tenu.description  }}</td>
-            <td>{{ tenu.ajout|date:"d/m/Y" }}</td>
+
+            <td>
+              <a href="{% url 'image' tenu.idtenu %}">
+                <button type="submit" class="btn btn-success"> Associer Image</button> <!-- Icône de modification -->
+
+              </a>
+            </td>
+            
+            <td>
+              <a href="{% url 'infosTenue' tenu.idtenu %}">
+                <button type="submit" class="btn btn-warning"> Voir Details</button> <!-- Icône de modification -->
+
+              </a>
+            </td>
             <td>
               <a href="{% url 'modifier_tenue' tenu.idtenu %}">
                 <button type="submit" class="btn btn-info"> Modifier Tenue</button> <!-- Icône de modification -->

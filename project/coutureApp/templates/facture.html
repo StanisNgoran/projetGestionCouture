@@ -92,9 +92,8 @@
               <table class="table table-striped mt-3">
                 <thead class="sticky-header">
                   <tr>
-                    <th scope="col">ID Facture</th>
-                    <th scope="col">ID Commande</th>
-                    <th scope="col">ID Client</th>
+                    <th scope="col">Nom Client</th>
+                    <th scope="col">N°Facture</th>
                     <th scope="col">Montant Total</th>
                     <th scope="col">Date Facture</th>
                     <th scope="col">Action</th>
@@ -103,9 +102,8 @@
                 <tbody>
                   {% for facture in facture %}
                     <tr>
+                      <td>{{ facture.idclient.nom }} {{ facture.idclient.prenom }}</td>
                       <td>{{ facture.idfacture }}</td>
-                      <td>{{ facture.idcom.idcom }}</td>
-                      <td>{{ facture.idclient.idclient }}</td>
                       <td>{{ facture.idcom.montantcom }}</td>
                       <td>{{ facture.date_facture }}</td>
                       <td>
@@ -128,7 +126,7 @@
                     </tr>
                   {% empty %}
                     <tr>
-                      <td colspan="5" class="text-center">Aucune Commande.</td>
+                      <td colspan="5" class="text-center">Aucune Commande Facturée.</td>
                     </tr>
                   {% endfor %}
                 </tbody>

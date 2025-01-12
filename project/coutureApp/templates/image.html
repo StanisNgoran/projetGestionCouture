@@ -82,20 +82,20 @@
       <!-- Fin de la barre de navigation -->
 
 
-      <form action="{% url 'image'%}" method="post" enctype="multipart/form-data">
+      <form action="{% url 'image' tenue_instance.idtenu %}" method="post" enctype="multipart/form-data">
 
               <div class="container-fluid d-flex flex-column align-items-center">
                 <h2 class="text-center">Inserez l'image de la tenue</h2>
 
                 {%csrf_token%}
                 <div class="mb-3 w-50">
-                  <label for="exampleCombobox" class="form-label">ID Tenu:</label>
-                  <select class="form-select" id="exampleCombobox" name="idtenu">
-                        <option value="" selected disabled>-- Sélectionner une Tenue-</option>
-                      {% for tenue in tenues %}
-                        <option value="{{ tenue.idtenu }}">{{tenue.idtenu }}</option>
-                      {% endfor %}
-                  </select>
+                  <label for="exampleCombobox" class="form-label">Nom Client</label>
+                  <input type="text" class="form-control" name="" id="exampleFormControlInput1" value="{{tenue_instance.idcom.idclient.nom}} {{tenue_instance.idcom.idclient.prenom}}" disabled>
+                </div>
+
+                <div class="mb-3 w-50">
+                  <label for="exampleCombobox" class="form-label">Modele</label>
+                  <input type="text" class="form-control" name="modele" id="exampleFormControlInput1" value="{{tenue_instance.modele}}" disabled>
                 </div>
 
                 <div class="mb-3 w-50">
@@ -111,49 +111,5 @@
                 </div>
             </div>
       </form>
-      
-    <!-- Liste des Clients et des elements -->
-    <div class="container mt-4">
-      <h2 class="text-center">Liste des tenues et leurs images</h2>
-      <div class="table-responsive" style="max-height: 250px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
-      <table class="table table-striped mt-3">
-          <thead class="sticky-header">
-              <tr>
-                  <th scope="col">ID Image</th>
-                  <th scope="col">ID Tenue</th>
-                  <th scope="col">ID Commande</th>
-                  <th scope="col">ID Client</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Modele</th>
-                  <th scope="col">Prix</th>
-                  <th scope="col">Date d'ajout</th>
-              </tr>
-          </thead>
-          <tbody>
-              {% for imagemodele in imagemodeles %}
-                  <tr>
-                      <td>{{ imagemodele.idmg }}</td>
-                      <td>{{ imagemodele.idtenu.idtenu }}</td>
-                      <td>{{ imagemodele.idtenu.idcom.idcom }}</td>
-                      <td>{{ imagemodele.idtenu.idcom.idclient.idclient }}</td>
-                      <td>
-                        {% if imagemodele.photos %}
-                            <img src="{{ imagemodele.photos.url }}" alt="Image de la tenue" style="width: 100px; height: auto;">
-                        {% else %}
-                            <span>Pas d'image</span>
-                        {% endif %}
-                    </td>
-
-                      <td>{{ imagemodele.idtenu.modele }}</td>
-                      <td>{{ imagemodele.idtenu.prix }}</td>
-                      <td>{{ imagemodele.ajout|date:"d/m/Y H:i" }}</td>
-                  </tr>
-              {% empty %}
-                  <tr>
-                      <td colspan="5" class="text-center">Aucune Image enregistrée enregistrée.</td>
-                  </tr>
-              {% endfor %}
-          </tbody>
-      </table>
 </body>
 </html>

@@ -83,19 +83,14 @@
 
        <!-- Affichage de message apres avoir enregistré une commande -->
        
-    <form action="{% url 'commande'%}" method="post">
+    <form action="{% url 'commande' client.idclient %}" method="post">
       {%csrf_token%}
         <div class="container-fluid d-flex flex-column align-items-center">
           <h2 class="text-center">Enregistrez la Commande</h2>
           
           <div class="mb-3 w-50">
-              <label for="exampleCombobox" class="form-label">ID Client:</label>
-              <select class="form-select" id="exampleCombobox" name="idclient">
-                <option value="" selected disabled>-- Sélectionner un client-</option>
-                  {% for client in clients %}
-                    <option value="{{ client.idclient }}">{{ client.idclient }}</option>
-                  {% endfor %}
-              </select>
+              <label for="exampleFormControlInput1" class="form-label">Infos Client</label>
+              <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{client.nom}} {{client.prenom}}" disabled>
           </div>
 
 
@@ -119,11 +114,11 @@
     </form>
     
     
-
-    <!-- Liste des Clients et des elements -->
+<!-- 
+    
     <div class="container mt-4">
       <h2 class="text-center">Liste des commandes</h2>
-      <div class="table-responsive mb-3" style="max-height: 150px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
+      <div class="table-responsive mb-3" style="max-height: 150px; overflow-y: auto;">
       <table class="table table-striped mt-3">
           <thead class="sticky-header">
               <tr>
@@ -155,6 +150,6 @@
                   </tr>
               {% endfor %}
           </tbody>
-      </table>
+      </table> -->
 </body>
 </html>

@@ -79,24 +79,19 @@
     <button class="btn btn-warning" type="submit">Recherche</button>
   </form>
 
-    <h4 class="mt-3">
-      <a class="nav-link active d-inline" aria-current="page" href="{% url 'commande'%}"> Ajouter Commande</a>
-      <i class="fa fa-plus-circle d-inline" aria-hidden="true"></i>
-    </h4>
 
   <h2 class="text-center">Liste Commandes</h2>
   <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
     <table class="table table-striped mt-3">
       <thead class="sticky-header">
         <tr>
-          <th scope="col">ID Commande</th>
-          <th scope="col">ID Client</th>
+          
+          <th scope="col">Nom Client</th>
           <th scope="col">Date Depot</th>
           <th scope="col">Date Retrait</th>
-          <th scope="col">Montant Total</th>
-          <th scope="col">Nombre de Tenue</th>
-          <th scope="col">Statut</th>
           <th scope="col">Date d'Ajout</th>
+          <th scope="col">Voir Details</th>
+          <th scope="col">Ajouter Tenue</th>
           <th scope="col">Modifier</th>
           <th scope="col">Supprimer</th>
         </tr>
@@ -104,15 +99,23 @@
       <tbody>
         {% for command in commandes %}
           <tr>
-            <td>{{ command.idcom}}</td>
-            <td>{{ command.idclient.idclient }}</td>
+            <td>{{ command.idclient.nom }} {{ command.idclient.prenom }} </td>
             <td>{{ command.debutcom }}</td>
             <td>{{ command.fincom }}</td>
-            <td>{{ command.montantcom }}</td>
-            <td>{{ command.nombre_tenue }}</td>
-            <td>{{ command.statut }}</td>
 
             <td>{{ command.creation|date:"d/m/Y" }}</td>
+            <td>
+              <a href="{% url 'infosCommande' command.idcom %}">
+                <button type="submit" class="btn btn-info"> Voir Details</button> <!-- Icône de modification -->
+                
+              </a>
+            </td>
+            <td>
+              <a href="{% url 'tenue' command.idcom %}">
+                <button type="submit" class="btn btn-success"> Ajouter Tenue</button> <!-- Icône de modification -->
+                
+              </a>
+            </td>
             <td>
               <a href="{% url 'modifier_commande' command.idcom %}">
                 <button type="submit" class="btn btn-warning"> Modifier la Commande</button> <!-- Icône de modification -->

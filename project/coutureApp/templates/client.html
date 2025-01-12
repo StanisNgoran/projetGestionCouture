@@ -88,12 +88,12 @@
         {%csrf_token%}
         <div class="mb-3 w-50">
             <label for="exampleFormControlInput1" class="form-label">Nom</label>
-            <input type="text" class="form-control" name="nom" id="exampleFormControlInput1" placeholder="Ngoran">
+            <input type="text" class="form-control" name="nom" id="exampleFormControlInput1" placeholder="Ngoran" style="text-transform: capitalize;">
         </div>
     
         <div class="mb-3 w-50">
             <label for="exampleFormControlInput1" class="form-label">Prenom</label>
-            <input type="text" class="form-control" name="prenom" id="exampleFormControlInput1" placeholder="Stane">
+            <input type="text" class="form-control" name="prenom" id="exampleFormControlInput1" placeholder="Stane" style="text-transform: capitalize;">
         </div>
     
         <div class="mb-3 w-50">
@@ -109,37 +109,6 @@
         </div>
     </div>
 </form>
-   
-      <!-- Tableau des clients enregistrés -->
-    <div class="container mt-4">
-      <h2 class="text-center">Liste des Clients</h2>
-      <div class="table-responsive" style="max-height: 150px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
-      <table class="table table-striped mt-3">
-          <thead class="sticky-header">
-              <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Nom</th>
-                  <th scope="col">Prenom</th>
-                  <th scope="col">Contact</th>
-                  <th scope="col">Date d'ajout</th>
-              </tr>
-          </thead>
-          <tbody>
-              {% for client in clients %}
-                  <tr>
-                      <td>{{ client.idclient }}</td>
-                      <td>{{ client.nom }}</td>
-                      <td>{{ client.prenom }}</td>
-                      <td>{{ client.contact }}</td>
-                      <td>{{ client.ajout|date:"d/m/Y H:i" }}</td>
-                  </tr>
-              {% empty %}
-                  <tr>
-                      <td colspan="5" class="text-center">Aucun client enregistré.</td>
-                  </tr>
-              {% endfor %}
-          </tbody>
-      </table>
   </div>
 </body>
 </html>

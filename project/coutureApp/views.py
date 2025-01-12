@@ -12,8 +12,6 @@ from django.db.models.functions import TruncWeek
 
 
 
-
-
 # ____________________________________________________________________________________
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS PRESENTES DANS HOME(MENUE PRINCIPAL) 
 # ____________________________________________________________________________________
@@ -21,7 +19,7 @@ from django.db.models.functions import TruncWeek
 def home(request):
 
     # Permet d'afficher toutes les commandes dans un tableau
-    commandes = Commande.objects.all().order_by('-idcom')
+    commandes = Commande.objects.all().order_by('-creation')
 
     # Retourne les commandes et clients dans le contexte du template
     return render(request, 'home.html', {'commandes': commandes})
@@ -29,19 +27,15 @@ def home(request):
 
 
 
-
-
-
 # ____________________________________________________________________________________
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS A EFFECTUER SUR LES CLIENTS 
 # ____________________________________________________________________________________
-
 # Creation du client 
-def creerEtAfficher_client(request):
+def Ajouter_client(request):
     if request.method == 'POST':
-        nom = request.POST.get('nom')
-        prenom = request.POST.get('prenom')
-        contact = request.POST.get('contact')
+        nom = request.POST['nom'].upper()
+        prenom = request.POST['prenom'].upper()
+        contact = request.POST['contact']
         
         if nom=="":
             messages.error(request, "Veuillez Entrer le nom du client.")
@@ -63,47 +57,44 @@ def creerEtAfficher_client(request):
             client = Client(nom=nom, prenom=prenom, contact=contact)
             client.save()
             messages.success(request, 'Client Enregistré avec Succès!')
-            # Rediriger vers la même page pour afficher le client nouvellement ajouté
-            return redirect('commande')  # Rediriger vers la même vue pour éviter les re-soumissions
-
-    # Récupère tous les clients pour les afficher dans le tableau
-    clients = Client.objects.all().order_by('ajout')
-    return render(request, 'client.html', {'clients': clients})  # Utilisez 'clients' ici
+            return redirect('clientlist')  
+    return render(request, 'client.html')  
 
 
 
-# Affiche la liste des clients à modifier 
+# Affiche la liste des clients  
 def clientlist(request):
-    clients=Client.objects.all().order_by('-idclient')
+    clients=Client.objects.all().order_by('-ajout')
     return render(request,'clientlist.html',{'clients':clients})
+
+
+
 
 # Permet de modifier un client 
 def modifier_client(request,idclient):
-    # Récupère le client ou renvoie une erreur 404 si non trouvé
-    client = get_object_or_404(Client, idclient=idclient)
+    # Récupère le client à modifier
+    client_a_modifier = get_object_or_404(Client, idclient=idclient)
     if request.method == 'POST':
             # Récupérer les nouvelles valeurs des champs
-            client.nom = request.POST.get('nom', client.nom)  # Garde la valeur existante si vide
-            client.prenom = request.POST.get('prenom', client.prenom)
-            client.contact = request.POST.get('contact', client.contact)
+            client_a_modifier.nom = request.POST.get('nom', client_a_modifier.nom) # Garde la valeur existante si vide
+            client_a_modifier.prenom = request.POST.get('prenom', client_a_modifier.prenom)
+            client_a_modifier.contact = request.POST.get('contact', client_a_modifier.contact)
 
             # Sauvegarder les nouvelles valeurs dans la base de données
-            client.save()
+            client_a_modifier.save()
             # Ajouter un message de succès
             messages.success(request, 'Client modifié avec succès.')
 
             return redirect('clientlist')  # Rediriger vers la liste des clients
-            
-    return render(request, 'modifierClient.html', {'client': client})
+    return render(request, 'modifierClient.html', {'client': client_a_modifier})
+
 
 
 # permet de supprimer un client 
 def supprimer_client(request,idclient):
-    # Récupère le client ou renvoie une erreur 404 si non trouvé
-    client = get_object_or_404(Client, pk=idclient)
-
+    client_a_supprimer = get_object_or_404(Client, idclient=idclient)
     # Supprime le client
-    client.delete()
+    client_a_supprimer.delete()
 
     # Affiche un message de confirmation (facultatif)
     messages.success(request, "Client supprimé avec succès!")
@@ -120,96 +111,93 @@ def supprimer_client(request,idclient):
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS A EFFECTUER SUR LES COMMANDES 
 # ____________________________________________________________________________________
 
-
 # Permet d'afficher la liste des commandes à modifier
 def commandlist(request):
-    commandes=Commande.objects.all()
+    commandes=Commande.objects.all().order_by('-creation')
     for commande in commandes:
         commande.nombre_tenue=commande.calculer_NombreTenue()
     return render(request,'commandlist.html',{'commandes':commandes})
 
 
+
 # Enregistrement de la commande d'un client donné 
-def SaveCommande(request):
+def SaveCommande(request,idclient):
+    client_commandeur = get_object_or_404(Client, idclient=idclient)
     if request.method == "POST":
         # Récupération des valeurs depuis le formulaire
-        idclient = request.POST.get("idclient")
-        debutcom = request.POST.get("debutcom")
-        fincom = request.POST.get("fincom")
+        debutcom = request.POST["debutcom"]
+        fincom = request.POST["fincom"]
         
         # Enregistrement de la commande si son client existe
 
-        if not idclient:
-            messages.error(request, "Veuillez sélectionner un client valide.")
-            return redirect('commande')
-        
-        elif debutcom=="":
+        if debutcom=="":
             messages.error(request, "Veuillez selectionner la date du debut.")
-            return redirect('commande')
+            return redirect('commande',idclient=idclient)
         
         elif fincom=="":
             messages.error(request, "Veuillez selectionner la date de fin.")
-            return redirect('commande')
+            return redirect('commande',idclient=idclient)
         
         elif fincom<debutcom:
             messages.error(request, "La date de fin doit être après la date de début.")
-            return redirect('commande')
+            return redirect('commande',idclient=idclient)
     
         else:
-            # Vérifie que `idclient` est valide et récupère l'instance `Client` clé étrangère
-            client_instance = get_object_or_404(Client, pk=idclient)
-            commande = Commande(idclient=client_instance, debutcom=debutcom, fincom=fincom)
-            commande.save()
+            
+            commande_lierauclient = Commande(idclient=client_commandeur, debutcom=debutcom, fincom=fincom)
+            commande_lierauclient.save()
             messages.success(request, 'Commande Enregistrée avec Succès!')
-            return redirect('tenue')
-
-    # Permet d'afficher toutes les commandes dans un tableau
-    commandes = Commande.objects.all()
-    for commande in commandes :
-        commande.nombre_tenue=commande.calculer_NombreTenue()
-
-    # permet de remplir le comboBox des ID du client 
-    clients = Client.objects.all()
-
-    # Retourne les commandes et clients dans le contexte du template
-    return render(request, 'commande.html', {'commandes': commandes, 'clients': clients})
+            return redirect('tenue',commande_lierauclient.idcom)
+    return render(request, 'commande.html', {'client': client_commandeur})
 
 
 
 
 # Permet de modifier une commande
 def modifier_commande(request,idcom):
-    commande= get_object_or_404(Commande,idcom=idcom)
+    commande_a_modifier= get_object_or_404(Commande,idcom=idcom)
     if request.method=='POST':
-        commande.debutcom=request.POST.get('debutcom',commande.debutcom)
-        commande.fincom=request.POST.get('fincom',commande.fincom)
-        commande.statut=request.POST.get('statut',commande.statut)
+        commande_a_modifier.debutcom=request.POST.get('debutcom',commande_a_modifier.debutcom)
+        commande_a_modifier.fincom=request.POST.get('fincom',commande_a_modifier.fincom)
+        commande_a_modifier.statut=request.POST.get('statut',commande_a_modifier.statut)
         
-        if commande.debutcom=="":
+        if commande_a_modifier.debutcom=="":
             messages.error(request, "Veuillez selectionner la date du debut.")
             return redirect('modifier_commande',idcom=idcom)
         
-        elif commande.fincom=="":
+        elif commande_a_modifier.fincom=="":
             messages.error(request, "Veuillez selectionner la date de fin.")
             return redirect('modifier_commande',idcom=idcom)
         
-        elif commande.fincom<commande.debutcom:
+        elif commande_a_modifier.fincom<commande_a_modifier.debutcom:
             messages.error(request, "La date de fin doit être après la date de début.")
             return redirect('modifier_commande',idcom=idcom)
         else:
 
-            commande.save()
+            commande_a_modifier.save()
             messages.success(request,'Commande modifiée avec Succès')
             return redirect('commandlist')
-    return render(request,'modifierComand.html',{'commande':commande})
+    return render(request,'modifierComand.html',{'commande':commande_a_modifier})
 
+
+
+def infosCommande(request,idcom):
+    commande=get_object_or_404(Commande,idcom=idcom)
+    tenue_commandee=commande.tenue_set.all()
+    details={
+        "tenues":tenue_commandee,
+        "total_commande":commande.montantcom
+
+
+    }
+
+    return render(request,"infosCommande.html",{'details':details,'commande':commande})
 
 # Permet de supprimer une commande
 def supprimer_commande(request,idcom):
-    commande=get_object_or_404(Commande,pk=idcom)
+    commande=get_object_or_404(Commande,idcom=idcom)
     commande.delete()
     messages.success(request,'Commande supprimée avec succès')
-
     return redirect('commandlist')
 
 
@@ -225,12 +213,11 @@ def supprimer_commande(request,idcom):
 
 # Permet d'afficher la liste des tenues
 def listeTenue(request):
-    tenues=Tenue.objects.all()
+    tenues=Tenue.objects.all().order_by("-ajout")
     return render(request,'listeTenue.html',{'tenues':tenues})
 
 
 # Permet de modifier une tenue 
-
 def modifier_tenue(request,idtenu):
     tenue=get_object_or_404(Tenue,idtenu=idtenu)
     if request.method=="POST":
@@ -259,6 +246,8 @@ def modifier_tenue(request,idtenu):
             return redirect('listeTenue')
     return render(request,"modifierTenue.html",{'tenue':tenue})
 
+
+
 # Permet de supprimer une tenue dans une commande 
 def supprimer_tenue(request,idtenu):
     tenue=get_object_or_404(Tenue,pk=idtenu)
@@ -269,10 +258,10 @@ def supprimer_tenue(request,idtenu):
 
 
 # Permet d'enregistrer une tenue dans la commande
-def tenue(request):
+def tenue(request,idcom):
+    commande_instance=get_object_or_404(Commande,idcom=idcom)
     if request.method == "POST":
-        # Récupération des valeurs depuis le formulaire
-        idcom = request.POST.get("idcom")
+       
         prix = request.POST.get("prix")
         qte=request.POST.get("qte")
         avance = request.POST.get("avance")
@@ -285,43 +274,36 @@ def tenue(request):
         avance_converti=int(avance)
 
 
-        if not idcom:
-
-            messages.error(request, "Veuillez sélectionner une commande valide.")
-            return redirect('tenue')
+        
+        if prix=="" or not prix.isdigit() or prix<='0':
+            messages.error(request, "Veuillez saisir un prix valide et superieur à 0.")
+            return redirect('tenue',idcom=idcom)
         
         elif prix=="" or not prix.isdigit() or prix<='0':
             messages.error(request, "Veuillez saisir un prix valide et superieur à 0.")
-            return redirect('tenue')
-        
-        elif prix=="" or not prix.isdigit() or prix<='0':
-            messages.error(request, "Veuillez saisir un prix valide et superieur à 0.")
-            return redirect('tenue')
+            return redirect('tenue',idcom=idcom)
         
         elif qte=="" or not qte.isdigit() or prix<='0':
             messages.error(request, "Veuillez saisir une quantité valide et superieur à 0.")
-            return redirect('tenue')
+            return redirect('tenue',idcom=idcom)
         
 
         elif avance=="" or not avance.isdigit():
             messages.error(request, "Veuillez saisir une avance valide!.")
-            return redirect('tenue')
+            return redirect('tenue',idcom=idcom)
         
 
         elif modele=="":
             messages.error(request, "Veuillez selectionner un modele")
-            return redirect('tenue')
+            return redirect('tenue',idcom=idcom)
         
 
         elif avance_converti>(qte_cov*prix_converti):
             messages.error(request, " Erreur L'avance depasse le montant total des tenues")
-            return redirect('tenue')
+            return redirect('tenue',idcom=idcom)
 
            
         else:
-            
-         # Vérifie que `idclient` est valide et récupère l'instance `Client` clé étrangère
-            commande_instance = get_object_or_404(Commande, pk=idcom)
             prix_converti=int(prix)
             avance_converti=int(avance)
             qte=int(qte)
@@ -329,23 +311,16 @@ def tenue(request):
             reste=montant-avance_converti
  
             if montant==avance_converti:
-                tenue = Tenue(idcom=commande_instance, prix=prix_converti, qte=qte,montant=montant, avance=avance_converti,reste=reste,modele=modele,description=description,etat_tenue="Soldé")
-                tenue.save()
+                tenue_commandee = Tenue(idcom=commande_instance, prix=prix_converti, qte=qte,montant=montant, avance=avance_converti,reste=reste,modele=modele,description=description,etat_tenue="Soldé")
+                tenue_commandee.save()
                 messages.success(request, 'Tenue Ajoutée avec Succès!')
                 return redirect('image')
             elif reste>0:
-                tenue = Tenue(idcom=commande_instance, prix=prix_converti,qte=qte,montant=montant, avance=avance_converti,reste=reste,modele=modele,description=description,etat_tenue="Non Soldé")
-                tenue.save()
+                tenue_commandee = Tenue(idcom=commande_instance, prix=prix_converti,qte=qte,montant=montant, avance=avance_converti,reste=reste,modele=modele,description=description,etat_tenue="Non Soldé")
+                tenue_commandee.save()
                 messages.success(request, 'Tenue Ajoutée avec Succès!')
-                return redirect('image')
-
-    # Permet d'afficher toutes les commandes dans un tableau
-    tenues = Tenue.objects.all()
-
-    # permet de remplir le comboBox des ID du client 
-    commands = Commande.objects.all()
-    # Retourne les commandes et clients dans le contexte du template
-    return render(request, 'tenue.html', {'tenues': tenues, 'commands': commands})
+                return redirect('image',tenue_commandee.idtenu)
+    return render(request, 'tenue.html', {'commands': commande_instance})
 
     
 
@@ -356,54 +331,59 @@ def tenue(request):
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS A EFFECTUER SUR LES IMAGES DES TENUES 
 # __________________________________________________________________________________________
 
-# def modifier_image(request,idmg):
-#     infosimageModif=ImageModele.objects.select_related("idtenu").get(idmg=idmg)
-#     if request.method=="POST":
-#         infosimageModif.idmg=request.POST.get("idmg", infosimageModif.idmg)
-#         infosimageModif.idtenu=request.POST.get("idtenu", infosimageModif.idtenu)
-#         infosimageModif.idtenu.idcom=request.POST.get("idcom", infosimageModif.idtenu.idcom)
-#         infosimageModif.idtenu.idcom.idclient=request.POST.get("idclient", infosimageModif.idtenu.idcom.idclient)
-#         infosimageModif.idtenu.prix=request.POST.get("prix", infosimageModif.idtenu.prix)
-#         infosimageModif.photos=request.FILES.get("photos")
-#         infosimageModif.save()
-#         messages.success(request, 'Image Modifiée avec Succès')
-#         return redirect('album')
-#     return render(request, 'modifierImage.html', {' infosimageModif':  infosimageModif})
+def modifier_image(request,idmg):
+    image_a_modifier=get_object_or_404(ImageModele,idmg=idmg)
+    if request.method=="POST":
+        image_a_modifier.photos=request.FILES.get("photos")
+
+        if not image_a_modifier.photos:
+            messages.error(request, 'Veuiller choisir une image')
+            return redirect('modifierImage',idmg=idmg)
+        else:
+            image_a_modifier.save()
+            messages.success(request, 'Image Modifiée avec Succès')
+            return redirect('album')
+    image_a_afficher=ImageModele.objects.all()
+    return render(request, 'modifierImage.html', {'image_a_modifier':image_a_modifier,'image_a_afficher':image_a_afficher})
+
+
+def supprimer_image(request,idmg):
+    image_supp=get_object_or_404(ImageModele,idmg=idmg)
+    image_supp.delete()
+    messages.warning(request,"image supprimée avec succès")
+    return redirect('album')
+    
 
 
 # Permet d'ajouter une image  à la tenue dans la commande
-def image(request):
+def image(request,idtenu):
+
+    tenue_instance = get_object_or_404(Tenue, idtenu=idtenu)
     if request.method == "POST":
-        # Récupération des valeurs depuis le formulaire
-        idtenu = request.POST.get("idtenu")
-        # photos = request.POST.get("photos")
         photos = request.FILES.get("photos")
 
-        if not idtenu:
-
-            messages.error(request, "Veuillez sélectionner une tenue valide.")
-            return redirect('image')
-        
-        elif not photos:
+        if not photos:
             messages.error(request, "Veuillez joindre une image de modele.")
-            return redirect('image')
+            return redirect('image',idtenu=idtenu)
            
         else:
-            # Vérifie que `id` est valide et récupère l'instance `Client` clé étrangère
-            tenue_instance = get_object_or_404(Tenue, pk=idtenu)
-            imagemodele = ImageModele(idtenu=tenue_instance, photos=photos)
-            imagemodele.save()
+            
+            tenue_avec_image = ImageModele(idtenu=tenue_instance, photos=photos)
+            tenue_avec_image.save()
             messages.success(request, 'Image Ajoutée avec Succès, Commande Validée!')
             return redirect('album')
+    #Permet d'afficher les tenues avec image
+    image_tenue=ImageModele.objects.all()
+    return render(request, 'image.html', {'tenue_instance': tenue_instance,'image_tenue':image_tenue})
 
-    # Permet d'afficher les ID des tenues dans le comboBox
-    tenues = Tenue.objects.all()
 
-    # permet de remplir le comboBox 
-    imagemodeles = ImageModele.objects.all()
-    # Retourne les commandes et clients dans le contexte du template
-    return render(request, 'image.html', {'imagemodeles': imagemodeles, 'tenues': tenues})
-
+def infostenue(request,idtenu):
+    tenue_instance=get_object_or_404(Tenue,idtenu=idtenu)
+    details={
+        "tenue_infos":tenue_instance
+    }
+    
+    return render(request,"infosTenue.html",{'details':details})
 
 
 
@@ -414,13 +394,13 @@ def image(request):
 
 
 def facture(request):
-    commandes = Commande.objects.all().order_by('-idcom')
+    commandes = Commande.objects.all().order_by('idcom')
     for commande in commandes :
         commande.nombre_tenue=commande.calculer_NombreTenue()
 
     # # permet de remplir le comboBox des ID du client 
-    clients = Client.objects.all().order_by('-idclient')
-    facture=Facture.objects.all().order_by('-idfacture')
+    clients = Client.objects.all().order_by('idclient')
+    facture=Facture.objects.all().order_by('-date_facture')
 
     # Retourne les commandes et clients dans le contexte du template
     return render(request, 'facture.html', {'commandes': commandes, 'clients': clients,'facture':facture})
@@ -436,6 +416,7 @@ def createfacture(request):
     commande_nonfacturee=Commande.objects.filter(facture=None)
     # Retourne les commandes et clients dans le contexte du template
     return render(request, 'creatfacture.html', {'commande_nonfacturee': commande_nonfacturee, 'clients': clients})
+
 
 
 def supprimer_facture(request,idfacture):
@@ -525,7 +506,8 @@ def Aff_Facture(request,idfacture):
 # __________________________________________________________________________________________
 
 def album(request):
-    infosimage=ImageModele.objects.select_related("idtenu")
+    #Toutes les qui sont associées à des images
+    infosimage=ImageModele.objects.select_related("idtenu").order_by('-ajout')
     return render(request,'album.html',{'infosimage':infosimage})
                 
 

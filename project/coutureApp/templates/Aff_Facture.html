@@ -83,18 +83,18 @@
             
               <div class="container">
                 <div class="header">
-                    <h1>Facture N°{{ facture.idfacture }}</h1>
+                    <h1>N°:{{ facture.idfacture }}</h1>
                     <p>Date : {{ details.date_facture|date:"d/m/Y H:i" }}</p>
                 </div>
             
                 <table class="details">
                     <tr>
                         <td><strong>Client</strong></td>
-                        <td>{{ details.client.nom }} (ID : {{ details.client.idclient }})</td>
+                        <td>{{ details.client.nom }} {{ details.client.prenom }}</td>
                     </tr>
                     <tr>
                         <td><strong>Commande</strong></td>
-                        <td>Commande {{ details.commande.idcom }}</td>
+                        <td>{{ details.commande.idcom }}</td>
                     </tr>
                 </table>
             

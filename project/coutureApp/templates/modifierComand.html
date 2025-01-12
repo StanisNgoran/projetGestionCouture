@@ -85,18 +85,16 @@
     <form action="{% url 'modifier_commande' idcom=commande.idcom %}" method="post">
       {%csrf_token%}
         <div class="container-fluid d-flex flex-column align-items-center">
-              <h2 class="text-center">Operation sur Commande</h2>
+              <h2 class="text-center">Modification Commande</h2>
             
+              <div class="mb-3 w-50">
+                <label for="exampleFormControlInput1" class="form-label">ID client</label>
+                <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande.idclient.nom }} {{ commande.idclient.prenom }}" disabled>
+              </div>
 
               <div class="mb-3 w-50">
                 <label for="exampleFormControlInput1" class="form-label">ID commande</label>
                 <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="{{ commande.idcom }}" disabled>
-              </div>
-
-             
-              <div class="mb-3 w-50">
-                <label for="exampleFormControlInput1" class="form-label">ID client</label>
-                <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande.idclient.idclient }}" disabled>
               </div>
 
               <div class="mb-3 w-50">

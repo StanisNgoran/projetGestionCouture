@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+LOGIN_URL = '/login/'  # URL vers laquelle les utilisateurs non connectés seront redirigés
+  # URL par défaut après la connexion réussie
 # Application definition
 
 INSTALLED_APPS = [

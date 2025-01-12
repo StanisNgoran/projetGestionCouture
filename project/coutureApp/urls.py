@@ -1,14 +1,19 @@
 # coutureApp/urls.py
 from django.urls import path
 from . import views
-
 urlpatterns = [
+
     path('', views.home, name='home'),
-    path('client/', views.creerEtAfficher_client, name='client'),  # Utilisation de la vue pour création/affichage
-    path('commande/', views.SaveCommande, name='commande'),
-    path('tenue/', views.tenue, name='tenue'),
-    path('image/', views.image, name='image'),
-    # path('modifierimage/<str:idmg>/', views.modifier_image, name='modifierImage'),
+    path('client/', views.Ajouter_client, name='client'),  # Utilisation de la vue pour création/affichage
+    path('commande/<str:idclient>', views.SaveCommande, name='commande'),
+
+    path('InfosCommande/<str:idcom>', views.infosCommande, name='infosCommande'),
+    path('tenue/<str:idcom>', views.tenue, name='tenue'),
+    path('InfosTenue/<str:idtenu>', views.infostenue, name='infosTenue'),
+    path('image/<str:idtenu>', views.image, name='image'),
+
+    path('modifierimage/<str:idmg>/', views.modifier_image, name='modifierImage'),
+    path('supprimerimage/picture/<str:idmg>/', views.supprimer_image, name='suppImage'),
     path('facture/', views.facture, name='facture'),
     path('createfacture/', views.createfacture, name='createfacture'),
     path('editefacture/Enregistrement/<str:idcom>/', views.editefacture, name='editefacture'),
@@ -16,6 +21,7 @@ urlpatterns = [
     path('supprimerfacture/<str:idfacture>/', views.supprimer_facture, name='supprimer_facture'),
     path('modifierfacture/<str:idfacture>/', views.modifier_facture, name='modifierFacture'),
 
+    path('commande/ajouter/<str:idclient>/', views.SaveCommande, name='commande'),
     path('clientlist/', views.clientlist, name='clientlist'),
     path('commandlist/', views.commandlist, name='commandlist'),
     path('album/', views.album, name='album'),

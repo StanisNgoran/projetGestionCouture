@@ -83,19 +83,14 @@
 
       <!-- Fin de la barre de navigation -->
 
-      <form  action="{% url 'tenue'%}" method="post">
+      <form  action="{% url 'tenue' commands.idcom%}" method="post">
 
-            <div class="container-fluid d-flex flex-column align-items-center">
-              <h2 class="text-center">Ajouter des Tenues dans la commande</h2>
+            <div class="container-fluid d-flex flex-column align-items-center" style="max-height: 500px; overflow-y: auto;">
+              <h2 class="text-center">Ajout de Tenues</h2>
               {%csrf_token%}
               <div class="mb-3 w-50">
-                <label for="exampleCombobox" class="form-label">ID Command:</label>
-                <select class="form-select" id="exampleCombobox" name="idcom">
-                      <option value="" selected disabled>-- Sélectionner une Commande-</option>
-                    {% for command in commands %}
-                      <option value="{{ command.idcom }}">{{command.idcom }}</option>
-                    {% endfor %}
-                </select>
+                <label for="exampleCombobox" class="form-label">Nom du client:</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="idcom"value="{{commands.idclient.nom}} {{commands.idclient.prenom}}" disabled>
               </div>
 
               <div class="mb-3 w-50">
@@ -144,7 +139,7 @@
 
               <div class="mb-3 w-50">
                   <label for="exampleFormControlInput1" class="form-label">Description</label>
-                  <input type="text" class="form-control" id="exampleFormControlInput1" name="description" placeholder="Manche bleue Bouton rouge">
+                  <input type="text" class="form-control" id="exampleFormControlInput1" name="description" placeholder="Manche bleue Bouton rouge" style="text-transform: capitalize;">
               </div>
 
             
@@ -156,55 +151,5 @@
               </div>
           </div>
     </form>
-    
-
-
-    <!-- <script src="{% static 'bootstrap/js/dynamicInput.js'%}">  </script> -->
-      
-    <!-- Liste des Vetements et des elements -->
-    <div class="container mt-4">
-      <h2 class="text-center">Liste des Tenues commandées</h2>
-      <div class="table-responsive" style="max-height: 250px; overflow-y: auto;"> <!-- Ajout du conteneur scrollable -->
-      <table class="table table-striped mt-3">
-          <thead class="sticky-header">
-              <tr>
-                  <th scope="col">ID Tenue</th>
-                  <th scope="col">ID Commande</th>
-                  <th scope="col">ID Client</th>
-                  <th scope="col">Prix</th>
-                  <th scope="col">Avance</th>
-                  <th scope="col">Restant</th>
-                  <th scope="col">Montant</th>
-                  <th scope="col">Quantité</th>
-                  <th scope="col">Statut</th>
-                  <th scope="col">Model</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Date d'ajout</th>
-              </tr>
-          </thead>
-          <tbody>
-              {% for tenue in tenues %}
-
-                  <tr>
-                      <td>{{ tenue.idtenu }}</td>
-                      <td>{{ tenue.idcom.idcom }}</td>
-                      <td>{{ tenue.idcom.idclient.idclient }}</td>
-                      <td>{{ tenue.prix }}</td>
-                      <td>{{ tenue.avance }}</td>
-                      <td>{{ tenue.reste }}</td>
-                      <td>{{ tenue.montant }}</td>
-                      <td>{{ tenue.qte }}</td>
-                      <td>{{ tenue.etat_tenue }}</td>
-                      <td>{{ tenue.modele }}</td>
-                      <td>{{ tenue.description }}</td>
-                      <td>{{ tenue.ajout|date:"d/m/Y H:i" }}</td>
-                  </tr>
-              {% empty %}
-                  <tr>
-                      <td colspan="5" class="text-center">Aucune Tenue enregistrée dans une quelconque commande.</td>
-                  </tr>
-              {% endfor %}
-          </tbody>
-      </table>
 </body>
 </html>

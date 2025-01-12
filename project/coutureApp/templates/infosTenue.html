@@ -1,0 +1,142 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/style_Facture.css' %}">
+    <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap.css'%}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
+    <title>Details Facture</title>
+</head>
+<body>
+
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="#">StaneApp</a>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg bg-body-secondary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-dark" href="{% url 'home'%}">MENU PRINCIPAL</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client
+                  <i class="fa fa-users" aria-hidden="true"></i>
+                </a>
+
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande
+                  <i class="fa fa-id-card" aria-hidden="true"></i>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture
+                  <i class="fa fa-file-text" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues
+                  <i class="fa fa-child" aria-hidden="true"></i>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album
+                  <i class="fa fa-folder" aria-hidden="true"></i>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques
+                  <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                </a>
+              </li>
+              
+            </ul>
+
+            {% include 'message.html'%}
+            <script src="{% static 'bootstrap/js/message.js'%}">  </script>
+               <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
+            <form class="d-flex ms-auto" role="search">
+              <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+              <button class="btn btn-outline-success" type="submit">Recherche</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Fin de la barre de navigation -->
+
+      {%csrf_token%}
+        <div class="container-fluid d-flex flex-column align-items-center">
+              <h2 class="text-center">Details Tenue</h2>
+            
+              <div class="container">
+                <div class="header">
+                    <h1>N°: {{ details.tenue_infos.idtenu }}</h1>
+                    <p>Date : {{ details.tenue_infos.ajout|date:"d/m/Y H:i" }}</p>
+                </div>
+            
+                <table class="details">
+                    <tr>
+                        <td><strong>Client</strong></td>
+                        <td>{{ details.tenue_infos.idcom.idclient.nom }} {{ details.tenue_infos.idcom.idclient.prenom }}</td>
+                    </tr>
+                    <!-- <tr>
+                        <td><strong>Commande</strong></td>
+                        <td>{{ commande.idcom }}</td>
+                        <td>Date depôt de Commande: {{ commande.debutcom }}</td>
+                        <td>Date Retrait: {{ commande.fincom }}</td>
+                        <td>Statut: {{ commande.statut }}</td>
+                    </tr> -->
+                </table>
+            
+                <h3>Tenues Commandées</h3>
+                <table class="tenues">
+                    <thead>
+                        <tr>
+                            <th>Modèle</th>
+                            <th>Quantité</th>
+                            <th>Prix Unitaire</th>
+                            <th>Montant</th>
+                            <th>Reste</th>
+                            <th>Etat Tenue</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td>{{ details.tenue_infos.modele }}</td>
+                            <td>{{ details.tenue_infos.qte }}</td>
+                            <td>{{ details.tenue_infos.prix }} FCFA</td>
+                            <td>{{ details.tenue_infos.montant }} FCFA</td>
+                            <td>{{ details.tenue_infos.reste }} FCFA</td>
+                            <td>{{ details.tenue_infos.etat_tenue }} FCFA</td>
+                        </tr>
+                      
+                    </tbody>
+                </table>
+            
+                <div class="footer">
+                    <!-- <h3>Image : {{ details.les_images_tenues.photos }}</h3> -->
+                    <!-- <h3><img src="{{ details.tenue_infos.photos.url }}" class="card-img-top" alt="Image" style="height: 150px; object-fit: cover;"> </h3>  -->
+
+                </div>
+            </div>
+            
+        </div>
+    </form>
+    
+</body>
+</html>

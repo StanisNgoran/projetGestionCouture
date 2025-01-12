@@ -1,0 +1,68 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
+
+    <title>Creation de Compte</title>
+</head>
+    <body>
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+            <nav class="navbar navbar-expand-lg bg-primary">
+                <div class="container-fluid">
+                <a class="navbar-brand text-light" href="#">StaneApp</a>
+                </div>
+            </nav>
+
+            <body class="bg-light">
+                <div class="container d-flex justify-content-center align-items-center vh-100">
+                    <div class="card shadow-lg p-4" style="width: 400px; border-radius: 10px;">
+                        <h3 class="text-center mb-4">Bienvenue</h3>
+                        <h5 class="text-center mb-4 text-muted">Veuillez Creer un Compte</h5>
+                        
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Nom d'utilisateur</label>
+                                <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Email</label>
+                                <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Entrez votre email" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Mot de passe</label>
+                                <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Mot de passe</label>
+                                <input type="password" class="form-control form-control-lg" id="password" name="confirm_password" placeholder="Confirmer mot de passe" required>
+                            </div>
+    
+    
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary w-100 btn-lg">S'inscrire</button>
+                            </div>
+                            
+                            <div class="text-center mt-3">
+                                <!-- <span class="text-muted">Se connecter ?</span> -->
+                                <a href="{% url 'login' %}" class="text-decoration-none fw-bold">Se connecter</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+    
+    
+            </body>
+
+    </body>
+</html>

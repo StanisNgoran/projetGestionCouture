@@ -73,10 +73,6 @@
           <button class="btn btn-warning" type="submit">Recherche</button>
         </form>
       
-          <h4 class="mt-3">
-            <a class="nav-link active d-inline" aria-current="page" href="{% url 'image'%}"> Ajouter Image</a>
-            <i class="fa fa-plus-circle d-inline" aria-hidden="true"></i>
-          </h4>
         <div class="row justify-content g-5 mt-2">
             {% for imagerel in infosimage %}
             <div class="col-sm-3 mb-1">
@@ -87,12 +83,15 @@
                         <!-- Affichage des informations -->
                         <h5 class="card-title">{{ imagerel.idtenu.modele }}</h5>
                         <p class="card-text">
+                            <strong>ID Image :</strong> {{ imagerel.idmg }}<br>
                             <strong>ID Tenue :</strong> {{ imagerel.idtenu.idtenu }}<br>
                             <strong>Prix Unitaire :</strong> {{ imagerel.idtenu.prix }}<br>
                             <strong>Client :</strong> {{ imagerel.idtenu.idcom.idclient }}<br>
                             <strong>ID Commande :</strong> {{ imagerel.idtenu.idcom.idcom }}
                         </p>
-                      
+                        <a href="{% url 'modifierImage' imagerel.idmg %}" class="btn btn-success d-inline " type="submit">Modifier</a>
+                        <a href="{% url 'suppImage' imagerel.idmg %}" class="btn btn-danger d-inline " type="submit">Supprimer</a>
+                        
                     </div>
                 </div>
             </div>

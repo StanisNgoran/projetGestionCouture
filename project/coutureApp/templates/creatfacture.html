@@ -87,22 +87,21 @@
               <table class="table table-striped mt-3">
                 <thead class="sticky-header">
                   <tr>
-                    <th scope="col">ID Commande</th>
-                    <th scope="col">ID Client</th>
+                   
                     <th scope="col">Nom Client</th>
+                    <th scope="col">ID commande</th>
+                    <th scope="col">Date Commande</th>
                     <th scope="col">Montant Total</th>
-                    <th scope="col">Nombre de Tenues</th>
                     <th scope="col">Générez Facture</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for command in commande_nonfacturee %}
                     <tr>
-                      <td>{{ command.idcom }}</td>
-                      <td>{{ command.idclient.idclient }}</td>
-                      <td>{{ command.idclient.nom}}</td>
+                      <td>{{ command.idclient.nom}} {{ command.idclient.prenom}}</td>
+                      <td>{{ command.idcom}}</td>
+                      <td>{{ command.creation}}</td>
                       <td>{{ command.montantcom }}</td>
-                      <td>{{ command.nombre_tenue }}</td>
                       <td>
                         <a href="{% url 'editefacture' command.idcom %}">
                           <button type="submit" class="btn btn-info">Créer Facture</button>
@@ -111,7 +110,7 @@
                     </tr>
                   {% empty %}
                     <tr>
-                      <td colspan="5" class="text-center">Aucune Commande.</td>
+                      <td colspan="5" class="text-center">Aucune Commande non Facturée.</td>
                     </tr>
                   {% endfor %}
                 </tbody>
