@@ -25,6 +25,10 @@ class Client(models.Model):
     def __str__(self):
         return f"{self.nom} {self.prenom}"
     
+    class Meta:
+        verbose_name = "Client"
+        verbose_name_plural = "Clients"
+    
     
 
 
@@ -44,7 +48,7 @@ class Commande(models.Model):
     montantcom=models.IntegerField(default=0)
     statut=models.CharField(default="En Cours", max_length=51)
     creation = models.DateTimeField(auto_now_add=True)
-
+    dateretrait=models.DateTimeField(default=timezone.now)
     def __str__(self):
         return f"Commande {self.idcom}"
     
@@ -168,4 +172,3 @@ class ImageModele(models.Model):
 
     def __str__(self):
         return self.libelle
-

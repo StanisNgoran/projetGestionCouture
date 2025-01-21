@@ -27,8 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_URL = '/login/'  # URL vers laquelle les utilisateurs non connectés seront redirigés
-  # URL par défaut après la connexion réussie
+# Rediriger après connexion réussie
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'  # Remplace 'home' par la page d'accueil de ton choix
+LOGOUT_REDIRECT_URL = 'login'  # Rediriger vers la page de connexion après déconnexion
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,6 +52,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+ 
+
 
 ROOT_URLCONF = 'devApp.urls'
 

@@ -5,10 +5,12 @@ from.models import Commande
 from.models import Tenue
 from.models import ImageModele,Facture
 from django.contrib import messages
-from datetime import datetime,timezone
 from django.shortcuts import render
 from django.db.models import Count
 from django.db.models.functions import TruncWeek
+from django.contrib.auth import login,authenticate,logout
+from django.contrib.auth.decorators import login_required
+from .forms import CustomUserCreationForm
 
 
 
@@ -16,6 +18,48 @@ from django.db.models.functions import TruncWeek
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS PRESENTES DANS HOME(MENUE PRINCIPAL) 
 # ____________________________________________________________________________________
 
+
+def register(request):
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Connexion automatique après inscription
+            messages.success(request, "Inscription réussie ! Bienvenue.")
+            return redirect('home')
+        else:
+            messages.error(request, "Erreur dans le formulaire.")
+    else:
+        form = CustomUserCreationForm()
+
+    return render(request, 'register.html', {'form': form})
+
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            messages.success(request, "Connexion réussie !")
+            return redirect('home')
+        else:
+            messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
+
+    return render(request, 'login.html')
+
+
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "Vous avez été déconnecté.")
+    return redirect('login')
+
+
+
+
+@login_required
 def home(request):
 
     # Permet d'afficher toutes les commandes dans un tableau
@@ -30,7 +74,11 @@ def home(request):
 # ____________________________________________________________________________________
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS A EFFECTUER SUR LES CLIENTS 
 # ____________________________________________________________________________________
-# Creation du client 
+# Creation du client
+
+
+
+@login_required
 def Ajouter_client(request):
     if request.method == 'POST':
         nom = request.POST['nom'].upper()
@@ -62,7 +110,9 @@ def Ajouter_client(request):
 
 
 
-# Affiche la liste des clients  
+# Affiche la liste des clients 
+
+@login_required
 def clientlist(request):
     clients=Client.objects.all().order_by('-ajout')
     return render(request,'clientlist.html',{'clients':clients})
@@ -71,6 +121,8 @@ def clientlist(request):
 
 
 # Permet de modifier un client 
+
+@login_required
 def modifier_client(request,idclient):
     # Récupère le client à modifier
     client_a_modifier = get_object_or_404(Client, idclient=idclient)
@@ -90,7 +142,9 @@ def modifier_client(request,idclient):
 
 
 
-# permet de supprimer un client 
+# permet de supprimer un client
+ 
+@login_required
 def supprimer_client(request,idclient):
     client_a_supprimer = get_object_or_404(Client, idclient=idclient)
     # Supprime le client
@@ -111,16 +165,18 @@ def supprimer_client(request,idclient):
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS A EFFECTUER SUR LES COMMANDES 
 # ____________________________________________________________________________________
 
-# Permet d'afficher la liste des commandes à modifier
+# affiche les commandes en cours
+
+@login_required
 def commandlist(request):
-    commandes=Commande.objects.all().order_by('-creation')
-    for commande in commandes:
-        commande.nombre_tenue=commande.calculer_NombreTenue()
+    commandes=Commande.objects.filter(statut="En Cours").order_by("-creation").all()
     return render(request,'commandlist.html',{'commandes':commandes})
 
 
 
-# Enregistrement de la commande d'un client donné 
+# Enregistrement de la commande d'un client donné
+
+@login_required
 def SaveCommande(request,idclient):
     client_commandeur = get_object_or_404(Client, idclient=idclient)
     if request.method == "POST":
@@ -154,12 +210,13 @@ def SaveCommande(request,idclient):
 
 
 # Permet de modifier une commande
+
+@login_required
 def modifier_commande(request,idcom):
     commande_a_modifier= get_object_or_404(Commande,idcom=idcom)
     if request.method=='POST':
         commande_a_modifier.debutcom=request.POST.get('debutcom',commande_a_modifier.debutcom)
         commande_a_modifier.fincom=request.POST.get('fincom',commande_a_modifier.fincom)
-        commande_a_modifier.statut=request.POST.get('statut',commande_a_modifier.statut)
         
         if commande_a_modifier.debutcom=="":
             messages.error(request, "Veuillez selectionner la date du debut.")
@@ -181,6 +238,8 @@ def modifier_commande(request,idcom):
 
 
 
+
+@login_required
 def infosCommande(request,idcom):
     commande=get_object_or_404(Commande,idcom=idcom)
     tenue_commandee=commande.tenue_set.all()
@@ -193,7 +252,43 @@ def infosCommande(request,idcom):
 
     return render(request,"infosCommande.html",{'details':details,'commande':commande})
 
+
+
+@login_required
+def Historique_de_commande(request):
+    historique=Commande.objects.filter(statut="Livrée").all()
+    return render(request,"historiqueCommande.html",{"historique":historique})
+
+
+@login_required
+def Liste_de_retrait(request):
+    commandes=Commande.objects.filter(statut="En Cours").order_by("-creation").all()
+    return render(request,'retraitCommande.html',{'commandes':commandes})
+
+
+
+@login_required
+def Action_Retrait(request,idcom):
+    commande_a_retirer=get_object_or_404(Commande,idcom=idcom)
+    if request.method=="POST":
+        commande_a_retirer.statut=request.POST.get("statut")
+        commande_a_retirer.dateretrait=request.POST.get("dateretrait")
+
+        if commande_a_retirer.statut=="":
+            messages.error(request,"Veuillez le statut de la commande!")
+            return redirect('actionRetrait',idcom=idcom)
+        elif commande_a_retirer.dateretrait=="":
+            messages.error(request,"Entrez la date de retrait!")
+            return redirect('actionRetrait',idcom=idcom)
+        else:
+            commande_a_retirer.save()
+            messages.success(request,"Retrait Effectuée avec succes!")
+            return redirect('HistoriqueCommande')
+    return render(request,"actionRetrait.html",{'commande_a_retirer':commande_a_retirer})
+
+
 # Permet de supprimer une commande
+@login_required
 def supprimer_commande(request,idcom):
     commande=get_object_or_404(Commande,idcom=idcom)
     commande.delete()
@@ -210,14 +305,22 @@ def supprimer_commande(request,idcom):
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS A EFFECTUER SUR LES TENUES 
 # ____________________________________________________________________________________
 
+@login_required
+def Historique_Tenue(request):
+    tenue_retiree = Tenue.objects.filter(idcom__statut='Livrée')
+    return render(request,'historiqueTenue.html',{'tenues':tenue_retiree})
+
+
 
 # Permet d'afficher la liste des tenues
+@login_required
 def listeTenue(request):
-    tenues=Tenue.objects.all().order_by("-ajout")
-    return render(request,'listeTenue.html',{'tenues':tenues})
+    tenues_encours=Tenue.objects.filter(idcom__statut='En Cours').order_by('-ajout')
+    return render(request,'listeTenue.html',{'tenues':tenues_encours})
 
 
 # Permet de modifier une tenue 
+@login_required
 def modifier_tenue(request,idtenu):
     tenue=get_object_or_404(Tenue,idtenu=idtenu)
     if request.method=="POST":
@@ -249,6 +352,7 @@ def modifier_tenue(request,idtenu):
 
 
 # Permet de supprimer une tenue dans une commande 
+@login_required
 def supprimer_tenue(request,idtenu):
     tenue=get_object_or_404(Tenue,pk=idtenu)
     tenue.delete()
@@ -258,6 +362,7 @@ def supprimer_tenue(request,idtenu):
 
 
 # Permet d'enregistrer une tenue dans la commande
+@login_required
 def tenue(request,idcom):
     commande_instance=get_object_or_404(Commande,idcom=idcom)
     if request.method == "POST":
@@ -330,7 +435,7 @@ def tenue(request,idcom):
 # __________________________________________________________________________________________
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS A EFFECTUER SUR LES IMAGES DES TENUES 
 # __________________________________________________________________________________________
-
+@login_required
 def modifier_image(request,idmg):
     image_a_modifier=get_object_or_404(ImageModele,idmg=idmg)
     if request.method=="POST":
@@ -346,7 +451,7 @@ def modifier_image(request,idmg):
     image_a_afficher=ImageModele.objects.all()
     return render(request, 'modifierImage.html', {'image_a_modifier':image_a_modifier,'image_a_afficher':image_a_afficher})
 
-
+@login_required
 def supprimer_image(request,idmg):
     image_supp=get_object_or_404(ImageModele,idmg=idmg)
     image_supp.delete()
@@ -356,6 +461,7 @@ def supprimer_image(request,idmg):
 
 
 # Permet d'ajouter une image  à la tenue dans la commande
+@login_required
 def image(request,idtenu):
 
     tenue_instance = get_object_or_404(Tenue, idtenu=idtenu)
@@ -377,6 +483,8 @@ def image(request,idtenu):
     return render(request, 'image.html', {'tenue_instance': tenue_instance,'image_tenue':image_tenue})
 
 
+
+@login_required
 def infostenue(request,idtenu):
     tenue_instance=get_object_or_404(Tenue,idtenu=idtenu)
     details={
@@ -392,7 +500,7 @@ def infostenue(request,idtenu):
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS A EFFECTUER SUR LES FACTURES
 # __________________________________________________________________________________________
 
-
+@login_required
 def facture(request):
     commandes = Commande.objects.all().order_by('idcom')
     for commande in commandes :
@@ -406,19 +514,19 @@ def facture(request):
     return render(request, 'facture.html', {'commandes': commandes, 'clients': clients,'facture':facture})
 
 
+
+@login_required
 def createfacture(request):
-    commandes = Commande.objects.all().order_by('-idcom')
+    commandes = Commande.objects.all()
     for commande in commandes :
         commande.nombre_tenue=commande.calculer_NombreTenue()
 
- 
-    clients = Client.objects.all().order_by('idclient')
-    commande_nonfacturee=Commande.objects.filter(facture=None)
+    commande_nonfacturee=Commande.objects.filter(facture=None).order_by('-creation')
     # Retourne les commandes et clients dans le contexte du template
-    return render(request, 'creatfacture.html', {'commande_nonfacturee': commande_nonfacturee, 'clients': clients})
+    return render(request, 'creatfacture.html', {'commande_nonfacturee': commande_nonfacturee})
 
 
-
+@login_required
 def supprimer_facture(request,idfacture):
     factureasupprimer=get_object_or_404(Facture,pk=idfacture)
     factureasupprimer.delete()
@@ -426,7 +534,7 @@ def supprimer_facture(request,idfacture):
     return redirect('facture')
 
 
-
+@login_required
 def editefacture(request, idcom):
     commande = get_object_or_404(Commande, pk=idcom)
     cle_client = commande.idclient  # Récupération du client lié à la commande
@@ -454,7 +562,7 @@ def editefacture(request, idcom):
     return render(request, 'editefacture.html', {'commande': commande, 'client': cle_client})
 
 
-
+@login_required
 def modifier_facture(request,idfacture):
     facture=Facture.objects.select_related('idcom').get(idfacture=idfacture)
     if request.method == "POST":
@@ -478,7 +586,7 @@ def modifier_facture(request,idfacture):
 
 
 
-
+@login_required
 def Aff_Facture(request,idfacture):
     # Récupérer la facture avec ses détails
     facture = get_object_or_404(Facture, idfacture=idfacture)
@@ -504,7 +612,7 @@ def Aff_Facture(request,idfacture):
 # __________________________________________________________________________________________
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES OPERATIONS A EFFECTUER SUR LES ALBUMS 
 # __________________________________________________________________________________________
-
+@login_required
 def album(request):
     #Toutes les qui sont associées à des images
     infosimage=ImageModele.objects.select_related("idtenu").order_by('-ajout')
@@ -520,7 +628,7 @@ def album(request):
 # __________________________________________________________________________________________
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES STATISTIQUES
 # __________________________________________________________________________________________
-
+@login_required
 def statistique(request):
 
      # Récupérer les clients ajoutés par semaine

@@ -1,137 +1,144 @@
-{% load static%}
+{%load static%}
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facturation</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css'%}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/style_Facture.css' %}">
+    <link href="{% static 'bootstrap/css/accueil.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 
-    <title>Facture</title>
-</head>
-<body>
-  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <nav class="navbar navbar-expand-lg bg-primary">
-        <div class="container-fluid">
-          <a class="navbar-brand text-light" href="#">StaneApp</a>
-        </div>
-    </nav>
-    <nav class="navbar navbar-expand-lg bg-body-secondary">
-        <div class="container-fluid">
-          <a class="navbar-brand text-dark" href="{% url 'home'%}">MENU PRINCIPAL</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client
-                  <i class="fa fa-users" aria-hidden="true"></i>
-                </a>
+  </head>
+    
+  <body>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column" style="background-color: #E4E4E4;">
+      <h5 class="text-center py-3 border-bottom " style="background-color: #0594D0;">Menu</h5>
+      <a href="#dashboard"><i class="fa fa-home"></i>Accueil</a>
+      <a href="#dashboard"><i class="fa fa-dashboard"></i>Tableau de Bord</a>
+      <a href="#dashboard"><i class="fa fa-users"></i>Utilisateurs</a>
+      <a href="#logout" class="mt-auto"> <i class="fa fa-sign-out"></i>Déconnexion</a>
+    </div>
 
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande
-                  <i class="fa fa-id-card" aria-hidden="true"></i>
-                </a>
-              </li>
+    
+    <!-- Contenue Principale -->
+    <div class="content">
 
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture
-                  <i class="fa fa-file-text" aria-hidden="true"></i>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues
-                  <i class="fa fa-child" aria-hidden="true"></i>
-                </a>
-              </li>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light  border-bottom" style="background-color:#0594D0">
+          <div class="container-fluid">
+            <a class="navbar-brand text-light" href="#">Master</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ms-2">
+                <li class="nav-item">
+                  <!-- <a class="nav-link" href="#client">Agents</a> -->
+                  <a class="nav-link text-light" href="{% url 'clientlist'%}"><i class="fa fa-users"></i> Client</a>
 
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album
-                  <i class="fa fa-folder" aria-hidden="true"></i>
-                </a>
-              </li>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-light" href="{% url 'commandlist'%}"><i class="fa fa-id-card"></i> Commande</a>
+                </li>
 
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques
-                  <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                </a>
-              </li>
-              
-            </ul>
+                <li class="nav-item">
+                  <a class="nav-link text-light" href="{% url 'listeTenue'%}"><i class="fa fa-child"></i> Tenues</a>
+                </li>
 
-             <!-- Affichage du message d'erreur -->
-             {% include 'message.html'%}
+  
+                <li class="nav-item">
+                  <a class="nav-link  text-light" href="{% url 'album'%}"><i class="fa fa-folder"></i> Album</a>
+                </li>
 
-             <!-- Du javaScript pour creer de l'animation -->
-             <script src="{% static 'bootstrap/js/message.js'%}">  </script>
-             
-               <!-- ms-auto permet de mettre un bloc d'element à l'extreme droit  -->
-            
-          </div>
-        </div>
-      </nav>
-      <!-- Liste des Clients et des éléments -->
-      <div class="container mt-2">
-        <h2 class="text-center mb-3">Gestion de la Facturation</h2>
-        <form class="d-flex ms-auto" role="search">
-          <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
-          <button class="btn btn-warning" type="submit">Recherche</button>
-        </form>
-      
-          <h4 class="mt-3">
-            <a class="nav-link active d-inline" aria-current="page" href="{% url 'createfacture'%}"> Ajouter Facture</a>
-            <i class="fa fa-plus-circle d-inline" aria-hidden="true"></i>
-          </h4>
-        
+                <li class="nav-item">
+                  <a class="nav-link  text-light" href="{% url 'facture'%}"><i class="fa fa-paper"></i> Facture</a>
+                </li>
 
-            <h3 class="text-center">Commande Facturée</h3>
-            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
-              <table class="table table-striped mt-3">
-                <thead class="sticky-header">
-                  <tr>
-                    <th scope="col">Nom Client</th>
-                    <th scope="col">N°Facture</th>
-                    <th scope="col">Montant Total</th>
-                    <th scope="col">Date Facture</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for facture in facture %}
-                    <tr>
-                      <td>{{ facture.idclient.nom }} {{ facture.idclient.prenom }}</td>
-                      <td>{{ facture.idfacture }}</td>
-                      <td>{{ facture.idcom.montantcom }}</td>
-                      <td>{{ facture.date_facture }}</td>
-                      <td>
-                        <a href="{% url 'Aff_Facture' facture.idfacture %}">
-                          <button type="submit" class="btn btn-info">Voir Details</button>
-                        </a>
-                      </td>
-
-                      <td>
-                        <a href="{% url 'modifierFacture' facture.idfacture %}">
-                          <button type="submit" class="btn btn-success">Modifier</button>
-                        </a>
-                      </td>
-
-                      <td>
-                        <a href="{% url 'supprimer_facture' facture.idfacture %}">
-                          <button type="submit" class="btn btn-danger">Supprimer</button>
-                        </a>
-                      </td>
-                    </tr>
-                  {% empty %}
-                    <tr>
-                      <td colspan="5" class="text-center">Aucune Commande Facturée.</td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+                <li class="nav-item">
+                  <a class="nav-link text-light" href="{% url 'statistique'%}"><i class="fa fa-bar-chart"></i> Statistiques</a>
+                </li>
+              </ul>
             </div>
-      </div>
-</body>
+          </div>
+        </nav>
+        <!-- Fin de la barre de navigation -->
+
+        <div class="container-fluid mt-3" style="border: none;">
+          <h2 class="">Commande Facturée</h2>
+          <p>Ici vous trouverez toutes les commandes qui ont été facturées.</p>
+        </div>
+
+
+        {%csrf_token%}
+        <div class="container mt-2" style="border-radius: 0%;">
+              
+              <form class="d-flex ms-auto" role="search">
+                <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+                <button class="btn btn-warning" type="submit">Recherche</button>
+              </form>
+            
+                <h4 class="mt-3">
+                  <a class="nav-link active d-inline" aria-current="page" href="{% url 'createfacture'%}"> Ajouter Facture</a>
+                  <i class="fa fa-plus-circle d-inline" aria-hidden="true"></i>
+                </h4>
+                  <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                    <table class="table table-striped mt-3">
+                      <thead class="sticky-header">
+                        <tr>
+                          <th scope="col">Nom Client</th>
+                          <th scope="col">N°Facture</th>
+                          <th scope="col">Montant Total</th>
+                          <th scope="col">Date Facture</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for facture in facture %}
+                          <tr>
+                            <td>{{ facture.idclient.nom }} {{ facture.idclient.prenom }}</td>
+                            <td>{{ facture.idfacture }}</td>
+                            <td>{{ facture.idcom.montantcom }}</td>
+                            <td>{{ facture.date_facture }}</td>
+                            <td>
+                              <a href="{% url 'Aff_Facture' facture.idfacture %}">
+                                <button type="submit" class="btn btn-info"><i class="fa fa-newspaper"></i> Details</button>
+                              </a>
+                            </td>
+      
+                            <td>
+                              <a href="{% url 'modifierFacture' facture.idfacture %}">
+                                <button type="submit" class="btn btn-success"><i class="fa fa-pencil"></i>Modifier</button>
+                              </a>
+                            </td>
+      
+                            <td>
+                              <a href="{% url 'supprimer_facture' facture.idfacture %}">
+                                <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i>Supprimer</button>
+                              </a>
+                            </td>
+                          </tr>
+                        {% empty %}
+                          <tr>
+                            <td colspan="5" class="text-center">Aucune Commande Facturée.</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+            </div>
+
+      
+      <!-- Fin contenue de la page -->
+
+
+    
+    </div>
+    <!-- Fin Contenue Principale -->
+
+  </body>
 </html>

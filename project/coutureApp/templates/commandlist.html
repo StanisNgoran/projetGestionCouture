@@ -1,145 +1,167 @@
 
-{% load static %}
+
+{%load static%}
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <title>Liste de Commande</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/style_Facture.css' %}">
+    <link href="{% static 'bootstrap/css/accueil.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 
-    <title>Liste Commande</title>
-</head>
-<body>
-    <!-- <script src="bootstrap/js/bootstrap.bundle.min.js"></script> -->
-    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
-    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <nav class="navbar navbar-expand-lg bg-primary">
-        <div class="container-fluid">
-          <a class="navbar-brand text-light" href="#">StaneApp</a>
-        </div>
-    </nav>
-    <nav class="navbar navbar-expand-lg bg-body-secondary">
-        <div class="container-fluid">
-          <a class="navbar-brand text-dark" href="{% url 'home'%}">MENU PRINCIPAL</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'clientlist'%}">Client
-                  <i class="fa fa-users" aria-hidden="true"></i>
-                </a>
-
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'commandlist'%}">Commande
-                  <i class="fa fa-id-card" aria-hidden="true"></i>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'facture'%}">Facture
-                  <i class="fa fa-file-text" aria-hidden="true"></i>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'listeTenue'%}">Tenues
-                  <i class="fa fa-child" aria-hidden="true"></i>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'album'%}">Album
-                  <i class="fa fa-folder" aria-hidden="true"></i>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'statistique'%}">Statistiques
-                  <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                </a>
-              </li>
-            </ul>
-
-            <!-- affiche de message  -->
-            {% include 'message.html'%}
-            <!-- Du javaScript pour creer de l'animation -->
-            <script src="{% static 'bootstrap/js/message.js'%}">  </script>
-          </div>
-        </div>
-      </nav>
-
-      <!-- Liste des Clients et des éléments -->
-<div class="container mt-4">
-  <form class="d-flex ms-auto" role="search">
-    <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
-    <button class="btn btn-warning" type="submit">Recherche</button>
-  </form>
-
-
-  <h2 class="text-center">Liste Commandes</h2>
-  <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
-    <table class="table table-striped mt-3">
-      <thead class="sticky-header">
-        <tr>
-          
-          <th scope="col">Nom Client</th>
-          <th scope="col">Date Depot</th>
-          <th scope="col">Date Retrait</th>
-          <th scope="col">Date d'Ajout</th>
-          <th scope="col">Voir Details</th>
-          <th scope="col">Ajouter Tenue</th>
-          <th scope="col">Modifier</th>
-          <th scope="col">Supprimer</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for command in commandes %}
-          <tr>
-            <td>{{ command.idclient.nom }} {{ command.idclient.prenom }} </td>
-            <td>{{ command.debutcom }}</td>
-            <td>{{ command.fincom }}</td>
-
-            <td>{{ command.creation|date:"d/m/Y" }}</td>
-            <td>
-              <a href="{% url 'infosCommande' command.idcom %}">
-                <button type="submit" class="btn btn-info"> Voir Details</button> <!-- Icône de modification -->
-                
-              </a>
-            </td>
-            <td>
-              <a href="{% url 'tenue' command.idcom %}">
-                <button type="submit" class="btn btn-success"> Ajouter Tenue</button> <!-- Icône de modification -->
-                
-              </a>
-            </td>
-            <td>
-              <a href="{% url 'modifier_commande' command.idcom %}">
-                <button type="submit" class="btn btn-warning"> Modifier la Commande</button> <!-- Icône de modification -->
-                
-              </a>
-            </td>
-            <td>
-              <a href="{% url 'supprimer_commande' command.idcom %}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce cette commande ?');">
-                <button type="submit" class="btn btn-danger"> Supprimer Commande</button> <!-- Icône de modification -->
-
-              </a>
-            </td>
-            
-          </tr>
-        {% empty %}
-          <tr>
-            <td colspan="7" class="text-center">Aucune Commande.</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
+  </head>
+    
+  <body>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column" style="background-color: #E4E4E4;">
+      <h5 class="text-center py-3 border-bottom " style="background-color: #0594D0;">Menu</h5>
+      <a href="#dashboard"><i class="fa fa-home"></i>Accueil</a>
+      <a href="#dashboard"><i class="fa fa-dashboard"></i>Tableau de Bord</a>
+      <a href="#dashboard"><i class="fa fa-users"></i>Utilisateurs</a>
+      <a href="#logout" class="mt-auto"> <i class="fa fa-sign-out"></i>Déconnexion</a>
+    </div>
 
     
-</body>
+    <!-- Contenue Principale -->
+    <div class="content">
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light  border-bottom" style="background-color:#0594D0">
+          <div class="container-fluid">
+            <a class="navbar-brand text-light" href="#">Master</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ms-2">
+                <li class="nav-item">
+                  <!-- <a class="nav-link" href="#client">Agents</a> -->
+                  <a class="nav-link text-light" href="{% url 'clientlist'%}"><i class="fa fa-users"></i> Client</a>
+
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-light" href="{% url 'commandlist'%}"><i class="fa fa-id-card"></i> Commande</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link text-light" href="{% url 'listeTenue'%}"><i class="fa fa-child"></i> Tenues</a>
+                </li>
+
+  
+                <li class="nav-item">
+                  <a class="nav-link  text-light" href="{% url 'album'%}"><i class="fa fa-folder"></i> Album</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link  text-light" href="{% url 'facture'%}"><i class="fa fa-paper"></i> Facture</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link text-light" href="{% url 'statistique'%}"><i class="fa fa-bar-chart"></i> Statistiques</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <!-- Fin de la barre de navigation -->
+
+
+       <!-- entete -->
+      <div class="container-fluid mt-3" style="border: none;">
+        <h2>Commandes en Cours de Conception</h2>
+        <p>Vous verrez ici les commandes qui n'ont pas encore été retirées ou Livrées.</p>
+      </div>
+
+      <!-- Contenue de la page -->
+      <div class="container mt-4" style="border-radius: 0%;">
+        <div class="container-fluid mt-4" style="border-radius: 0%;">
+          <form class="d-flex ms-auto mb-3" role="search">
+            <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+            <button class="btn btn-warning" type="submit">Recherche</button>
+          </form>
+          <h4 class="mt-3 d-inline me-4">
+            <a class="nav-link active d-inline" aria-current="page" href="{% url 'retraitCommande'%}">Retrait</a>
+            <i class="fa fa-bookmark" aria-hidden="true"></i>
+          </h4>
+
+          <h4 class="mt-3 d-inline">
+            <a class="nav-link active d-inline" aria-current="page" href="{% url 'HistoriqueCommande'%}">Historiques</a>
+            <i class="fa fa-address-book" aria-hidden="true"></i>
+          </h4>
+
+          
+          <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
+            <table class="table table-striped mt-3">
+              <thead class="sticky-header">
+                <tr>
+                  
+                  <th scope="col">Nom Client</th>
+                  <th scope="col">Date Depot</th>
+                  <th scope="col">Rendez Vous</th>
+                  <th scope="col">Crée le</th>
+                  <th scope="col">Voir Details</th>
+                  <th scope="col">Ajouter Tenue</th>
+                  <th scope="col">Modifier</th>
+                  <th scope="col">Supprimer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for command in commandes %}
+                  <tr>
+                    <td>{{ command.idclient.nom }} {{ command.idclient.prenom }} </td>
+                    <td>{{ command.debutcom }}</td>
+                    <td>{{ command.fincom }}</td>
+
+                    <td>{{ command.creation|date:"d/m/Y" }}</td>
+                    <td>
+                      <a href="{% url 'infosCommande' command.idcom %}">
+                        <button type="submit" class="btn btn-info"> Voir Details <i class="fa fa-newspaper"></i></button> <!-- Icône de modification -->
+                        
+                      </a>
+                    </td>
+                    <td>
+                      <a href="{% url 'tenue' command.idcom %}">
+                        <button type="submit" class="btn btn-success"> Ajouter Tenue <i class="fa fa-plus"></i></button> <!-- Icône de modification -->
+                        
+                      </a>
+                    </td>
+                    <td>
+                      <a href="{% url 'modifier_commande' command.idcom %}">
+                        <button type="submit" class="btn btn-warning"> Modifier la Commande<i class="fa fa-pencil"></i></button> <!-- Icône de modification -->
+                        
+                      </a>
+                    </td>
+                    <td>
+                      <a href="{% url 'supprimer_commande' command.idcom %}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce cette commande ?');">
+                        <button type="submit" class="btn btn-danger"> Supprimer Commande <i class="fa fa-trash"></i></button> <!-- Icône de modification -->
+
+                      </a>
+                    </td>
+                    
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="7" class="text-center">Aucune Commande.</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+              
+      </div>
+      <!-- Fin contenue de la page -->
+
+
+    
+    </div>
+    <!-- Fin Contenue Principale -->
+
+  </body>
 </html>

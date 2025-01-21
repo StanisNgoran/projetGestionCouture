@@ -1,0 +1,122 @@
+
+{%load static%}
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retrait de tenue</title>
+    <link href="{% static 'bootstrap/css/accueil.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
+  </head>
+  <body>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column" style="background-color: #E4E4E4;">
+      <h5 class="text-center py-3 border-bottom " style="background-color: #0594D0;">Menu</h5>
+      <a href="#dashboard"><i class="fa fa-home"></i>Accueil</a>
+      <a href="#dashboard"><i class="fa fa-dashboard"></i>Tableau de Bord</a>
+      <a href="#dashboard"><i class="fa fa-users"></i>Utilisateurs</a>
+      <a href="#logout" class="mt-auto"> <i class="fa fa-sign-out"></i>Déconnexion</a>
+    </div>
+
+    
+    <!-- Contenue Principale -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light  border-bottom" style="background-color:#0594D0">
+          <div class="container-fluid">
+            <a class="navbar-brand text-light" href="#">Master</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ms-2">
+                <li class="nav-item">
+                  <!-- <a class="nav-link" href="#client">Agents</a> -->
+                  <a class="nav-link text-light" href="{% url 'clientlist'%}"><i class="fa fa-users"></i> Client</a>
+
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-light" href="{% url 'commandlist'%}"><i class="fa fa-id-card"></i> Commande</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link text-light" href="{% url 'listeTenue'%}"><i class="fa fa-child"></i> Tenues</a>
+                </li>
+
+  
+                <li class="nav-item">
+                  <a class="nav-link  text-light" href="{% url 'album'%}"><i class="fa fa-folder"></i> Album</a>
+                </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link  text-light" href="{% url 'facture'%}"><i class="fa fa-paper"></i> Facture</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link text-light" href="{% url 'statistique'%}"><i class="fa fa-bar-chart"></i> Statistiques</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <!-- Fin de la barre de navigation -->
+
+      
+       <!-- entete -->
+        <div class="container-fluid mt-3" style="border: none;">
+          <h2 class=""> Effectuez un Retrait de Commande</h2>
+          <p>Faire le retrait en toute simplicité.</p>
+        </div>
+
+        {%csrf_token%}
+
+        <!-- Contenue de la page -->
+      <div class="container mt-4" style="border-radius: 0%;">
+          <form action="{% url 'actionRetrait' commande_a_retirer.idcom %}" method="post">
+              <div class="container-fluid d-flex flex-column align-items-center"> 
+                  <div class="mb-3 w-50">
+                      <label for="exampleFormControlInput1" class="form-label">Nom client</label>
+                      <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande_a_retirer.idclient.nom }} {{ commande_a_retirer.idclient.prenom }}" disabled>
+                  </div>
+        
+                  <div class="mb-3 w-50">
+                      <label for="exampleFormControlInput1" class="form-label">Montant commande</label>
+                      <input type="text" class="form-control" name="montantcom" id="exampleFormControlInput1" value="{{ commande_a_retirer.montantcom }}" disabled>
+                  </div>
+        
+        
+                  <div class="mb-3 w-50">
+                      <label for="dateInput" class="form-label">Date retrait</label>
+                      <input type="date" class="form-control" id="dateInput" name="dateretrait">
+                  </div>
+        
+                  <div class="mb-3 w-50">
+                    <label for="exampleCombobox" class="form-label">Statut Commande</label>
+                      <select class="form-select" id="exampleCombobox" name="statut">
+                        <option value="" selected disabled>-- Sélectionner Statut --</option>
+                                <!-- <option value="En Attente">En Cours </option> -->
+                        <option value="Livrée">Livrée </option>  
+                      </select>
+                  </div>
+          
+                  
+                  <div class="mb-3 w-50 mt-2">
+                    <button type="submit" class="btn btn-primary w-100" style="background-color: #0594D0;">Effectuer</button>
+                  </div>
+                </div>
+            </form>
+        </div>
+        <!-- Fin contenue de la page -->
+
+    </div>
+    <!-- Fin Contenue Principale -->
+
+  </body>
+</html>
+
+   
+    

@@ -8,61 +8,59 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
-
-
-    <title>Creation de Compte</title>
+    <title>Inscription</title>
 </head>
     <body>
         <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-            <nav class="navbar navbar-expand-lg bg-primary">
-                <div class="container-fluid">
-                <a class="navbar-brand text-light" href="#">StaneApp</a>
-                </div>
-            </nav>
 
-            <body class="bg-light">
-                <div class="container d-flex justify-content-center align-items-center vh-100">
-                    <div class="card shadow-lg p-4" style="width: 400px; border-radius: 10px;">
-                        <h3 class="text-center mb-4">Bienvenue</h3>
-                        <h5 class="text-center mb-4 text-muted">Veuillez Creer un Compte</h5>
-                        
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Nom d'utilisateur</label>
-                                <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Entrez votre nom d'utilisateur" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Email</label>
-                                <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Entrez votre email" required>
-                            </div>
 
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Mot de passe</label>
-                                <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Entrez votre mot de passe" required>
-                            </div>
+        <div class="container mt-3 w-50 mx-auto text-center py-1" style="border: none; background-color: #0594D0;">
+            <h2 class="text-center text-light">Bienvenue sur Clothe</h2>
+            <p class="text-center text-light">Veuillez vous Inscrire</p>
+        </div>
 
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Mot de passe</label>
-                                <input type="password" class="form-control form-control-lg" id="password" name="confirm_password" placeholder="Confirmer mot de passe" required>
-                            </div>
     
-    
-                            <div class="mt-4">
-                                <button type="submit" class="btn btn-primary w-100 btn-lg">S'inscrire</button>
-                            </div>
-                            
-                            <div class="text-center mt-3">
-                                <!-- <span class="text-muted">Se connecter ?</span> -->
-                                <a href="{% url 'login' %}" class="text-decoration-none fw-bold">Se connecter</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-    
-    
-            </body>
+          <!-- input -->
+          <div class="container mt-4" style="border-radius: 0%;">
+                  <form action="" method="post"> 
+                    {% csrf_token %}
+                    <div class="container-fluid d-flex flex-column align-items-center">
+                      
+                      <div class="mb-1 w-50">
+                          <label for="exampleFormControlInput1" class="form-label">Nom Utilisateur</label>
+                          <input type="text" class="form-control" name="username" id="exampleFormControlInput1" placeholder="Jean" style="border-radius: 0%;" required>
+                      </div>
 
+                      <div class="mb-1 w-50">
+                        <label for="exampleFormControlInput1" class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="exampleFormControlInput1" placeholder="jean@gmail.com" style="border-radius: 0%;" required>
+                      </div>
+                  
+                      <div class="mb-1 w-50">
+                          <label for="exampleFormControlInput1" class="form-label">Mot de Passe</label>
+                          <input type="password" class="form-control" name="password1" id="exampleFormControlInput1" style="border-radius: 0%;">
+                      </div>
+                  
+                      <div class="mb-1 w-50">
+                          <label for="exampleFormControlInput1" class="form-label">Confirmation Mot de Passe</label>
+                          <input type="password" class="form-control" name="password2" id="exampleFormControlInput1"style="border-radius: 0%;">
+                      </div>
+    
+                      <!-- Boutons Annuler et Suivant rapprochés -->
+                      <div class="d-flex justify-content-center w-50 mt-2">
+                        <button type="submit" class="btn btn-primary w-100" style="background-color: #0594D0; border-radius: 0%;">S'inscrire</button>
+
+
+                      </div>
+
+                      <div class="d-flex justify-content-center w-50">
+                        <a href="{% url 'login'%}" class="nav-link"> Se Connecter</a>
+                      </div>
+                  </div>
+                </form>
+    
+          </div>
+          <!-- Fin contenue de la page -->
+    
     </body>
 </html>

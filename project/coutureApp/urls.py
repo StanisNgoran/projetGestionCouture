@@ -1,12 +1,25 @@
 # coutureApp/urls.py
 from django.urls import path
 from . import views
-urlpatterns = [
+from .views import register, login_view, logout_view
+from django.contrib.auth.views import LogoutView
 
-    path('', views.home, name='home'),
+
+urlpatterns = [
+ 
+    path('home/', views.home, name='home'),
+
+    path('register/', register, name='register'),
+    path('', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+
     path('client/', views.Ajouter_client, name='client'),  # Utilisation de la vue pour création/affichage
     path('commande/<str:idclient>', views.SaveCommande, name='commande'),
 
+    path('HistoriqueTenue/', views.Historique_Tenue, name='HistoriqueTenue'),
+    path('ActionRetrait/<str:idcom>', views.Action_Retrait, name='actionRetrait'),
+    path('ListeRetraitCommande/', views.Liste_de_retrait, name='retraitCommande'),
+    path('HistoriqueCommande/', views.Historique_de_commande, name='HistoriqueCommande'),
     path('InfosCommande/<str:idcom>', views.infosCommande, name='infosCommande'),
     path('tenue/<str:idcom>', views.tenue, name='tenue'),
     path('InfosTenue/<str:idtenu>', views.infostenue, name='infosTenue'),
