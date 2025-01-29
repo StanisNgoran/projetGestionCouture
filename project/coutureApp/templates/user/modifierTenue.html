@@ -1,0 +1,102 @@
+
+
+{%include 'user/userSidebare.html'%}
+    <!-- Contenue Principale -->
+    <div class="content">
+      {%include 'user/navbar.html'%}
+      {%load static%} 
+
+      <!-- entete -->
+      <div class="container-fluid mt-3" style="border: none;">
+        <h2 class="">Modification de Tenue</h2>
+        <p>Ici vous pouvez modifier les caracteristiques d'une tenue</p>
+      </div>
+      <!-- Contenue de la page -->
+      <div class="container mt-4" style="border-radius: 0%;">
+        {%csrf_token%}
+                    
+                <form  action="{% url 'modifier_tenue' idtenu=tenue.idtenu %}" method="post" >
+
+                  <div class="container-fluid d-flex flex-column align-items-center" style="max-height: 500px; overflow-y: auto;">
+                    {%csrf_token%}
+
+                    <div class="mb-3 w-50">
+                        <label for="exampleFormControlInput1" class="form-label">Nom client</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" name="idclient" value="{{ tenue.idcom.idclient.nom }} {{ tenue.idcom.idclient.prenom }}" disabled>
+                    </div>
+
+                      <div class="mb-3 w-50">
+                        <label for="exampleFormControlInput1" class="form-label">Montant</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" name="montant" value="{{tenue.montant}}" disabled>
+                    </div>
+
+                      <div class="mb-3 w-50">
+                          <label for="exampleFormControlInput1" class="form-label">Prix Unitaire</label>
+                          <input type="text" class="form-control" id="exampleFormControlInput1" name="prix" value="{{tenue.prix}}" >
+                      </div>
+
+
+                      <div class="mb-3 w-50">
+                        <label for="exampleFormControlInput1" class="form-label">Quantité</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" name="qte" value="{{tenue.qte}}" >
+                      </div>
+
+                    <div class="mb-3 w-50">
+                        <label for="exampleFormControlInput1" class="form-label">Avance</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" name="avance" value="{{tenue.avance}}">
+                    </div>
+
+                      <div class="mb-3 w-50">
+                          <label for="exampleFormControlInput1" class="form-label">Reste</label>
+                          <input type="text" class="form-control" id="exampleFormControlInput1" name="reste" value="{{tenue.reste}}" disabled>
+                      </div>
+
+
+                    <div class="mb-3 w-50">
+                      <label for="exampleCombobox" class="form-label">Model:</label>
+                      <select class="form-select" id="exampleCombobox" name="modeltenue">
+                            <option value="" selected disabled>-- Sélectionner un modèle --</option>
+                            <option value="Costume Femme">Costume Femme </option>
+                            <option value="Costume Homme">Costume Homme </option>
+                            <option value="Costume ecole">Costume ecole </option>
+                            <option value="Chemise Manche Longue Pantalon">Chemise Manche Longue+ pantanlon </option>
+                            <option value="Chemise Manche Longue simple">Chemise Manche Longue simple </option>
+                            <option value="Chemise Manche courte Pantalon">Chemise Manche Courte+ pantanlon </option>
+                            <option value="Chemise Manche courte simple">Chemise Manche Courte simple </option>
+                            <option value="Pantalon simple">Pantalon simple </option>
+                            <option value="culotte simple">culotte simple </option>
+                            <option value="Robe compose">Robe Composée </option>
+                            <option value="Robe simple">Robe simple </option>
+                            <option value="Tunique homme">Tunique homme</option>
+                            <option value="Tunique femme">Tunique Femme </option>
+                            <option value="Tunique enfant">Tunique enfant </option>
+                            <option value="Mesticaine">Mesticaine </option>
+                            <option value="Taille Haute">Taille haute </option>
+                            <option value="Jupe simple">Jupe simple </option>
+                            <option value="Jupe haut">Jupe + haut </option>
+                            <option value="Toge">Toge</option>
+                      </select>
+                  </div>
+
+                    <div class="mb-3 w-50">
+                        <label for="exampleFormControlInput1" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" name="description" value="{{tenue.description}}">
+                    </div>
+
+
+                    <!-- Boutons Annuler et Suivant rapprochés -->
+                    <div class="d-flex justify-content-center w-50 mt-2">
+                        <button type="submit" class="btn btn-primary w-100" style="background-color: #0594D0;">Appliquez</button>
+                    </div>
+                </div>
+          </form>
+      </div>
+      <!-- Fin contenue de la page -->
+
+
+    
+    </div>
+    <!-- Fin Contenue Principale -->
+
+  </body>
+</html>

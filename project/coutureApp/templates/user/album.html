@@ -1,0 +1,62 @@
+{%include 'user/userSidebare.html'%}
+    
+    <!-- Contenue Principale -->
+    <div class="content">
+      {%include 'user/navbar.html'%}
+        <!-- Fin de la barre de navigation -->
+
+        {%load static%}
+        <!-- entete -->
+      <div class="container-fluid mt-3" style="border: none;">
+        <h2 class="">Bienvenue dans les Modeles deja Cousures</h2>
+        <p>Ici vous verrez des tops modeles deja cousures par des clients .</p>
+      </div>
+
+      <!-- Contenue de la page -->
+      <div class="container mt-4" style="border-radius: 0%;">
+        <form class="d-flex ms-auto" role="search">
+          <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+          <button class="btn btn-warning" type="submit">Recherche</button>
+        </form>
+      
+        <div class="row justify-content g-5 mt-1">
+            {% for imagerel in infosimage %}
+            <div class="col-sm-4 mb-1">
+                <div class="card" style="width: 20rem;">
+                    <!-- Affichage de l'image -->
+                    <img src="{{ imagerel.photos.url }}" class="card-img-top" alt="Image" style="height: 150px; object-fit: cover;">
+                    <div class="card-body">
+                        <!-- Affichage des informations -->
+                        <h5 class="card-title">{{ imagerel.idtenu.modele }}</h5>
+                        <p class="card-text">
+                            <strong>ID Image :</strong> {{ imagerel.idmg }}<br>
+                            <strong>ID Tenue :</strong> {{ imagerel.idtenu.idtenu }}<br>
+                            <strong>Prix Unitaire :</strong> {{ imagerel.idtenu.prix }}<br>
+                            <strong>Client :</strong> {{ imagerel.idtenu.idcom.idclient }}<br>
+                            <strong>ID Commande :</strong> {{ imagerel.idtenu.idcom.idcom }}
+                        </p>
+                        <a href="{% url 'modifierImage' imagerel.idmg %}" class="btn btn-success d-inline " type="submit"> <i class="fa fa-pencil"></i>Modifier</a>
+                        <a href="{% url 'suppImage' imagerel.idmg %}" class="btn btn-danger d-inline " type="submit"><i class="fa fa-trash"></i>Supprimer</a>
+                        
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+        
+      <!-- Fin contenue de la page -->
+      <!-- </div> -->
+      
+
+
+    
+    </div>
+    <!-- Fin Contenue Principale -->
+
+  </body>
+</html>

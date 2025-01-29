@@ -1,0 +1,84 @@
+    {%include 'user/userSidebare.html'%}
+    
+    <!-- Contenue Principale -->
+    <div class="content">
+        {%include 'user/navbar.html'%}
+           {%load static%}    <!-- Navbar -->
+       
+        <!-- Fin de la barre de navigation -->
+
+        <!-- entete -->
+        <div class="container-fluid mt-3" style="border: none;">
+          <h2 class="">Commande dejà Livrée ou Retirée</h2>
+          <p>Toutes les commandes qui deja été retirée par leurs clients respectifs.</p>
+        </div>
+
+      <!-- Contenue de la page -->
+      <div class="container mt-4" style="border-radius: 0%;">
+        {%csrf_token%}
+        <div class="container-fluid mt-4">
+          <form class="d-flex ms-auto" role="search">
+            <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+            <button class="btn btn-warning" type="submit">Recherche</button>
+          </form>
+      
+          <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
+            <table class="table table-striped mt-3">
+              <thead class="sticky-header">
+                <tr>
+                  
+                  <th scope="col">Nom Client</th>
+                  <th scope="col">Date Depot</th>
+                  <th scope="col">Rendez Vous</th>
+                  <th scope="col">Montant</th>
+                  <th scope="col">Statut</th>
+                  <th scope="col">Date Retrait</th>
+                  <th scope="col">Voir Details</th>
+                  <th scope="col">Supprimer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for command in historique %}
+                  <tr>
+                    <td>{{ command.idclient.nom }} {{ command.idclient.prenom }} </td>
+                    <td>{{ command.debutcom }}</td>
+                    <td>{{ command.fincom }}</td>
+                    <td>{{ command.montantcom }}</td>
+                    <td>{{ command.statut }}</td>
+        
+                    <td>{{ command.dateretrait|date:"d/m/Y" }}</td>
+                    <td>
+                      <a href="{% url 'infosCommande' command.idcom %}">
+                        <button type="submit" class="btn btn-info"> Details <i class="fa fa-newspaper"></i></button> <!-- Icône de modification -->
+                        
+                      </a>
+                    </td>
+                    
+                    <td>
+                      <a href="{% url 'supprimer_commande' command.idcom %}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce cette commande ?');">
+                        <button type="submit" class="btn btn-danger"> Supprimer Commande<i class="fa fa-trash"></i></button> <!-- Icône de modification -->
+        
+                      </a>
+                    </td>
+                    
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="7" class="text-center">Aucune Commande.</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <!-- Fin contenue de la page -->
+
+
+    
+    </div>
+    <!-- Fin Contenue Principale -->
+
+  </body>
+</html>

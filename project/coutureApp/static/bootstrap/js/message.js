@@ -7,6 +7,6 @@ document.addEventListener("DOMContentLoaded", function() {
                       // Cacher le message après 3 secondes
                       setTimeout(() => {
                           messageContainer.style.display = 'none';
-                      }, 5000);  // 3000 ms = 3 secondes
+                      }, 1000);  // 3000 ms = 3 secondes
                   }
               });

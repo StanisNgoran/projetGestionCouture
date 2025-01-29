@@ -1,0 +1,55 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <title>Connexion</title>
+</head>
+    <body>
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+        <div class="container mt-3 w-50 mx-auto text-center py-1" style="border: none; background-color: #0594D0;">
+            <h2 class="text-center text-light">Bienvenue sur Clothe</h2>
+            <p class="text-center text-light">Veuillez vous Connecter à votre Espace</p>
+        </div>
+        {%include 'admin/messages.html'%}
+          <!-- input -->
+          <div class="container mt-4" style="border-radius: 0%;">
+                  <form action="" method="post"> 
+                    {%csrf_token%} 
+                    <div class="container-fluid d-flex flex-column align-items-center">
+                  
+                      <div class="mb-1 w-50">
+                          <label for="exampleFormControlInput1" class="form-label">Nom Utilisateur</label>
+                          <input type="text" class="form-control" name="username" id="exampleFormControlInput1" placeholder="Jean" style="border-radius: 0%;" required>
+                      </div>
+                  
+                      <div class="mb-1 w-50">
+                          <label for="exampleFormControlInput1" class="form-label">Mot de Passe</label>
+                          <input type="password" class="form-control" name="password" id="exampleFormControlInput1" style="border-radius: 0%;" required>
+                      </div>
+    
+                      
+                      <div class="d-flex justify-content-center w-50 mt-2">
+                        <button type="submit" class="btn btn-primary w-100" style="background-color: #0594D0; border-radius: 0%;">Se connecter</button>
+                      </div>
+
+                      <div class="d-flex justify-content-center w-50">
+                        <a href="{% url 'register'%}" class="nav-link"> S'inscrire</a>
+                      </div>
+                  </div>
+                </form>
+    
+          </div>
+       
+
+          <!-- Fin contenue de la page -->
+    
+    </body>
+</html>

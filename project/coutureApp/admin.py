@@ -25,8 +25,9 @@ class ClientAdmin(admin.ModelAdmin):
 
 
 
+
 class CommandeAdmin(admin.ModelAdmin):
-    list_display = ('debutcom', 'fincom', 'montancom','statut','dateretrait','idclient','creation')  # Colonnes affichées dans la liste
+    list_display = ('debutcom', 'fincom')  # Colonnes affichées dans la liste
     list_filter = ('creation',)  # Filtrer par nom
     search_fields = ('nom', 'prenom')  # Ajouter une barre de recherche
     ordering = ('creation',)  # Trier par nom

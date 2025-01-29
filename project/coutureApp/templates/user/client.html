@@ -1,0 +1,57 @@
+{%include 'user/userSidebare.html'%}
+    
+    <!-- Contenue Principale -->
+    <div class="content">
+      {%include 'user/navbar.html'%}
+        
+            {%load static%}    
+            <!-- Fin de la barre de navigation -->
+
+       <!-- entete -->
+      <div class="container-fluid mt-3" style="border: none;">
+        <h2 class="">Ajoutez un nouveau client</h2>
+        <p>Ici vous vous enregistrez les personnes qui n'ont jamais passée de commande pour en faire des clients</p>
+      </div>
+
+    {%include 'admin/messages.html'%}
+      <!-- Contenue de la page -->
+      <div class="container mt-4" style="border-radius: 0%;">
+              <form action="{% url 'client'%}" method="post">  
+                <div class="container-fluid d-flex flex-column align-items-center">
+                  <h3 style="text-decoration: underline;">Infos Client</h3>
+
+                  {%csrf_token%}
+                  <div class="mb-3 w-50">
+                      <label for="exampleFormControlInput1" class="form-label">Nom</label>
+                      <input type="text" class="form-control" name="nom" id="exampleFormControlInput1" placeholder="Ngoran" style="text-transform: capitalize;">
+                  </div>
+              
+                  <div class="mb-3 w-50">
+                      <label for="exampleFormControlInput1" class="form-label">Prenom</label>
+                      <input type="text" class="form-control" name="prenom" id="exampleFormControlInput1" placeholder="Stane" style="text-transform: capitalize;">
+                  </div>
+              
+                  <div class="mb-3 w-50">
+                      <label for="exampleFormControlInput1" class="form-label">Contact</label>
+                      <input type="text" class="form-control" name="contact" id="exampleFormControlInput1" placeholder="0700010203">
+                  </div>
+
+                  <!-- Boutons Annuler et Suivant rapprochés -->
+                  <div class="d-flex justify-content-center w-50 mt-2">
+                    <button type="submit" class="btn btn-primary w-100" style="background-color: #0594D0;">Validez</button>
+
+                  </div>
+              </div>
+            </form>
+
+      </div>
+      <!-- Fin contenue de la page -->
+
+
+    
+    </div>
+    <!-- Fin Contenue Principale -->
+
+  </body>
+</html>
+

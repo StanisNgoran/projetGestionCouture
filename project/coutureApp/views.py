@@ -5,12 +5,12 @@ from.models import Commande
 from.models import Tenue
 from.models import ImageModele,Facture
 from django.contrib import messages
-from django.shortcuts import render
+from django.contrib.auth.models import User
 from django.db.models import Count
 from django.db.models.functions import TruncWeek
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm
+from .models import Profil
 
 
 
@@ -19,54 +19,128 @@ from .forms import CustomUserCreationForm
 # ____________________________________________________________________________________
 
 
-def register(request):
-    if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # Connexion automatique après inscription
-            messages.success(request, "Inscription réussie ! Bienvenue.")
-            return redirect('home')
+def inscription(request):
+    if request.method=="POST":
+        nomUtilisateur=request.POST['username']
+        email=request.POST['email']
+        motPasse=request.POST['password1']
+        motPasseConfirm=request.POST['password2']
+        if User.objects.filter(username=nomUtilisateur).exists():
+            messages.error(request,"Cet nom utilisateur est deja utilisé")
+        elif motPasse!=motPasseConfirm:
+            messages.error(request,"Le mot de passe doit etre identique") 
         else:
-            messages.error(request, "Erreur dans le formulaire.")
-    else:
-        form = CustomUserCreationForm()
+            
+            # creation de l'utilisateur
+            utilisateur=User.objects.create_user(username=nomUtilisateur,email=email,password=motPasseConfirm)
+            utilisateur.save()
 
-    return render(request, 'register.html', {'form': form})
+            # Connexion automatique apres creation du compte
+            login(request,utilisateur)
+            # messages.success(request,"Compte Crée avec succès")
+            return redirect('homeUser')
+        
+    utilisateurs=User.objects.all() 
+    return render(request,"authentification/register.html",{'utilisateur':utilisateurs})
 
 
-def login_view(request):
+def connexion(request):
     if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
-        if user:
-            login(request, user)
-            messages.success(request, "Connexion réussie !")
-            return redirect('home')
+        nomUtilisateur = request.POST["username"]
+        motPasse = request.POST["password"]
+        utilisateur = authenticate(request, username=nomUtilisateur, password=motPasse)
+        if utilisateur:
+            login(request, utilisateur)
+            # messages.success(request, "Connexion réussie !") 
+
+            # Récupérer le profil de l'utilisateur et vérifier son rôle
+            try:
+                profil = Profil.objects.get(user=utilisateur)
+                if profil.role == "admin":
+                    return redirect("home")  # Redirection vers la page admin
+                else:
+                    return redirect("homeUser")  # Redirection vers la page utilisateur
+            except Profil.DoesNotExist:
+                messages.error(request, "Votre profil n'existe pas.")
+
         else:
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
 
-    return render(request, 'login.html')
+    return render(request, 'authentification/login.html')
 
 
 
-def logout_view(request):
+def deconnexion(request):
     logout(request)
-    messages.success(request, "Vous avez été déconnecté.")
+    # messages.success(request, "Vous avez été déconnecté.")
     return redirect('login')
 
 
+@login_required
+def listeUtilisateur(request):
+    listeUser=Profil.objects.all()
+    # listeUser=User.objects.all()
+    return render(request,"admin/utilisateur.html",{'utilisateurs':listeUser})
+
+@login_required
+def supprimerUtilisateur(request,id):
+    idpro=get_object_or_404(Profil,id=id)
+    idpro.delete()
+    messages.success(request,"Utilisateur Supprimé avec succes")
+    return redirect('utilisateur')
+
+
+@login_required
+def modifierUtilisateur(request,id):
+    idprofile=get_object_or_404(Profil,id=id)
+    if request.method=='POST':
+        idprofile.role=request.POST.get("role",idprofile.role)
+        if idprofile.role=="":
+            messages.error(request,"Changer le role de l'utilisateur")
+        else:
+            idprofile.save()
+            messages.success(request,"Rôle changé avec succes")
+    return render(request,"admin/modifierProfile.html",{'listeProfile':idprofile})
+
+
+@login_required
+def creerUtilisateur(request):
+    if request.method=="POST":
+        nomUtilisateur=request.POST['username']
+        email=request.POST['email']
+        motPasse=request.POST['password1']
+        motPasseConfirm=request.POST['password2']
+        if User.objects.filter(username=nomUtilisateur).exists():
+            messages.error(request,"Cet nom utilisateur est deja utilisé")
+        elif motPasse!=motPasseConfirm:
+            messages.error(request,"Le mot de passe doit etre identique") 
+        else:
+            
+            # creation de l'utilisateur
+            utilisateur=User.objects.create_user(username=nomUtilisateur,email=email,password=motPasseConfirm)
+            utilisateur.save()
+            messages.success(request,"Utilisateur crée avec succes")
+            return redirect('utilisateur')
+    return render (request,"admin/creerUser.html")
 
 
 @login_required
 def home(request):
 
     # Permet d'afficher toutes les commandes dans un tableau
-    commandes = Commande.objects.all().order_by('-creation')
+    # commandes = Commande.objects.all().order_by('-creation')
 
     # Retourne les commandes et clients dans le contexte du template
-    return render(request, 'home.html', {'commandes': commandes})
+    return render(request, 'admin/home.html')
+
+@login_required
+def homeUser(request):
+
+    # Permet d'afficher toutes les commandes dans un tableau
+    # commandes = Commande.objects.all().order_by('-creation')
+
+    # Retourne les commandes et clients dans le contexte du template
+    return render(request, 'user/homeUser.html')
 
 
 
@@ -106,7 +180,7 @@ def Ajouter_client(request):
             client.save()
             messages.success(request, 'Client Enregistré avec Succès!')
             return redirect('clientlist')  
-    return render(request, 'client.html')  
+    return render(request, 'user/client.html')  
 
 
 
@@ -115,7 +189,7 @@ def Ajouter_client(request):
 @login_required
 def clientlist(request):
     clients=Client.objects.all().order_by('-ajout')
-    return render(request,'clientlist.html',{'clients':clients})
+    return render(request,'user/clientlist.html',{'clients':clients})
 
 
 
@@ -138,7 +212,7 @@ def modifier_client(request,idclient):
             messages.success(request, 'Client modifié avec succès.')
 
             return redirect('clientlist')  # Rediriger vers la liste des clients
-    return render(request, 'modifierClient.html', {'client': client_a_modifier})
+    return render(request, 'user/modifierClient.html', {'client': client_a_modifier})
 
 
 
@@ -170,7 +244,7 @@ def supprimer_client(request,idclient):
 @login_required
 def commandlist(request):
     commandes=Commande.objects.filter(statut="En Cours").order_by("-creation").all()
-    return render(request,'commandlist.html',{'commandes':commandes})
+    return render(request,'user/commandlist.html',{'commandes':commandes})
 
 
 
@@ -204,7 +278,7 @@ def SaveCommande(request,idclient):
             commande_lierauclient.save()
             messages.success(request, 'Commande Enregistrée avec Succès!')
             return redirect('tenue',commande_lierauclient.idcom)
-    return render(request, 'commande.html', {'client': client_commandeur})
+    return render(request, 'user/commande.html', {'client': client_commandeur})
 
 
 
@@ -234,7 +308,7 @@ def modifier_commande(request,idcom):
             commande_a_modifier.save()
             messages.success(request,'Commande modifiée avec Succès')
             return redirect('commandlist')
-    return render(request,'modifierComand.html',{'commande':commande_a_modifier})
+    return render(request,'user/modifierComand.html',{'commande':commande_a_modifier})
 
 
 
@@ -250,20 +324,20 @@ def infosCommande(request,idcom):
 
     }
 
-    return render(request,"infosCommande.html",{'details':details,'commande':commande})
+    return render(request,"user/infosCommande.html",{'details':details,'commande':commande})
 
 
 
 @login_required
 def Historique_de_commande(request):
     historique=Commande.objects.filter(statut="Livrée").all()
-    return render(request,"historiqueCommande.html",{"historique":historique})
+    return render(request,"user/historiqueCommande.html",{"historique":historique})
 
 
 @login_required
 def Liste_de_retrait(request):
     commandes=Commande.objects.filter(statut="En Cours").order_by("-creation").all()
-    return render(request,'retraitCommande.html',{'commandes':commandes})
+    return render(request,'user/retraitCommande.html',{'commandes':commandes})
 
 
 
@@ -284,7 +358,7 @@ def Action_Retrait(request,idcom):
             commande_a_retirer.save()
             messages.success(request,"Retrait Effectuée avec succes!")
             return redirect('HistoriqueCommande')
-    return render(request,"actionRetrait.html",{'commande_a_retirer':commande_a_retirer})
+    return render(request,"user/actionRetrait.html",{'commande_a_retirer':commande_a_retirer})
 
 
 # Permet de supprimer une commande
@@ -308,7 +382,7 @@ def supprimer_commande(request,idcom):
 @login_required
 def Historique_Tenue(request):
     tenue_retiree = Tenue.objects.filter(idcom__statut='Livrée')
-    return render(request,'historiqueTenue.html',{'tenues':tenue_retiree})
+    return render(request,'user/historiqueTenue.html',{'tenues':tenue_retiree})
 
 
 
@@ -316,7 +390,7 @@ def Historique_Tenue(request):
 @login_required
 def listeTenue(request):
     tenues_encours=Tenue.objects.filter(idcom__statut='En Cours').order_by('-ajout')
-    return render(request,'listeTenue.html',{'tenues':tenues_encours})
+    return render(request,'user/listeTenue.html',{'tenues':tenues_encours})
 
 
 # Permet de modifier une tenue 
@@ -347,7 +421,7 @@ def modifier_tenue(request,idtenu):
             tenue.save()
             messages.success(request,"Tenue modifiée avec succès")
             return redirect('listeTenue')
-    return render(request,"modifierTenue.html",{'tenue':tenue})
+    return render(request,"user/modifierTenue.html",{'tenue':tenue})
 
 
 
@@ -425,7 +499,7 @@ def tenue(request,idcom):
                 tenue_commandee.save()
                 messages.success(request, 'Tenue Ajoutée avec Succès!')
                 return redirect('image',tenue_commandee.idtenu)
-    return render(request, 'tenue.html', {'commands': commande_instance})
+    return render(request, 'user/tenue.html', {'commands': commande_instance})
 
     
 
@@ -449,7 +523,7 @@ def modifier_image(request,idmg):
             messages.success(request, 'Image Modifiée avec Succès')
             return redirect('album')
     image_a_afficher=ImageModele.objects.all()
-    return render(request, 'modifierImage.html', {'image_a_modifier':image_a_modifier,'image_a_afficher':image_a_afficher})
+    return render(request, 'user/modifierImage.html', {'image_a_modifier':image_a_modifier,'image_a_afficher':image_a_afficher})
 
 @login_required
 def supprimer_image(request,idmg):
@@ -480,7 +554,7 @@ def image(request,idtenu):
             return redirect('album')
     #Permet d'afficher les tenues avec image
     image_tenue=ImageModele.objects.all()
-    return render(request, 'image.html', {'tenue_instance': tenue_instance,'image_tenue':image_tenue})
+    return render(request, 'user/image.html', {'tenue_instance': tenue_instance,'image_tenue':image_tenue})
 
 
 
@@ -491,7 +565,7 @@ def infostenue(request,idtenu):
         "tenue_infos":tenue_instance
     }
     
-    return render(request,"infosTenue.html",{'details':details})
+    return render(request,"user/infosTenue.html",{'details':details})
 
 
 
@@ -511,7 +585,7 @@ def facture(request):
     facture=Facture.objects.all().order_by('-date_facture')
 
     # Retourne les commandes et clients dans le contexte du template
-    return render(request, 'facture.html', {'commandes': commandes, 'clients': clients,'facture':facture})
+    return render(request, 'user/facture.html', {'commandes': commandes, 'clients': clients,'facture':facture})
 
 
 
@@ -523,7 +597,7 @@ def createfacture(request):
 
     commande_nonfacturee=Commande.objects.filter(facture=None).order_by('-creation')
     # Retourne les commandes et clients dans le contexte du template
-    return render(request, 'creatfacture.html', {'commande_nonfacturee': commande_nonfacturee})
+    return render(request, 'user/creatfacture.html', {'commande_nonfacturee': commande_nonfacturee})
 
 
 @login_required
@@ -559,7 +633,7 @@ def editefacture(request, idcom):
             # Redirection vers la page d'affichage de la facture avec l'ID de la facture
             return redirect('Aff_Facture', idfacture=facture.idfacture)
 
-    return render(request, 'editefacture.html', {'commande': commande, 'client': cle_client})
+    return render(request, 'user/editefacture.html', {'commande': commande, 'client': cle_client})
 
 
 @login_required
@@ -582,7 +656,7 @@ def modifier_facture(request,idfacture):
             # Redirection vers la page d'affichage de la facture avec l'ID de la facture
             return redirect('Aff_Facture', idfacture=facture.idfacture)
 
-    return render(request, 'modifierFacture.html', {'facture': facture})
+    return render(request, 'user/modifierFacture.html', {'facture': facture})
 
 
 
@@ -600,7 +674,7 @@ def Aff_Facture(request,idfacture):
         "total_commande": facture.idcom.montantcom,
     }
 
-    return render(request, 'Aff_Facture.html', {
+    return render(request, 'user/Aff_Facture.html', {
         'facture': facture,
         'details': details,
     })
@@ -616,7 +690,7 @@ def Aff_Facture(request,idfacture):
 def album(request):
     #Toutes les qui sont associées à des images
     infosimage=ImageModele.objects.select_related("idtenu").order_by('-ajout')
-    return render(request,'album.html',{'infosimage':infosimage})
+    return render(request,'user/album.html',{'infosimage':infosimage})
                 
 
 

@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    {%load static%}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothe</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/style_Facture.css' %}">
+    <link href="{% static 'bootstrap/css/accueil.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
+  </head>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column" style="background-color: #E4E4E4;">
+      <h5 class="text-center py-3 border-bottom " style="background-color: #0594D0;">Menu</h5>
+      <a href="{%url 'homeUser'%}"> <i class="fa fa-home"></i>Accueil</a>
+      <!-- <a href="{% url 'statistique'%}"> <i class="fa fa-dashboard"></i>Tableau de Bord</a> -->
+      <!-- <a href="{% url 'utilisateur'%}"><i class="fa fa-users"></i>Utilisateur</a> -->
+      <a href="{%url 'logout'%}" class="mt-auto"><i class="fa fa-sign-out"></i>Déconnexion</a>
+    </div>

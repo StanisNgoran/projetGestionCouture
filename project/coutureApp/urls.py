@@ -1,18 +1,28 @@
 # coutureApp/urls.py
 from django.urls import path
 from . import views
-from .views import register, login_view, logout_view
+# from .views import register, login_view, logout_view,Historique_de_commande
 from django.contrib.auth.views import LogoutView
 
 
 urlpatterns = [
  
-    path('home/', views.home, name='home'),
+    path('homeAdmin/', views.home, name='home'),
+    path('homeUser/', views.homeUser, name='homeUser'),
 
-    path('register/', register, name='register'),
-    path('', login_view, name='login'),
-    path('logout/', logout_view, name='logout'),
+    # path('register/', register, name='register'),
+    # path('', login_view, name='login'),
+    # path('logout/', logout_view, name='logout'),
 
+    path('Creation Compte/',views.inscription, name='register'),
+    path('', views.connexion, name='login'),
+    path('Deconnexion/', views.deconnexion, name='logout'),
+
+
+    path('utilisateur/creer/',views.creerUtilisateur, name='creerUser'),
+    path('utilisateur/',views.listeUtilisateur, name='utilisateur'),
+    path('utilisateur/suppression/<int:id>',views.supprimerUtilisateur, name='deleteUser'),
+    path('utilisateur/Modifier/<int:id>',views.modifierUtilisateur, name='modifierUser'),
     path('client/', views.Ajouter_client, name='client'),  # Utilisation de la vue pour création/affichage
     path('commande/<str:idclient>', views.SaveCommande, name='commande'),
 

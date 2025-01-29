@@ -1,0 +1,90 @@
+
+    {%include 'admin/adminSidebare.html'%}
+    
+    <!-- Contenue Principale -->
+    <div class="content">
+      {%include 'user/navbar.html'%}
+      {%load static%}     
+        <!-- Fin de la barre de navigation -->
+
+
+       <!-- entete -->
+      <div class="container-fluid mt-3" style="border: none;">
+        <h2>Gestion des Utilisateurs</h2>
+        <p>Vous verrez ici tous les utilisateur.</p>
+      </div>
+
+      <div class="container-fluid" style="border: none;">
+        <h4 class="">
+          <a class="nav-link active" aria-current="page" href="{% url 'creerUser'%}"> Nouveau Utilisateur <i class="fa fa-plus-circle d-inline" aria-hidden="true"></i></a> 
+        </h4>
+      </div>
+      
+
+      <!-- Contenue de la page -->
+      <div class="container mt-4" style="border-radius: 0%;">
+        <div class="container-fluid mt-4" style="border-radius: 0%;">
+          <form class="d-flex ms-auto mb-3" role="search">
+            <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+            <button class="btn btn-warning" type="submit">Recherche</button>
+          </form>
+
+        
+          <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
+            <table class="table table-striped mt-3">
+              <thead class="sticky-header">
+                <tr>
+                  
+                  <th scope="col">Nom Utilisateur</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Modifier</th>
+                  <th scope="col">Supprimer</th> 
+                </tr>
+              </thead>
+              <tbody>
+                {% for utilisateur in utilisateurs %}
+                  <tr>
+                    <td>{{ utilisateur.user.username }} </td>
+                    <td>{{ utilisateur.user.email }}</td>
+                    <td>{{ utilisateur.user.profil.role }}</td>
+
+                    <!-- <td>{{ utilisateur.username }} </td>
+                    <td>{{ utilisateur.email }}</td>
+                    <td>{{ utilisateur.role }}</td> -->
+                    
+                    <td>
+                      <a href="{% url 'modifierUser' utilisateur.id %}">
+                        <button type="submit" class="btn btn-warning"> Modifier utilisateur<i class="fa fa-pencil"></i></button> 
+                        
+                      </a>
+                    </td>
+                    <td>
+                      <a href="{%url 'deleteUser' utilisateur.id%}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce cet utilisateur ?');">
+                        <button type="submit" class="btn btn-danger"> Supprimer utilisateur <i class="fa fa-trash"></i></button> 
+
+                      </a>
+                    </td>
+                    
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="7" class="text-center">Aucune Commande.</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+              
+      </div>
+      <!-- Fin contenue de la page -->
+
+
+    
+    </div>
+    <!-- Fin Contenue Principale -->
+
+  </body>
+</html>
