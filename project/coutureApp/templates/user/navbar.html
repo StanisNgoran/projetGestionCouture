@@ -4,14 +4,12 @@
 {%load static%}
 <nav class="navbar navbar-expand-lg navbar-light  border-bottom" style="background-color:#0594D0">
     <div class="container-fluid">
-      <!-- <a class="navbar-brand text-light" href="{%url 'home'%}">Master</a> -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-2">
           <li class="nav-item">
-            <!-- <a class="nav-link" href="#client">Agents</a> -->
             <a class="nav-link text-light" href="{% url 'clientlist'%}"><i class="fa fa-users"></i> Client</a>
 
           </li>
@@ -29,7 +27,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link  text-light" href="{% url 'facture'%}"><i class="fa fa-paper"></i> Facture</a>
+            <a class="nav-link  text-light" href="{% url 'facture'%}"><i class="fa fa-newspaper"></i> Facture</a>
           </li>
         </ul>
 
@@ -37,11 +35,13 @@
           <ul class="navbar-nav ms-auto">
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <span class="nav-link text-light">Bonjour, <strong>{{ user.username }}</strong></span>
+                    <span class="nav-link text-light">Bonjour, Bienvenue <strong>{{ user.username }}</strong></span>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'logout' %}" class="nav-link text-light btn btn-danger">Déconnexion</a>
-                </li>
+
+                <!-- <li class="nav-item">
+                  <span class="nav-link text-light"><strong>{{ value|time:"H:i" }}</strong></span>
+                </li> -->
+                
             {% else %}
                 <li class="nav-item">
                     <a href="{% url 'login' %}" class="nav-link text-light btn btn-primary">Connexion</a>

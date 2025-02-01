@@ -1,82 +1,33 @@
-{%load static%}
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistique</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/css/tableau.css' %}">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/style_Facture.css' %}">
-    <link href="{% static 'bootstrap/css/accueil.css' %}" rel="stylesheet">
-    <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 
-  </head>
-    
-  <body>
-    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
-    <!-- Sidebar -->
-    <div class="sidebar d-flex flex-column" style="background-color: #E4E4E4;">
-      <h5 class="text-center py-3 border-bottom " style="background-color: #0594D0;">Menu</h5>
-      <a href="#dashboard"><i class="fa fa-home"></i>Accueil</a>
-      <a href="#dashboard"><i class="fa fa-dashboard"></i>Tableau de Bord</a>
-      <a href="#dashboard"><i class="fa fa-users"></i>Utilisateurs</a>
-      <a href="#logout" class="mt-auto"> <i class="fa fa-sign-out"></i>Déconnexion</a>
-    </div>
+{%if user.is_authenticated and user.profil.role == "admin" %}
+  {%include 'admin/adminSidebare.html'%}
+{%else%}
+  {%include 'user/userSidebare.html'%}
+
+{%endif%}
 
     
     <!-- Contenue Principale -->
     <div class="content">
+      {%include 'user/navbar.html'%}
+       
+      {%load static%}     <!-- Fin de la barre de navigation -->
 
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light  border-bottom" style="background-color:#0594D0">
-          <div class="container-fluid">
-            <a class="navbar-brand text-light" href="#">Master</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav ms-2">
-                <li class="nav-item">
-                  <!-- <a class="nav-link" href="#client">Agents</a> -->
-                  <a class="nav-link text-light" href="{% url 'clientlist'%}"><i class="fa fa-users"></i> Client</a>
 
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link text-light" href="{% url 'commandlist'%}"><i class="fa fa-id-card"></i> Commande</a>
-                </li>
+       <!-- entete -->
+      <div class="container-fluid mt-3" style="border: none;">
+        <h2 class="">Statistique</h2>
+        <p>Toutes les statistiques</p>
+      </div>
 
-                <li class="nav-item">
-                  <a class="nav-link text-light" href="{% url 'listeTenue'%}"><i class="fa fa-child"></i> Tenues</a>
-                </li>
-
-  
-                <li class="nav-item">
-                  <a class="nav-link  text-light" href="{% url 'album'%}"><i class="fa fa-folder"></i> Album</a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link  text-light" href="{% url 'facture'%}"><i class="fa fa-paper"></i> Facture</a>
-                </li>
-
-                <li class="nav-item">
-                  <a class="nav-link text-light" href="{% url 'statistique'%}"><i class="fa fa-bar-chart"></i> Statistiques</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-        <!-- Fin de la barre de navigation -->
-
-        <div class="container-fluid mt-3" style="border: none;">
-          <h2 class="">Bienvenue dans les statistiques</h2>
-          <p>Ici vous avez une vue globale</p>
-        </div>
       <!-- Contenue de la page -->
       <div class="container mt-4" style="border-radius: 0%;">
         
-        {%csrf_token%}
-        
+          
+
+
+      
+
       </div>
       <!-- Fin contenue de la page -->
 
@@ -87,3 +38,4 @@
 
   </body>
 </html>
+

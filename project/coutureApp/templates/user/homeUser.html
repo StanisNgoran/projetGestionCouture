@@ -1,7 +1,11 @@
 
-    <!-- La sidebare de l'admin -->
+{%if user.is_authenticated and user.profil.role == "admin" %}
+  {%include 'admin/adminSidebare.html'%}
+{%else%}
+  {%include 'user/userSidebare.html'%}
 
-    {%include 'user/userSidebare.html'%}
+{%endif%}
+
 
     <!-- Contenue Principale -->
     <div class="content">

@@ -1,10 +1,15 @@
 
+{%if user.is_authenticated and user.profil.role == "admin" %}
+  {%include 'admin/adminSidebare.html'%}
+{%else%}
+  {%include 'user/userSidebare.html'%}
 
-      {%include 'user/userSidebare.html'%}
+{%endif%}
+
     <!-- Contenue Principale -->
     <div class="content">
-        {%include 'admin/navbar.html'%}
-           {%load static%}    
+      {%include 'user/navbar.html'%}
+      {%load static%}    
         <!-- Fin de la barre de navigation -->
 
       <!-- entete -->
@@ -41,7 +46,7 @@
                     <div class="mb-3 w-50">
                       <label for="dateInput" class="form-label">Date Facture</label>
                       <input type="date" class="form-control" id="dateInput" name="date_facture">
-                  </div>
+                    </div>
                     <!-- Boutons Annuler et Suivant rapprochés -->
                     <div class="d-flex justify-content-center w-50 mt-2">
                         <!-- permet d'ajouter de l'espace entre les boutons -->

@@ -149,7 +149,7 @@ class Facture(models.Model):
     idfacture = models.CharField(primary_key=True,max_length=20,default=generate_facture_id,unique=True)
     idclient = models.ForeignKey(Client, on_delete=models.CASCADE)
     idcom = models.ForeignKey(Commande, on_delete=models.CASCADE)
-    date_facture = models.DateTimeField(auto_now_add=True)
+    date_facture = models.DateTimeField()
 
     def __str__(self):
         return f"Facture {self.idfacture}"

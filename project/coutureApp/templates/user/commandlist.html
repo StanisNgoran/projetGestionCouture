@@ -1,4 +1,11 @@
-    {%include 'user/userSidebare.html'%}
+
+{%if user.is_authenticated and user.profil.role == "admin" %}
+  {%include 'admin/adminSidebare.html'%}
+{%else%}
+  {%include 'user/userSidebare.html'%}
+
+{%endif%}
+
 
     
     <!-- Contenue Principale -->

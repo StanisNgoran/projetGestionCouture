@@ -1,6 +1,10 @@
 
+{%if user.is_authenticated and user.profil.role == "admin" %}
+  {%include 'admin/adminSidebare.html'%}
+{%else%}
+  {%include 'user/userSidebare.html'%}
 
-{%include 'user/userSidebare.html'%}
+{%endif%}
 
     <!-- Contenue Principale -->
     <div class="content">
@@ -14,11 +18,12 @@
           <p>Faire le retrait en toute simplicité.</p>
         </div>
 
-        {%csrf_token%}
+        
 
         <!-- Contenue de la page -->
       <div class="container mt-4" style="border-radius: 0%;">
           <form action="{% url 'actionRetrait' commande_a_retirer.idcom %}" method="post">
+            {%csrf_token%}
               <div class="container-fluid d-flex flex-column align-items-center"> 
                   <div class="mb-3 w-50">
                       <label for="exampleFormControlInput1" class="form-label">Nom client</label>

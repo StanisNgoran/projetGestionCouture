@@ -31,13 +31,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         Profil.objects.create(user=instance,role="utilisateur")
 
 
-
-# @receiver(post_save, sender=Profil)
-# def sauvegarder_profil(sender, instance, **kwargs):
-#     instance.save()
-
-
-# Suppression du profil et de l'utilisateur
+# Suppression du profil et de l'utilisateur si son profil est supprimé
 # 
 @receiver(post_delete,sender=Profil)
 def suppressionUser(sender,instance,**kwargs):

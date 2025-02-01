@@ -6,12 +6,10 @@ from.models import Tenue
 from.models import ImageModele,Facture
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.db.models import Count
-from django.db.models.functions import TruncWeek
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.decorators import login_required
 from .models import Profil
-
+from .decorators import role_requis
 
 
 # ____________________________________________________________________________________
@@ -77,12 +75,14 @@ def deconnexion(request):
 
 
 @login_required
+@role_requis('admin')
 def listeUtilisateur(request):
     listeUser=Profil.objects.all()
-    # listeUser=User.objects.all()
     return render(request,"admin/utilisateur.html",{'utilisateurs':listeUser})
 
+
 @login_required
+@role_requis('admin')
 def supprimerUtilisateur(request,id):
     idpro=get_object_or_404(Profil,id=id)
     idpro.delete()
@@ -91,6 +91,7 @@ def supprimerUtilisateur(request,id):
 
 
 @login_required
+@role_requis('admin')
 def modifierUtilisateur(request,id):
     idprofile=get_object_or_404(Profil,id=id)
     if request.method=='POST':
@@ -104,6 +105,7 @@ def modifierUtilisateur(request,id):
 
 
 @login_required
+@role_requis('admin')
 def creerUtilisateur(request):
     if request.method=="POST":
         nomUtilisateur=request.POST['username']
@@ -119,27 +121,19 @@ def creerUtilisateur(request):
             # creation de l'utilisateur
             utilisateur=User.objects.create_user(username=nomUtilisateur,email=email,password=motPasseConfirm)
             utilisateur.save()
-            messages.success(request,"Utilisateur crée avec succes")
+            # messages.success(request,"Utilisateur crée avec succes")
             return redirect('utilisateur')
     return render (request,"admin/creerUser.html")
 
 
 @login_required
+@role_requis('admin') 
 def home(request):
-
-    # Permet d'afficher toutes les commandes dans un tableau
-    # commandes = Commande.objects.all().order_by('-creation')
-
-    # Retourne les commandes et clients dans le contexte du template
     return render(request, 'admin/home.html')
 
+@role_requis('utilisateur') 
 @login_required
 def homeUser(request):
-
-    # Permet d'afficher toutes les commandes dans un tableau
-    # commandes = Commande.objects.all().order_by('-creation')
-
-    # Retourne les commandes et clients dans le contexte du template
     return render(request, 'user/homeUser.html')
 
 
@@ -703,23 +697,11 @@ def album(request):
 #  CETTE PARTIE DU CODE CONCERNE TOUTES LES STATISTIQUES
 # __________________________________________________________________________________________
 @login_required
+@role_requis('admin')
 def statistique(request):
 
-     # Récupérer les clients ajoutés par semaine
-    clients_per_week = Client.objects.annotate(week=TruncWeek('ajout')) \
-                                    .values('week') \
-                                    .annotate(client_count=Count('idclient')) \
-                                    .order_by('week')
-
-    # Extraire les données pour le graphique
-    categories = [client['week'].strftime('%d-%m-%Y') for client in clients_per_week]  # Semaine formatée en date
-    data = [client['client_count'] for client in clients_per_week]  # Nombre de clients par semaine
-
-    context = {
-        'categories': categories,
-        'data': data
-    }
-    return render(request,'statistique.html',context)
+    
+    return render(request,'user/statistique.html')
    
 
 
