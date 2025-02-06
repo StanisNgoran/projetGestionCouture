@@ -69,13 +69,12 @@
                     </td>
                     <td>
 
-                      {%if client.idclient%}
+                      
                         <!-- <a href="modal.html" class="text-danger"> -->
                           <a href="{% url 'supprimer_client' client.idclient %}" class="text-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce client ?');">
                           <button type="submit" class="btn btn-danger"> <i class="fa fa-trash"></i> Supprimer Client</button>
           
                         </a>
-                      {%endif%}
                     </td>
                   </tr>
                 {% empty %}

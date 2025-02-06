@@ -20,12 +20,8 @@ class Profil(models.Model):
         return f"{self.user.username} - {self.role}"   
 
 def generate_client_id():
-    year = datetime.now().year
-    while True:
-        random_part = str(random.randint(1, 999)).zfill(3)
-        unique_id = f"CLI-{year}{random_part}"
-        if not Client.objects.filter(idclient=unique_id).exists():
-            return unique_id
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")  # Format : AnnéeMoisJourHeureMinuteSeconde
+    return f"{timestamp}"
 
 
 class Client(models.Model):
@@ -46,12 +42,8 @@ class Client(models.Model):
 
 
 def generate_commande_id():
-    year = datetime.now().year
-    while True:
-        random_part = str(random.randint(1, 999)).zfill(3)
-        unique_id = f"CMD-{year}{random_part}"
-        if not Commande.objects.filter(idcom=unique_id).exists():
-            return unique_id
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")  # Format : AnnéeMoisJourHeureMinuteSeconde
+    return f"{timestamp}"
 
 class Commande(models.Model):
     idcom = models.CharField(primary_key=True,max_length=20,default=generate_commande_id,unique=True)
@@ -94,12 +86,8 @@ class Commande(models.Model):
 
 
 def generate_tenue_id():
-    year = datetime.now().year
-    while True:
-        random_part = str(random.randint(1, 999)).zfill(3)
-        unique_id = f"TN-{year}{random_part}"
-        if not Tenue.objects.filter(idtenu=unique_id).exists():
-            return unique_id
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")  # Format : AnnéeMoisJourHeureMinuteSeconde
+    return f"{timestamp}"
 
 
 class Tenue(models.Model):
@@ -138,12 +126,8 @@ class Tenue(models.Model):
 
 
 def generate_facture_id():
-    year = datetime.now().year
-    while True:
-        random_part = str(random.randint(1, 999)).zfill(3)
-        unique_id = f"FA-{year}{random_part}"
-        if not Facture.objects.filter(idfacture=unique_id).exists():
-            return unique_id
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")  # Format : AnnéeMoisJourHeureMinuteSeconde
+    return f"{timestamp}"
 
 class Facture(models.Model):
     idfacture = models.CharField(primary_key=True,max_length=20,default=generate_facture_id,unique=True)
@@ -167,12 +151,8 @@ class Facture(models.Model):
 
 
 def generate_image_id():
-    year = datetime.now().year
-    while True:
-        random_part = str(random.randint(1, 999)).zfill(3)
-        unique_id = f"MOD-{year}{random_part}"
-        if not ImageModele.objects.filter(idmg=unique_id).exists():
-            return unique_id
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")  # Format : AnnéeMoisJourHeureMinuteSeconde
+    return f"{timestamp}"
 
 
 class ImageModele(models.Model):
