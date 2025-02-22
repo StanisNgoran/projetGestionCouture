@@ -1,15 +1,6 @@
 from django.contrib import admin
 from .models import Client,Commande,Tenue,ImageModele
 
-admin.site.register(Client)
-admin.site.register(Commande)
-admin.site.register(Tenue)
-admin.site.register(ImageModele)
-
-# Modifier le titre de la page d'administration
-admin.site.site_header = "Clothe Administration"
-admin.site.site_title = "Clothe Admin"
-admin.site.index_title = "Bienvenue sur le Tableau de Bord"
 
 class ClientAdmin(admin.ModelAdmin):
     list_display = ('nom', 'prenom', 'contact')  # Colonnes affichées dans la liste
@@ -38,3 +29,13 @@ class CommandeAdmin(admin.ModelAdmin):
     #     ("Contact", {'fields': ('contact',)}),
     # )
 
+
+admin.site.register(Client)
+admin.site.register(Commande)
+admin.site.register(Tenue)
+admin.site.register(ImageModele)
+
+# Modifier le titre de la page d'administration
+admin.site.site_header = "Clothe Administration"
+admin.site.site_title = "Clothe Admin"
+admin.site.index_title = "Bienvenue sur le Tableau de Bord"

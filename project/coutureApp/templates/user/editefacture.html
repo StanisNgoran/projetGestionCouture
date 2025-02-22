@@ -28,8 +28,8 @@
               <div class="container-fluid d-flex flex-column align-items-center">
             
                     <div class="mb-3 w-50">
-                      <label for="exampleFormControlInput1" class="form-label">Nom Client</label>
-                      <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="{{ commande.idclient.nom }} {{ commande.idclient.prenom }}" disabled>
+                      <label for="exampleFormControlInput1" class="form-label">Nom Prenom</label>
+                      <input type="text" class="form-control" name="idcom" id="exampleFormControlInput1" value="{{ commande.idclient.nom_prenom }}" disabled>
                     </div>
 
                   
@@ -41,11 +41,6 @@
                     <div class="mb-3 w-50">
                       <label for="exampleFormControlInput1" class="form-label">Montant commande</label>
                       <input type="text" class="form-control" name="montantcom" id="exampleFormControlInput1" value="{{ commande.montantcom }}" disabled>
-                    </div>
-
-                    <div class="mb-3 w-50">
-                      <label for="dateInput" class="form-label">Date Facture</label>
-                      <input type="date" class="form-control" id="dateInput" name="date_facture">
                     </div>
                     <!-- Boutons Annuler et Suivant rapprochés -->
                     <div class="d-flex justify-content-center w-50 mt-2">

@@ -32,14 +32,14 @@
             <a class="nav-link active d-inline" aria-current="page" href="{% url 'HistoriqueTenue'%}">Tenues retirées</a>
             <i class="fa fa-bookmark" aria-hidden="true"></i>
           </h4>
-          
+          <!-- <h2>Liste des Tenues en Cours</h2> -->
           <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
             <table class="table table-striped mt-3">
               <thead class="sticky-header">
                 <tr>
                   
-                  <th scope="col">Nom Client</th>
-                  <th scope="col">Prix Unitaire</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Prix Unt</th>
                   <th scope="col">Montant</th>
                   <th scope="col">Statut</th>
                   <th scope="col">Details</th>
@@ -51,7 +51,7 @@
               <tbody>
                 {% for tenu in tenues %}
                   <tr>
-                    <td>{{ tenu.idcom.idclient.nom }} {{ tenu.idcom.idclient.prenom }}</td>
+                    <td>{{ tenu.idcom.idclient.nom_prenom }}</td>
                     <td>{{ tenu.prix  }}</td>
                     <td>{{ tenu.montant  }}</td>
                     <td>{{ tenu.etat_tenue  }}</td>

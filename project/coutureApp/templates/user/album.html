@@ -18,7 +18,7 @@
         <h2 class="">Bienvenue dans les Modeles deja Cousures</h2>
         <p>Ici vous verrez des tops modeles deja cousures par des clients .</p>
       </div>
-
+      {%include 'admin/messages.html'%}
       <!-- Contenue de la page -->
       <div class="container mt-4" style="border-radius: 0%;">
         <form class="d-flex ms-auto" role="search">
@@ -36,11 +36,10 @@
                         <!-- Affichage des informations -->
                         <h5 class="card-title">{{ imagerel.idtenu.modele }}</h5>
                         <p class="card-text">
-                            <strong>ID Image :</strong> {{ imagerel.idmg }}<br>
-                            <strong>ID Tenue :</strong> {{ imagerel.idtenu.idtenu }}<br>
                             <strong>Prix Unitaire :</strong> {{ imagerel.idtenu.prix }}<br>
-                            <strong>Client :</strong> {{ imagerel.idtenu.idcom.idclient }}<br>
-                            <strong>ID Commande :</strong> {{ imagerel.idtenu.idcom.idcom }}
+                            <strong>Client :</strong> {{ imagerel.idtenu.idcom.idclient.nom_prenom }}<br>
+                            <strong>Statut :</strong> {{ imagerel.idtenu.idcom.statut }}<br>
+                            <strong>Nbr Exemplaires :</strong> {{ imagerel.idtenu.qte }}<br>
                         </p>
                         <a href="{% url 'modifierImage' imagerel.idmg %}" class="btn btn-success d-inline " type="submit"> <i class="fa fa-pencil"></i>Modifier</a>
                         <a href="{% url 'suppImage' imagerel.idmg %}" class="btn btn-danger d-inline " type="submit"><i class="fa fa-trash"></i>Supprimer</a>

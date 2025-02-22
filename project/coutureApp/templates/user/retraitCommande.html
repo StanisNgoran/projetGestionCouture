@@ -19,6 +19,7 @@
         <h2 class="">Retrait de Commande</h2>
         <p>Effectuez le retrait d'une Commande</p>
       </div>
+      {%include 'admin/messages.html'%}
 
       <!-- Contenue de la page -->
       <div class="container mt-4" style="border-radius: 0%;">
@@ -35,7 +36,7 @@
                 <thead class="sticky-header">
                   <tr>
                     
-                    <th scope="col">Nom Client</th>
+                    <th scope="col">Nom Prenom</th>
                     <th scope="col">Date Depot</th>
                     <th scope="col">Date Retrait</th>
                     <th scope="col">Date d'Ajout</th>
@@ -50,7 +51,7 @@
                 <tbody>
                   {% for command in commandes %}
                     <tr>
-                      <td>{{ command.idclient.nom }} {{ command.idclient.prenom }} </td>
+                      <td>{{ command.idclient.nom_prenom }}</td>
                       <td>{{ command.debutcom }}</td>
                       <td>{{ command.fincom }}</td>
                       <td>{{ command.creation|date:"d/m/Y" }}</td>

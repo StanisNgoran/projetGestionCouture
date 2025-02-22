@@ -18,6 +18,7 @@
         <h2>Commandes en Cours de Conception</h2>
         <p>Vous verrez ici les commandes qui n'ont pas encore été retirées ou Livrées.</p>
       </div>
+      {%include 'admin/messages.html'%}
 
       <!-- Contenue de la page -->
       <div class="container mt-4" style="border-radius: 0%;">
@@ -42,10 +43,10 @@
               <thead class="sticky-header">
                 <tr>
                   
-                  <th scope="col">Nom Client</th>
-                  <th scope="col">Date Depot</th>
-                  <th scope="col">Rendez Vous</th>
-                  <th scope="col">Crée le</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Depot</th>
+                  <th scope="col">RDV</th>
+                  <th scope="col">Payement</th>
                   <th scope="col">Voir Details</th>
                   <th scope="col">Ajouter Tenue</th>
                   <th scope="col">Modifier</th>
@@ -55,11 +56,10 @@
               <tbody>
                 {% for command in commandes %}
                   <tr>
-                    <td>{{ command.idclient.nom }} {{ command.idclient.prenom }} </td>
+                    <td>{{ command.idclient.nom_prenom }}</td>
                     <td>{{ command.debutcom }}</td>
                     <td>{{ command.fincom }}</td>
-
-                    <td>{{ command.creation|date:"d/m/Y" }}</td>
+                    <td>{{ command.methodePayement }}</td>
                     <td>
                       <a href="{% url 'infosCommande' command.idcom %}">
                         <button type="submit" class="btn btn-info"> Voir Details <i class="fa fa-newspaper"></i></button> <!-- Icône de modification -->

@@ -34,14 +34,14 @@
             <table class="details">
                 <tr>
                     <td><strong>Client</strong></td>
-                    <td>{{ details.tenue_infos.idcom.idclient.nom }} {{ details.tenue_infos.idcom.idclient.prenom }}</td>
+                    <td>{{ details.tenue_infos.idcom.idclient.nom_prenom }} </td>
                 </tr>
                 <tr>
                     <td><strong>Commande</strong></td>
                     <td>{{ details.tenue_infos.idcom.idcom }}</td>
                     <td>Date Commande: {{ details.tenue_infos.idcom.debutcom }}</td>
                     <td>Date RDV: {{ details.tenue_infos.idcom.fincom }}</td>
-                    <td>Date Retrait: {{ details.tenue_infos.idcom.dateretrait }}</td>
+                    <!-- <td>Date Retrait: {{ details.tenue_infos.idcom.dateretrait }}</td> -->
                     <td>Statut: {{ details.tenue_infos.idcom.statut }}</td>
                 </tr>
             </table>
@@ -67,14 +67,14 @@
                         <td>{{ details.tenue_infos.prix }} FCFA</td>
                         <td>{{ details.tenue_infos.montant }} FCFA</td>
                         <td>{{ details.tenue_infos.reste }} FCFA</td>
-                        <td>{{ details.tenue_infos.etat_tenue }} FCFA</td>
+                        <td>{{ details.tenue_infos.etat_tenue }}</td>
                     </tr>
                   
                 </tbody>
             </table>
         
             <div class="footer">
-                <h3><td>Montant Commande: {{ details.tenue_infos.idcom.montantcom }}</td></h3>
+                <h3><td>Montant Commande: {{ details.tenue_infos.idcom.montantcom }} Fcfa</td></h3>
                 <!-- <h3><img src="{{ details.tenue_infos.photos.url }}" class="card-img-top" alt="Image" style="height: 150px; object-fit: cover;"> </h3>  -->
 
             </div>

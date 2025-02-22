@@ -20,6 +20,7 @@
         <p>Vous avez la possibilité de modifier les caracteristiques d'une commande.</p>
       </div>
 
+      {%include 'admin/messages.html'%}
       <!-- Contenue de la page -->
       <div class="container mt-4" style="border-radius: 0%;">
         {%csrf_token%}
@@ -29,8 +30,8 @@
             <div class="container-fluid d-flex flex-column align-items-center">
                 
                   <div class="mb-3 w-50">
-                    <label for="exampleFormControlInput1" class="form-label">Nom client</label>
-                    <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande.idclient.nom }} {{ commande.idclient.prenom }}" disabled>
+                    <label for="exampleFormControlInput1" class="form-label">Nom Prenom</label>
+                    <input type="text" class="form-control" name="idclient" id="exampleFormControlInput1" value="{{ commande.idclient.nom_prenom }}" disabled>
                   </div>
 
                   <div class="mb-3 w-50">
@@ -39,21 +40,22 @@
                   </div>
 
                   <div class="mb-3 w-50">
-                    <label for="exampleFormControlInput1" class="form-label">Montant commande</label>
-                    <input type="text" class="form-control" name="montantcom" id="exampleFormControlInput1" value="{{ commande.montantcom }}" disabled>
-                  </div>
-
-
-                  <div class="mb-3 w-50">
-                      <label for="dateInput" class="form-label">Date Commande</label>
-                      <input type="date" class="form-control" id="dateInput" name="debutcom" value="{{commande.debutcom}}">
-                  </div>
-
-                  <div class="mb-3 w-50">
                       <label for="dateInput" class="form-label">Date Rendez Vous</label>
                       <input type="date" class="form-control" id="dateInput" name="fincom" value="{{commande.fincom}}">
                   </div>
-
+                  
+                   
+                  <div class="mb-3 w-50">
+                    <label for="exampleCombobox" class="form-label">Payement</label>
+                      <select class="form-select" id="exampleCombobox" name="methodePayement">
+                        <option value="" selected disabled>-- Payement:{{commande.methodePayement}} --</option>
+                        <option value="Espece"> Espece</option>
+                        <option value="Wave"> Wave</option>
+                        <option value="Orange Money">Orange Money</option>  
+                        <option value="MTN Money">MTN Money</option>  
+                        <option value="MOOV Money">MOOV Money</option>  
+                      </select>
+                  </div>
                   <!-- Boutons Annuler et Suivant rapprochés -->
                   <div class="d-flex justify-content-center w-50 mt-2">
                       <!-- permet d'ajouter de l'espace entre les boutons -->

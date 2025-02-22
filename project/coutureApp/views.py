@@ -10,6 +10,7 @@ from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.decorators import login_required
 from .models import Profil
 from .decorators import role_requis
+from datetime import datetime
 
 
 # ____________________________________________________________________________________
@@ -149,15 +150,12 @@ def homeUser(request):
 @login_required
 def Ajouter_client(request):
     if request.method == 'POST':
-        nom = request.POST['nom'].upper()
-        prenom = request.POST['prenom'].upper()
-        contact = request.POST['contact']
+        nom_prenom = request.POST.get('nom_prenom').upper()
+        contact= request.POST.get('contact')
+        sexe = request.POST.get('sexe')
         
-        if nom=="":
-            messages.error(request, "Veuillez Entrer le nom du client.")
-            return redirect('client')
-        elif prenom=="":
-            messages.error(request, "Veuillez Entrer le prenom du client.")
+        if nom_prenom=="":
+            messages.error(request, "Veuillez Entrer le nom et le prenom")
             return redirect('client')
         
         elif contact=="":
@@ -167,10 +165,13 @@ def Ajouter_client(request):
         elif contact and (len(contact)!=10 or not contact.isdigit()):
             messages.error(request, "Le contact doit etre 10 chiffres.")
             return redirect('client')
+        elif sexe=="":
+            messages.error(request, "LSelectionnez le genre!.")
+            return redirect('client')
         else:
 
             # Créer un nouvel objet Client et l'enregistrer dans la base de données
-            client = Client(nom=nom, prenom=prenom, contact=contact)
+            client = Client(nom_prenom=nom_prenom, contact=contact, sexe=sexe)
             client.save()
             messages.success(request, 'Client Enregistré avec Succès!')
             return redirect('clientlist')  
@@ -196,9 +197,9 @@ def modifier_client(request,idclient):
     client_a_modifier = get_object_or_404(Client, idclient=idclient)
     if request.method == 'POST':
             # Récupérer les nouvelles valeurs des champs
-            client_a_modifier.nom = request.POST.get('nom', client_a_modifier.nom) # Garde la valeur existante si vide
-            client_a_modifier.prenom = request.POST.get('prenom', client_a_modifier.prenom)
+            client_a_modifier.nom_prenom = request.POST.get('nom_prenom', client_a_modifier.nom_prenom) # Garde la valeur existante si vide
             client_a_modifier.contact = request.POST.get('contact', client_a_modifier.contact)
+            client_a_modifier.sexe = request.POST.get('sexe', client_a_modifier.sexe)
 
             # Sauvegarder les nouvelles valeurs dans la base de données
             client_a_modifier.save()
@@ -247,28 +248,29 @@ def commandlist(request):
 @login_required
 def SaveCommande(request,idclient):
     client_commandeur = get_object_or_404(Client, idclient=idclient)
+    comm=Commande()
     if request.method == "POST":
         # Récupération des valeurs depuis le formulaire
-        debutcom = request.POST["debutcom"]
-        fincom = request.POST["fincom"]
-        
+        fincom = request.POST.get("fincom")
+        methodePayement = request.POST.get("methodePayement")
+        # debutcom=Commande.objects()
         # Enregistrement de la commande si son client existe
 
-        if debutcom=="":
-            messages.error(request, "Veuillez selectionner la date du debut.")
+        if fincom=="":
+            messages.error(request, "Veuillez selectionner la date de Retrait.")
             return redirect('commande',idclient=idclient)
         
-        elif fincom=="":
-            messages.error(request, "Veuillez selectionner la date de fin.")
+        elif fincom<=str(datetime.today()):
+            messages.error(request, "La date du rendez vous ne peut pas etre aujourd'hui.")
             return redirect('commande',idclient=idclient)
         
-        elif fincom<debutcom:
-            messages.error(request, "La date de fin doit être après la date de début.")
+        elif methodePayement=="":
+            messages.error(request, "Selectionnez un mode de payement")
             return redirect('commande',idclient=idclient)
-    
+
         else:
             
-            commande_lierauclient = Commande(idclient=client_commandeur, debutcom=debutcom, fincom=fincom)
+            commande_lierauclient = Commande(idclient=client_commandeur, fincom=fincom,methodePayement=methodePayement)
             commande_lierauclient.save()
             messages.success(request, 'Commande Enregistrée avec Succès!')
             return redirect('tenue',commande_lierauclient.idcom)
@@ -283,19 +285,19 @@ def SaveCommande(request,idclient):
 def modifier_commande(request,idcom):
     commande_a_modifier= get_object_or_404(Commande,idcom=idcom)
     if request.method=='POST':
-        commande_a_modifier.debutcom=request.POST.get('debutcom',commande_a_modifier.debutcom)
         commande_a_modifier.fincom=request.POST.get('fincom',commande_a_modifier.fincom)
+        commande_a_modifier.methodePayement=request.POST.get('methodePayement',commande_a_modifier.methodePayement)
         
-        if commande_a_modifier.debutcom=="":
-            messages.error(request, "Veuillez selectionner la date du debut.")
+        if commande_a_modifier.fincom=="":
+            messages.error(request, "Veuillez selectionner date du Rendez vous.")
             return redirect('modifier_commande',idcom=idcom)
         
-        elif commande_a_modifier.fincom=="":
-            messages.error(request, "Veuillez selectionner la date de fin.")
+        elif str(commande_a_modifier.fincom)<= str(commande_a_modifier.debutcom):
+            messages.error(request, "Date de rendez ne doit pas etre en dessous de celle de la commande:.")
             return redirect('modifier_commande',idcom=idcom)
         
-        elif commande_a_modifier.fincom<commande_a_modifier.debutcom:
-            messages.error(request, "La date de fin doit être après la date de début.")
+        elif commande_a_modifier.methodePayement=="":
+            messages.error(request, "Selectionnez un mode de Payement.")
             return redirect('modifier_commande',idcom=idcom)
         else:
 
@@ -338,16 +340,18 @@ def Liste_de_retrait(request):
 @login_required
 def Action_Retrait(request,idcom):
     commande_a_retirer=get_object_or_404(Commande,idcom=idcom)
+    # verif_tenu=Tenue()
     if request.method=="POST":
         commande_a_retirer.statut=request.POST.get("statut")
-        commande_a_retirer.dateretrait=request.POST.get("dateretrait")
 
+        # if verif_tenu.etat_tenue=="Non Soldé":
+        #     messages.error(request,"Veuillez solder les tenues avant de pourvoir retirer!")
+        #     return redirect('actionRetrait',idcom=idcom)
+        
         if commande_a_retirer.statut=="":
             messages.error(request,"Veuillez le statut de la commande!")
             return redirect('actionRetrait',idcom=idcom)
-        elif commande_a_retirer.dateretrait=="":
-            messages.error(request,"Entrez la date de retrait!")
-            return redirect('actionRetrait',idcom=idcom)
+        
         else:
             commande_a_retirer.save()
             messages.success(request,"Retrait Effectuée avec succes!")
@@ -395,7 +399,6 @@ def modifier_tenue(request,idtenu):
         tenue.prix=request.POST.get("prix",tenue.prix)
         tenue.avance=request.POST.get("avance",tenue.avance)
         tenue.modele=request.POST.get("modeltenue",tenue.modele)
-        tenue.description=request.POST.get("description",tenue.description)
         tenue.qte=request.POST.get("qte",tenue.qte)
 
         qte=int(tenue.qte)
@@ -439,7 +442,6 @@ def tenue(request,idcom):
         qte=request.POST.get("qte")
         avance = request.POST.get("avance")
         modele = request.POST.get("modeltenue")
-        description = request.POST.get("description")
         
         # Enregistrement de la commande si son client existe
         prix_converti=int(prix)
@@ -484,12 +486,12 @@ def tenue(request,idcom):
             reste=montant-avance_converti
  
             if montant==avance_converti:
-                tenue_commandee = Tenue(idcom=commande_instance, prix=prix_converti, qte=qte,montant=montant, avance=avance_converti,reste=reste,modele=modele,description=description,etat_tenue="Soldé")
+                tenue_commandee = Tenue(idcom=commande_instance, prix=prix_converti, qte=qte,montant=montant, avance=avance_converti,reste=reste,modele=modele,etat_tenue="Soldé")
                 tenue_commandee.save()
                 messages.success(request, 'Tenue Ajoutée avec Succès!')
-                return redirect('image')
+                return redirect('image',tenue_commandee.idtenu)
             elif reste>0:
-                tenue_commandee = Tenue(idcom=commande_instance, prix=prix_converti,qte=qte,montant=montant, avance=avance_converti,reste=reste,modele=modele,description=description,etat_tenue="Non Soldé")
+                tenue_commandee = Tenue(idcom=commande_instance, prix=prix_converti,qte=qte,montant=montant, avance=avance_converti,reste=reste,modele=modele,etat_tenue="Non Soldé")
                 tenue_commandee.save()
                 messages.success(request, 'Tenue Ajoutée avec Succès!')
                 return redirect('image',tenue_commandee.idtenu)
@@ -613,14 +615,9 @@ def editefacture(request, idcom):
         return redirect('facture')
       # Retourne à la page si la date est vide
     elif request.method == "POST":
-        date_facture = request.POST.get("date_facture")
-
-        if date_facture == "":
-            messages.error(request, "Veuillez entrer la date de facturation.")
-            return redirect('editefacture', idcom=idcom)  # Retourne à la page si la date est vide
-        else:
+        
             # Création de la facture
-            facture = Facture(idclient=cle_client, idcom=commande, date_facture=date_facture)
+            facture = Facture(idcom=commande)
             facture.save()
             
             messages.success(request, "Facture enregistrée avec succès !")
@@ -634,9 +631,6 @@ def editefacture(request, idcom):
 def modifier_facture(request,idfacture):
     facture=Facture.objects.select_related('idcom').get(idfacture=idfacture)
     if request.method == "POST":
-        facture.idfacture=request.POST.get("idfacture",facture.idfacture)
-        facture.idclient=request.POST.get("idclient",facture.idclient)
-        facture.idcom=request.POST.get("idcom",facture.idcom)
         facture.idcom.montantcom=request.POST.get("montantcom",facture.idcom.montantcom)
         facture.date_facture = request.POST.get("date_facture",facture.date_facture)
 
@@ -661,7 +655,7 @@ def Aff_Facture(request,idfacture):
     tenues = facture.idcom.tenue_set.all()  # Récupère les tenues de la commande associée
 
     details = {
-        "client": facture.idclient,
+        
         "commande": facture.idcom,
         "tenues": tenues,
         "date_facture": facture.date_facture,
@@ -699,9 +693,36 @@ def album(request):
 @login_required
 @role_requis('admin')
 def statistique(request):
-
+    nbrComm=Commande.objects.filter(statut='En Cours').count()
+    nbrLivr=Commande.objects.filter(statut='Livrée').count()
+    nbrTotCom=Commande.objects.count()
+    nbrClient=Client.objects.count()
+    nbrClient_Homme=Client.objects.filter(sexe='Masculin').count()
+    nbrClient_Femme=Client.objects.filter(sexe='Feminin').count()
+    nbrclient_non_solde=Tenue.objects.filter(etat_tenue="Non Soldé").count()
     
-    return render(request,'user/statistique.html')
+    pourcent_Com_encours=(nbrComm/nbrTotCom)*100
+    pourcent_Com_Livr=(nbrLivr/nbrTotCom)*100
+    nbrPourent_H=(nbrClient_Homme/nbrClient)*100
+    nbrPourent_F=(nbrClient_Femme/nbrClient)*100
+
+    pourcent_Homme=f"{nbrPourent_H:.1f}"
+    pourcent_Femme=f"{nbrPourent_F:.1f}"
+    com_cours=f"{pourcent_Com_encours:.1f}"
+    com_li=f"{pourcent_Com_Livr:.1f}"
+    stats={
+        'nbrclient':nbrClient,
+        'nbrcom':nbrComm,
+        'nbrLivr':nbrLivr,
+        'totCom':nbrTotCom,
+        'pourcent_enCours':com_cours,
+        'pourcent_Livre':com_li,
+        'clientNonsolde':nbrclient_non_solde,
+        'nbr_H':pourcent_Homme,
+        'nbr_F':pourcent_Femme
+    }
+    
+    return render(request,'user/statistique.html',{'stats':stats})
    
 
 

@@ -21,17 +21,15 @@
 
       <!-- Contenue de la page -->
       <div class="container mt-4" style="border-radius: 0%;">
-        {%csrf_token%}
-        
               <form action="{% url 'image' tenue_instance.idtenu %}" method="post" enctype="multipart/form-data">
-
+                {%csrf_token%}
                 <div class="container-fluid d-flex flex-column align-items-center">
                   <h2 class="text-center">Inserez l'image de la tenue</h2>
 
-                  {%csrf_token%}
+                  
                   <div class="mb-3 w-50">
-                    <label for="exampleCombobox" class="form-label">Nom Client</label>
-                    <input type="text" class="form-control" name="" id="exampleFormControlInput1" value="{{tenue_instance.idcom.idclient.nom}} {{tenue_instance.idcom.idclient.prenom}}" disabled>
+                    <label for="exampleCombobox" class="form-label">Nom Prenom</label>
+                    <input type="text" class="form-control" name="" id="exampleFormControlInput1" value="{{tenue_instance.idcom.idclient.nom_prenom}}" disabled>
                   </div>
 
                   <div class="mb-3 w-50">

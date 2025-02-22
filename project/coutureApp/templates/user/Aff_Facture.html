@@ -28,7 +28,7 @@
                 <table class="details">
                     <tr>
                         <td><strong>Client</strong></td>
-                        <td>{{ details.client.nom }} {{ details.client.prenom }}</td>
+                        <td>{{ details.commande.idclient.nom_prenom }} </td>
                     </tr>
                     <tr>
                         <td><strong>Commande</strong></td>
@@ -40,7 +40,6 @@
                 <table class="tenues">
                     <thead>
                         <tr>
-                            <th>Description</th>
                             <th>Modèle</th>
                             <th>Quantité</th>
                             <th>Prix Unitaire</th>
@@ -50,7 +49,6 @@
                     <tbody>
                         {% for tenue in details.tenues %}
                         <tr>
-                            <td>{{ tenue.description }}</td>
                             <td>{{ tenue.modele }}</td>
                             <td>{{ tenue.qte }}</td>
                             <td>{{ tenue.prix }} FCFA</td>

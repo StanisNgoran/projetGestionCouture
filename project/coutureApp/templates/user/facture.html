@@ -36,7 +36,7 @@
                     <table class="table table-striped mt-3">
                       <thead class="sticky-header">
                         <tr>
-                          <th scope="col">Nom Client</th>
+                          <th scope="col">Nom Prenom</th>
                           <th scope="col">N°Facture</th>
                           <th scope="col">Montant Total</th>
                           <th scope="col">Date Facture</th>
@@ -46,7 +46,7 @@
                       <tbody>
                         {% for facture in facture %}
                           <tr>
-                            <td>{{ facture.idclient.nom }} {{ facture.idclient.prenom }}</td>
+                            <td>{{ facture.idcom.idclient.nom_prenom }}</td>
                             <td>{{ facture.idfacture }}</td>
                             <td>{{ facture.idcom.montantcom }}</td>
                             <td>{{ facture.date_facture }}</td>

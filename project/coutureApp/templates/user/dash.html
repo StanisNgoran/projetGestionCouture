@@ -5,32 +5,32 @@
     <div class="row text-center align-items-stretch"> 
         <div class="col-md-3">
             <div class="card p-3  text-white h-100 d-flex flex-column justify-content-center" style="background-color: purple;">
-                <h3>5</h3>
-                <p>Équipes disponibles</p>
+                <h3>{{ stats.nbrcom }} </h3>
+                <p>Commande En Cours soit {{ stats.pourcent_enCours }}%</p>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3 bg-info text-white h-100 d-flex flex-column justify-content-center">
-                <h3>842</h3>
-                <p>Heures prestées</p>
+                <h3>{{ stats.nbrclient }} </h3>
+                <p>Nombre de client</p>
             </div>
         </div>
         
         <div class="col-md-3">
             <div class="card p-3 bg-warning text-dark h-100 d-flex flex-column justify-content-center">
-                <h3>3</h3>
-                <p>Projets en cours</p>
+                <h3>{{ stats.nbrLivr }}</h3>
+                <p>Commandes Livrées soit {{ stats.pourcent_Livre }}%</p>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3 bg-danger text-white h-100 d-flex flex-column justify-content-center">
-                <h3>58%</h3>
-                <p>% Projets terminés</p>
+                <h3>{{ stats.totCom }}</h3>
+                <p>Total Commande</p>
             </div>
         </div>
     </div>
     
-    
+<!--     
     <div class="row mt-4">
         <div class="col-md-4">
             <canvas id="hoursByTeam"></canvas>
@@ -42,32 +42,48 @@
         <div class="col-md-4">
             <canvas id="hoursByProjects"></canvas>
         </div>
-    </div>
+    </div> -->
     
     <div class="row mt-4">
         <div class="col-md-12">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Projet</th>
-                        <th>Heures estimées</th>
-                        <th>Heures prestées</th>
-                        <th>Heures restantes</th>
-                        <th>Progression</th>
+                        <th>Clients Non Soldés</th>
+                        <th>Tenue en Cours</th>
+                        <th>Tenue Terminée</th>
+                        <th>Totale Vente</th>
+                        <th>Montant Net</th>
+                        <th>% Client Homme</th>
+                        <th>% Client Femme</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr><td>{{ stats.clientNonsolde }}</td><td>91</td><td>45</td><td>46</td><td>56</td><td>{{ stats.nbr_H }}%</td><td>{{ stats.nbr_F }}%</td></tr>
+                </tbody>
+
+                <!-- <thead>
+                    <tr>
+                        <th>Clients Non Soldés</th>
+                        <th>Tenue en Cours</th>
+                        <th>Tenue Terminée</th>
+                        <th>Totale Vente</th>
+                        <th>Modele fare</th>
                         <th>% Restant</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr><td>MA12</td><td>91</td><td>45</td><td>46</td><td>49%</td><td>51%</td></tr>
-                    <tr><td>AEC</td><td>224</td><td>211</td><td>13</td><td>94%</td><td>6%</td></tr>
+                     <tr><td>AEC</td><td>224</td><td>211</td><td>13</td><td>94%</td><td>6%</td></tr>
                     <tr><td>EZFEF</td><td>245</td><td>56</td><td>189</td><td>23%</td><td>77%</td></tr>
-                    <tr><td>EFF</td><td>100</td><td>90</td><td>0</td><td>100%</td><td>0%</td></tr>
-                </tbody>
+                    <tr><td>EFF</td><td>100</td><td>90</td><td>0</td><td>100%</td><td>0%</td></tr> 
+                </tbody> -->
             </table>
         </div>
     </div>
 <!-- </div> -->
-
+<!-- 
 <script>
     const ctx1 = document.getElementById('hoursByTeam').getContext('2d');
     new Chart(ctx1, {
@@ -104,4 +120,4 @@
             }]
         }
     });
-</script>
+</script> -->

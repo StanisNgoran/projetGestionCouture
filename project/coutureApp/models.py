@@ -26,9 +26,9 @@ def generate_client_id():
 
 class Client(models.Model):
     idclient = models.CharField(primary_key=True, max_length=20,default=generate_client_id,unique=True)
-    nom = models.CharField(max_length=100, null=True, blank=True)
-    prenom = models.CharField(max_length=100, null=True, blank=True)
-    contact = models.CharField(max_length=10, null=True, blank=True)
+    nom_prenom = models.CharField(max_length=100, null=True, blank=True)
+    contact= models.CharField(max_length=100, null=True, blank=True)
+    sexe = models.CharField(max_length=10, null=True, blank=True)
     ajout = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -48,15 +48,20 @@ def generate_commande_id():
 class Commande(models.Model):
     idcom = models.CharField(primary_key=True,max_length=20,default=generate_commande_id,unique=True)
     idclient = models.ForeignKey(Client, on_delete=models.CASCADE)
-    debutcom = models.DateField()
+    debutcom = models.DateField(auto_now_add=True)
     fincom = models.DateField()
     montantcom=models.IntegerField(default=0)
     statut=models.CharField(default="En Cours", max_length=51)
-    creation = models.DateTimeField(auto_now_add=True)
+    methodePayement= models.CharField(default="Espece",max_length=20)
     dateretrait=models.DateTimeField(default=timezone.now)
+    creation=models.DateTimeField(default=timezone.now)
     def __str__(self):
         return f"Commande {self.idcom}"
     
+    def nbrCommande(self):
+        for i in Commande:
+            total=self.idcom.count()
+        return total
 
 
 # ____________________________________________________________________________________
@@ -92,18 +97,16 @@ def generate_tenue_id():
 
 class Tenue(models.Model):
     idtenu = models.CharField(primary_key=True, max_length=20,default=generate_tenue_id,unique=True)
+    idcom = models.ForeignKey(Commande, on_delete=models.CASCADE ,default=1)
     prix = models.IntegerField()
     avance = models.IntegerField()
     reste = models.IntegerField()
-    montant=models.IntegerField(default=0)
-    qte=models.IntegerField(default=0)
+    montant=models.IntegerField(default=prix)
+    qte=models.IntegerField(default=1)
     modele = models.TextField()
-    description = models.CharField(max_length=300)
-    idcom = models.ForeignKey(Commande, on_delete=models.CASCADE ,default=1)
     ajout = models.DateTimeField(auto_now_add=True)
     etat_tenue=models.CharField(max_length=100, blank=True)
-    modifierle=models.DateField(default= timezone.now)
-
+   
     def __str__(self):
         return self.description
     
@@ -131,9 +134,8 @@ def generate_facture_id():
 
 class Facture(models.Model):
     idfacture = models.CharField(primary_key=True,max_length=20,default=generate_facture_id,unique=True)
-    idclient = models.ForeignKey(Client, on_delete=models.CASCADE)
     idcom = models.ForeignKey(Commande, on_delete=models.CASCADE)
-    date_facture = models.DateTimeField()
+    date_facture = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Facture {self.idfacture}"
@@ -154,14 +156,8 @@ def generate_image_id():
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")  # Format : AnnéeMoisJourHeureMinuteSeconde
     return f"{timestamp}"
 
-
 class ImageModele(models.Model):
     idmg = models.CharField(primary_key=True,max_length=20,default=generate_image_id,unique=True)
     idtenu = models.ForeignKey(Tenue, on_delete=models.CASCADE)
-    #photos = models.BinaryField()  # Store image as binary
     photos = models.ImageField(upload_to='tenue_images/', null=True, blank=True)
-    libelle = models.CharField(max_length=100)
     ajout = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.libelle

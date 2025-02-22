@@ -32,7 +32,9 @@
                     <table class="details">
                         <tr>
                             <td><strong>Client</strong></td>
-                            <td>{{ commande.idclient.nom }} {{ commande.idclient.prenom }}</td>
+                            <td>{{ commande.idclient.nom_prenom }}</td>
+                            <td>Payement: {{ commande.methodePayement }}</td>
+
                         </tr>
                         <tr>
                             <td><strong>Commande</strong></td>

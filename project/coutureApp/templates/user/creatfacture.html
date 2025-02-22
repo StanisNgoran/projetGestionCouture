@@ -33,7 +33,7 @@
                   <thead class="sticky-header">
                     <tr>
                      
-                      <th scope="col">Nom Client</th>
+                      <th scope="col">Nom Prenom</th>
                       <th scope="col">ID commande</th>
                       <th scope="col">Date Commande</th>
                       <th scope="col">Montant Total</th>
@@ -43,7 +43,7 @@
                   <tbody>
                     {% for command in commande_nonfacturee %}
                       <tr>
-                        <td>{{ command.idclient.nom}} {{ command.idclient.prenom}}</td>
+                        <td>{{ command.idclient.nom_prenom}} </td>
                         <td>{{ command.idcom}}</td>
                         <td>{{ command.creation}}</td>
                         <td>{{ command.montantcom }}</td>

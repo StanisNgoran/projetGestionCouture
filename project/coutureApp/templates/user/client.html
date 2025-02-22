@@ -29,18 +29,22 @@
 
                   {%csrf_token%}
                   <div class="mb-3 w-50">
-                      <label for="exampleFormControlInput1" class="form-label">Nom</label>
-                      <input type="text" class="form-control" name="nom" id="exampleFormControlInput1" placeholder="Ngoran" style="text-transform: capitalize;">
-                  </div>
-              
-                  <div class="mb-3 w-50">
-                      <label for="exampleFormControlInput1" class="form-label">Prenom</label>
-                      <input type="text" class="form-control" name="prenom" id="exampleFormControlInput1" placeholder="Stane" style="text-transform: capitalize;">
+                      <label for="exampleFormControlInput1" class="form-label">Nom et Prenom</label>
+                      <input type="text" class="form-control" name="nom_prenom" id="exampleFormControlInput1" placeholder="Jean Hervé" style="text-transform: capitalize;">
                   </div>
               
                   <div class="mb-3 w-50">
                       <label for="exampleFormControlInput1" class="form-label">Contact</label>
-                      <input type="text" class="form-control" name="contact" id="exampleFormControlInput1" placeholder="0700010203">
+                      <input type="text" class="form-control" name="contact" id="exampleFormControlInput1" placeholder="0500010203" style="text-transform: capitalize;">
+                  </div>
+              
+                  <div class="mb-3 w-50">
+                    <label for="exampleCombobox" class="form-label">Genre</label>
+                      <select class="form-select" id="exampleCombobox" name="sexe">
+                        <option value="" selected disabled>-- Sélectionner un Genre --</option>
+                                <option value="Masculin"> Masculin</option>
+                        <option value="Feminin"> Feminin </option>  
+                      </select>
                   </div>
 
                   <!-- Boutons Annuler et Suivant rapprochés -->

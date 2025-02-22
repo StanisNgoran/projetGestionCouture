@@ -16,6 +16,8 @@
         <h2 class="">Modification de Tenue</h2>
         <p>Ici vous pouvez modifier les caracteristiques d'une tenue</p>
       </div>
+
+      {%include 'admin/messages.html'%}
       <!-- Contenue de la page -->
       <div class="container mt-4" style="border-radius: 0%;">
         {%csrf_token%}
@@ -26,19 +28,14 @@
                     {%csrf_token%}
 
                     <div class="mb-3 w-50">
-                        <label for="exampleFormControlInput1" class="form-label">Nom client</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" name="idclient" value="{{ tenue.idcom.idclient.nom }} {{ tenue.idcom.idclient.prenom }}" disabled>
+                        <label for="exampleFormControlInput1" class="form-label">Nom Prenom</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" name="idclient" value="{{ tenue.idcom.idclient.nom_prenom }}" disabled>
                     </div>
 
-                      <div class="mb-3 w-50">
-                        <label for="exampleFormControlInput1" class="form-label">Montant</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" name="montant" value="{{tenue.montant}}" disabled>
+                    <div class="mb-3 w-50">
+                        <label for="exampleFormControlInput1" class="form-label">Prix Unitaire</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" name="prix" value="{{tenue.prix}}" >
                     </div>
-
-                      <div class="mb-3 w-50">
-                          <label for="exampleFormControlInput1" class="form-label">Prix Unitaire</label>
-                          <input type="text" class="form-control" id="exampleFormControlInput1" name="prix" value="{{tenue.prix}}" >
-                      </div>
 
 
                       <div class="mb-3 w-50">
@@ -82,12 +79,6 @@
                             <option value="Toge">Toge</option>
                       </select>
                   </div>
-
-                    <div class="mb-3 w-50">
-                        <label for="exampleFormControlInput1" class="form-label">Description</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" name="description" value="{{tenue.description}}">
-                    </div>
-
 
                     <!-- Boutons Annuler et Suivant rapprochés -->
                     <div class="d-flex justify-content-center w-50 mt-2">
