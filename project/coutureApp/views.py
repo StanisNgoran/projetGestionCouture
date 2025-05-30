@@ -211,7 +211,7 @@ def modifier_client(request,idclient):
 
 
 
-# permet de supprimer un client
+# permet de supprimer un client coll
  
 @login_required
 def supprimer_client(request,idclient):
